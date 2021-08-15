@@ -7,20 +7,20 @@
         v-if="$vuetify.breakpoint.smAndDown"
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="inspire">
-        <router-link to="/" style="text-decoration: none"
-          >BRAND</router-link
-        >
+        <router-link to="/" style="text-decoration: none" class="font-weight-bold text-uppercase textbase--text">BRAND</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn to="/login" text fab plain >
+      <v-btn to="/login" text fab plain>
         <v-icon fab> mdi-account </v-icon>
       </v-btn>
+      <Notification/>
       <v-btn text fab @click="toggleCart = !toggleCart">
         <v-badge right overlap color="pink">
-          <span slot="badge">{{ cart.length }}</span>
+          <span slot="badge">{{ totalProduct }}</span>
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
+      
       <!-- <template
         v-slot:extension
         class="justify-space-around layout-menu"
@@ -65,13 +65,13 @@
       <v-list nav dense>
         <v-list-item>
           <v-list-item-content>
-            <span class="px-2 py-2">Shopping Cart</span>
+            <span class="px-2 py-2 text-h6 black--text">Shopping Cart</span>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item v-for="product in cart" :key="product.id">
           <v-badge overlap color="blue">
-            <span slot="badge">{{ product.quantity }}</span>
+            <span slot="badge" > {{ product.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
               <v-img :src="product.img" width="70" height="60"></v-img>
             </v-avatar>
@@ -79,8 +79,8 @@
 
           <v-list-item two-line>
             <v-list-item-content>
-              <v-list-item-title> {{ product.title }}</v-list-item-title>
-              <v-list-item-subtitle>{{ product.price }}</v-list-item-subtitle>
+              <v-list-item-title class="mb-1 font-weight-bold"> {{ product.title }}</v-list-item-title>
+              <v-list-item-subtitle class="red--text text--darken-4 font-weight-black text-body-2 mb-1">${{ product.price }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action>
               <v-btn text fab @click="deleteItem(product.id)"
@@ -91,14 +91,20 @@
         </v-list-item>
         <v-divider></v-divider>
       </v-list>
-      
-      <v-row align="center" class="pt-2 px-3">
-        <v-col v-if="cart.length==0" cols="12" class="justify-center d-flex">
-          <span>no item in cart</span>
-        </v-col>
+      <div class="ma-2 mt-6" v-if="cart.length === 0">
+        <div class="text-center"> 
+            <v-icon>
+                mdi-block-helper
+            </v-icon>
+        </div>
+        <div class="text-center mt-7">
+            <span>Shopping Cart Empty</span>
+        </div>
+      </div>
+      <v-row align="center" class="pt-2 px-3 mt-3">
         <v-col class="d-flex justify-center" cols="12">
-          <v-btn class="theme--light v-size--large">
-            Check out: {{totalPrice}} $ | items: ({{ totalProduct }})
+          <v-btn class="theme--light v-size--large pink white--text font-weight-bold" >
+            Check out: {{ totalPrice }} $ | items: ({{ totalProduct }})
           </v-btn>
         </v-col>
       </v-row>
@@ -108,7 +114,11 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import Notification from "../app/Notification.vue"
 export default {
+  components:{
+    Notification,
+  },
   data: () => ({
     toggleLeftMenu: false,
     toggleCart: false,
@@ -137,12 +147,16 @@ export default {
   }),
   computed: {
     ...mapState(["cart"]),
-    ...mapGetters(["totalProduct", 'totalPrice']),
+    ...mapGetters(["totalProduct", "totalPrice"]),
   },
   methods: {
-   ...mapActions(['deleteItem'])
+    ...mapActions(["deleteItem"]),
+    // deleteItem(productId){
+    //   console.log(productId)
+    // }
   },
 };
 </script>
-<style lang="scss">
+<style >
+
 </style>

@@ -1,183 +1,123 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+//import createPersistedState from "vuex-persistedstate";
+import axios from 'axios'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    products: [
-      {
-        id: 1,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 10,
-        description: "No Description",
-        quantity: 1,
-        category: "THEME"
-      },
-      {
-        id: 2,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 15,
-        description: "No Description",
-        quantity: 1,
-        category: "THEME"
-      },
-      {
-        id: 3,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 20,
-        description: "No Description",
-        quantity: 1,
-        category: "UIKIT"
-      },
-      {
-        id: 4,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 25,
-        description: "No Description",
-        quantity: 1,
-        category: "UIKIT"
-      },
-      {
-        id: 5,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 30,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-      {
-        id: 6,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 35,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-      {
-        id: 7,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 35,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-      {
-        id: 8,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 35,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-      {
-        id: 9,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 35,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-      {
-        id: 10,
-        img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        title: "Cafe Badilico",
-        rate: "4.7",
-        price: 35,
-        description: "No Description",
-        quantity: 1,
-        category: "FREEBIES"
-      },
-
-
+    categories: [
     ],
     cart: [],
-    users:[
+    users: [
       {
         email: "a",
-        password:"a",
+        password: "a",
       }
-     
-    ],
-  },
-  mutations: {
-    ADD_CART(state, productId) {
-      state.products.map(product => {
-        if (product.id === productId) {
-          var found = false;
-          for (var i = 0; i < state.cart.length; i++) {
-            if (state.cart[i].id === productId) {
-              state.cart[i].quantity++;
-              found = true;
-            }
-           
-          }
-          if(!found)  state.cart.unshift(product)
-        }
 
+    ],
+    loading: true,
+    snackbar: false
+  },
+  // plugins: [createPersistedState()],
+  mutations: {
+    ADD_CART(state, productId,categoryId) {
+      console.log(productId)
+      console.log(categoryId)
+      state.categories.map(category => {
+        category.products.map(product => {
+         
+          if (product.id === productId) {
+            var found = false;
+            for (var i = 0; i < state.cart.length; i++) {
+              if (state.cart[i].id === productId) {
+                state.cart[i].quantity++;
+                found = true;
+              }
+            }
+            if (!found) state.cart.unshift(product)
+          }
+
+        })
+        state.snackbar = true
       })
+      // state.categories.map(product => {
+      // if (product.id === productId) {
+      //   var found = false;
+      //   for (var i = 0; i < state.cart.length; i++) {
+      //     if (state.cart[i].id === productId) {
+      //       state.cart[i].quantity++;
+      //       found = true;
+      //     }
+
+      //   }
+      //   if (!found) state.cart.unshift(product)
+      // }
+
+      // })
     },
     DELETE_PRODUCT(state, productId) {
-      state.cart = state.cart.filter(product => product.id !== productId)
-    }, 
-    ADD_USER(state,user){
-      state.users.push(user)
+      state.cart = state.cart.filter(product =>
+        product.id !== productId)
+        
     },
-    USER_LOGIN(state, email, password){
-        state.users.map(user =>{
-          if (user.email === email && user.password===password){
-            return true
-          }
-          else return false
-        })
+    ADD_USER(state, user) {
+      state.users.push(user)
+      state.snackbar = true
+    },
+    USER_LOGIN(state, email, password) {
+      state.users.map(user => {
+        if (user.email === email && user.password === password) {
+          return true
+        }
+        else return false
+      })
+    },
+    GET_PRODUCT(state, categories) {
+      state.categories = categories
+      state.loading = false
     }
   },
   actions: {
     addToCart({ commit }, productId) {
-       commit('ADD_CART', productId)
-     },
-    deleteItem({commit}, productId){
-       commit('DELETE_PRODUCT', productId)
-     }
+      commit('ADD_CART', productId)
+    },
+    deleteItem({ commit }, productId) {
+      commit('DELETE_PRODUCT', productId)
+    },
+    async getProduct({ commit }) {
+      try {
+        const response = await axios.get('https://demo-tttn.herokuapp.com/category?fbclid=IwAR3VSOyMm_1ZnV7635OY3L-jm-MoUdH2x6S7jSIaA2ELiYM1xSxsT8NRj9o')
+        commit('GET_PRODUCT', response.data)
+        
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
   },
   modules: {
   },
   getters: {
-      cartSize(state){
-        return state.cart.length;
-      },
-      totalProduct(state){
-        var totalProduct = state.cart.reduce((pre, cur) => {
-            return pre + cur.quantity 
-        },0)
-       // console.log(totalProduct)
-        return totalProduct
-      },
-      totalPrice(state){
-        state.cart.map(product => {
-          for(var i =0; i< state.cart.length; i++)
-            if(state.cart[i].id == product.id)
-            return state.cart[i].quantity * state.cart[i].price
-        })
+    cartSize(state) {
+      return state.cart.length;
+    },
+    totalProduct(state) {
+      var totalProduct = state.cart.reduce((pre, cur) => {
+        return pre + cur.quantity
+      }, 0)
+      // console.log(totalProduct)
+      return totalProduct
+    },
+    totalPrice(state) {
+      var sum = 0;
+      for (var i = 0; i < state.cart.length; i++) {
+        //console.log(state.cart[i].price * state.cart[i].quantity)
+        sum += state.cart[i].price * state.cart[i].quantity
       }
-      
+        return parseFloat(sum).toFixed(2)
+    },
+    
+
   }
 })

@@ -3,21 +3,35 @@
     <v-card class="px-2">
       <Carousel />
     </v-card>
-      <Filter/>
-      
-    <section class="mt-6 mb-3">
-      <v-row>
-        <v-col cols="12" class="mt-12">
-          <strong style="color: white">NEW PRODUCT</strong>
+    <v-btn
+      text
+      @click="expand = !expand"
+      class="font-weight-bold text-uppercase textbase--text white"
+    >
+      <v-icon>mdi-filter-menu-outline</v-icon> Filter
+    </v-btn>
+    <v-expand-transition v-model="expand"> </v-expand-transition>
+    <section class="mt-6 mb-3" >
+      <skeleton v-if="loading" />
+      <div v-else class="row" v-for="category in categories" :key="category.id">
+        <v-col cols="12" class="mt-12 mb-5">
+          <strong style="color: white">{{ category.name }}</strong>
+          <v-divider class="my-6 white"></v-divider>
         </v-col>
+
         <v-col
-          v-for="product in products"
-          :key="product.id"
+          v-for="product in category.products"
+          :key="`${product.id}${category.id}`"
           cols="12"
           sm="6"
           xl="3"
           lg="4"
         >
+          <!-- <v-skeleton-loader v-if="show==true"
+            type="card, card-heading, actions"
+            :types="{ actions: 'button@1' }"
+            dark
+          ></v-skeleton-loader> -->
           <div class="position-relative">
             <v-card class="rounded-card" dark>
               <v-sheet>
@@ -42,19 +56,22 @@
                         class="product-price body-2"
                         style="margin-top: 5px; margin-right: 1px"
                       >
-                        $
+                        $ 
                       </span>
                       <span class="product-price font-weight-bold text-h5"
-                        >12</span
+                        >{{product.price}}</span
                       >
-                      <span
+                      <!-- <span  v-else class="product-price font-weight-bold text-h5"
+                        >{{parseFloat(product.price).toFixed(2)}}</span
+                      > -->
+                      <!-- <span
                         class="product-price body-2"
                         style="margin-left: 2px; margin-top: 5px"
                         >98</span
-                      >
+                      > -->
                     </div>
                   </div>
-                  <del class="body-1 mx-1" style="margin-top: 3px">14.94</del>
+                  <del class="body-1 mx-1" style="margin-top: 3px">{{parseFloat(product.oldPrice).toFixed(2)}}</del>
                   <v-spacer></v-spacer>
                   <v-btn
                     color="deep-purple lighten-2"
@@ -65,6 +82,7 @@
                     large
                     class="accent--text"
                     depressed
+                    
                   >
                     <v-icon>mdi-basket-plus</v-icon>
                   </v-btn>
@@ -73,7 +91,7 @@
             </v-card>
           </div>
         </v-col>
-      </v-row>
+      </div>
     </section>
 
     <v-btn
@@ -88,25 +106,38 @@
     >
       <v-icon>mdi-arrow-up-bold</v-icon>
     </v-btn>
+    <Pagination />
+    <div class="text-center">
+      <v-snackbar  v-model="snackbar" :timeout="2000">
+        {{ text }}
+      </v-snackbar>
+    </div>
+    <!-- //  <SnackBar/> -->
   </v-container>
 </template>
 
 <script>
-import Carousel from "../components/app/Carousel.vue"
-import Filter from "../components/app/Filter.vue"
-import { mapState, mapActions } from "vuex"
+import Carousel from "../components/app/Carousel.vue";
+// import Filter from "../components/app/Filter.vue"
+import Pagination from "../components/app/Pagination.vue";
+import skeleton from "../components/skeletonLoader.vue";
+//import SnackBar from "../components/app/SnackBar.vue"
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
-  
+
   components: {
     //    HelloWorld,
     Carousel,
-    Filter,
+    // Filter,
+    Pagination,
+    //  SnackBar,
+    skeleton,
   },
   data() {
     return {
-      // expand: false,
-
+      expand: false,
+      text: 'Added to cart',
     };
   },
   methods: {
@@ -118,12 +149,23 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
-    ...mapActions(["addToCart"]),
+    ...mapActions(["getProduct", "addToCart"]),
+    // addToCart(productId, categoryId){
+    //   console.log(productId)
+    //   console.log(categoryId)
+    // },
   },
   computed: {
-    ...mapState(["products"]),
+    ...mapState(["categories", "loading", "snackbar"]),
     // ...mapActions(['addToCart']),
-    // ...mapGetters(['getProductCategory'])
+    ...mapGetters([]),
+    getFree(){
+      
+      return true
+    }
+  },
+  created() {
+    this.getProduct(() => {});
   },
 };
 </script>
