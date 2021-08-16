@@ -38,6 +38,15 @@ export default {
         {
           problem: "Register chưa hoàn thành",
         },
+         {
+          problem: "Profile Page chưa hoàn thành",
+        },
+         {
+          problem: "Preview Image chưa hoành thành",
+        },
+         {
+          problem: "..................",
+        },
         
       ],
     };

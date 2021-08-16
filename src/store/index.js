@@ -20,6 +20,7 @@ export default new Vuex.Store({
 
     ],
     loading: true,
+    loadingDetails: true,
     snackbar: false
   },
   // plugins: [createPersistedState()],
@@ -82,6 +83,7 @@ export default new Vuex.Store({
     },
     GET_SINGLE(state, products){
       state.products = products
+      state.loadingDetails = false
     }
   },
   actions: {

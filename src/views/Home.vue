@@ -35,7 +35,7 @@
           <div class="position-relative">
             <v-card class="rounded-card" dark>
               <v-sheet>
-                <router-link :to = "{name: 'Product', params: {id:product.id}}" :key="$route.path" >
+                <router-link :to = "{name: 'Product', params: {slug:product.title}}" >
                   <v-img
                     style="height: 250px"
                     :src="product.img"

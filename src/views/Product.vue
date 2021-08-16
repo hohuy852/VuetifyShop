@@ -1,6 +1,7 @@
 <template>
   <v-container style="margin-top: 50px">
-    <v-row>
+    <SkeletonProduct v-if="loadingDetails"/>
+    <div class="row" v-if="!loadingDetails">
       <v-col cols="12" md="8" xl="6" offset-xl="1">
         <div class="d-flex flex-column-reverse flex-md-row">
           <div class="d-flex d-md-block justify-center">
@@ -119,8 +120,8 @@
           </div>
         </div>
       </v-col>
-    </v-row>
-    <v-row>
+    </div>
+    <div class="row" v-if="!loadingDetails">
       <v-col class="mx-auto" cols="12">
         <v-card class="pa-3" color="#05090c">
           <v-sheet class="py-2 body-1 white--text" color="#05090c">
@@ -154,9 +155,9 @@
           </v-sheet>
         </v-card>
       </v-col>
-    </v-row>
+    </div>
 
-    <v-row>
+    <div class="row" v-if="!loadingDetails">
       <v-col cols="12">
         <v-divider class="mt-7"></v-divider>
         <div
@@ -184,7 +185,7 @@
             <div class="position-relative">
               <v-card class="rounded-card" dark>
                 <v-sheet>
-                  <router-link  :to = "{name: 'Product', params: {id:item.id}}" :key="$route.path">
+                  <router-link  :to = "{name: 'Product', params: {slug:item.title}}">
                     <v-img
                       style="height: 250px"
                       :src="item.img"
@@ -240,19 +241,26 @@
           </v-col>
         </v-row>
       </v-col>
-    </v-row>
+    </div>
   </v-container>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
+import SkeletonProduct from '../components/app/SkeletonProduct.vue'
 export default {
   name: "Product",
+  components: {
+    SkeletonProduct,
+  },
   data() {
     return {
-      productId: this.$route.params.id,
+      slug: this.$route.params.slug,
     };
+  },
+  props:{
+   
   },
   methods: {
     ...mapActions(["getSingleProduct",'addToCart']),
@@ -265,8 +273,9 @@ export default {
     },
     product() {
       const productList = this.$store.state.products;
-      return productList.find((product) => product.id === this.productId);
+      return productList.find((product) => product.title === this.slug);
     },
+    ...mapState(['loadingDetails'])
   },
   created() {
     this.getSingleProduct();
