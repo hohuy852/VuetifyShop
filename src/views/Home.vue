@@ -35,7 +35,7 @@
           <div class="position-relative">
             <v-card class="rounded-card" dark>
               <v-sheet>
-                <router-link to="/product">
+                <router-link :to = "{name: 'Product', params: {id:product.id}}" :key="$route.path" >
                   <v-img
                     style="height: 250px"
                     :src="product.img"
@@ -107,11 +107,11 @@
       <v-icon>mdi-arrow-up-bold</v-icon>
     </v-btn>
     <Pagination />
-    <div class="text-center">
+    <!-- <div class="text-center">
       <v-snackbar  v-model="snackbar" :timeout="2000">
         {{ text }}
       </v-snackbar>
-    </div>
+    </div> -->
     <!-- //  <SnackBar/> -->
   </v-container>
 </template>
@@ -165,7 +165,8 @@ export default {
     }
   },
   created() {
-    this.getProduct(() => {});
+    this.getProduct();
+  
   },
 };
 </script>

@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Product from '../views/Product.vue'
-import Register from '../views/Register.vue'
-import Login from '../views/Login.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -21,25 +19,26 @@ const routes = [
   //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   // },
   {
-    path: '/product',
+    path:'/product/:id',
     name: 'Product',
-    component: Product
+    component:()=>import ( /* webpackChunkName: "product" */ '../views/Product.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component:()=>import (/* webpackChunkName: "register" */'../views/Register.vue')
   },{
     path: '/login',
     name: 'Login',
-    component: Login
+    component:()=>import (/* webpackChunkName: "login" */'../views/Login.vue')
   }
 ]
 
 const router = new VueRouter({
     mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+ 
 })
 
 export default router

@@ -6,6 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    products:[
+      
+    ],
     categories: [
     ],
     cart: [],
@@ -76,6 +79,9 @@ export default new Vuex.Store({
     GET_PRODUCT(state, categories) {
       state.categories = categories
       state.loading = false
+    },
+    GET_SINGLE(state, products){
+      state.products = products
     }
   },
   actions: {
@@ -92,6 +98,15 @@ export default new Vuex.Store({
         
       }
       catch (error) {
+        console.log(error)
+      }
+    },
+    async getSingleProduct({commit}){
+      try{
+        const response = await axios.get("https://demo-tttn.herokuapp.com/product")
+        commit('GET_SINGLE', response.data)
+      }
+      catch(error){
         console.log(error)
       }
     }

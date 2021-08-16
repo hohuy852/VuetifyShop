@@ -38,9 +38,7 @@ export default {
         {
           problem: "Register chưa hoàn thành",
         },
-        {
-          problem: "Routing chưa hoàn thành",
-        },
+        
       ],
     };
   },

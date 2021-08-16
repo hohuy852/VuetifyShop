@@ -1,7 +1,7 @@
 <template>
   <v-container style="margin-top: 50px">
-    <v-row style="margin-left: 27px">
-      <v-col cols="12" md="8" xl="6">
+    <v-row>
+      <v-col cols="12" md="8" xl="6" offset-xl="1">
         <div class="d-flex flex-column-reverse flex-md-row">
           <div class="d-flex d-md-block justify-center">
             <v-tab
@@ -72,7 +72,7 @@
           <div class="mb-1 min-w-0 mx-md-auto">
             <div class="" style="position: relative">
               <img
-                src="https://cdn.shopify.com/s/files/1/2695/0984/products/image3_7a06743a-b730-49f1-a636-a63fb43dafe7.png?v=1611181256"
+                :src="product.img"
                 width="auto"
                 height="auto"
                 style="max-width: 100%; max-height: 474px"
@@ -82,8 +82,8 @@
         </div>
       </v-col>
       <v-col cols="12" md="4" xl="3">
-        <div class="product-content white--text" >
-          <h1 class="text-h5 text-lg-h4 mb-1">Flairo Theme PRO</h1>
+        <div class="product-content white--text">
+          <h1 class="text-h5 text-lg-h4 mb-1">{{ product.title }}</h1>
           <div class="mb-2">
             <div class="product-price d-flex">
               <div class="d-flex success--text">
@@ -92,24 +92,30 @@
                   style="margin-top: 5px; margin-right: 1px"
                   >$</span
                 >
-                <span class="product-price font-weight-bold text-h4">9</span>
-                <span
+                <span class="product-price font-weight-bold text-h4">{{ product.price }}</span>
+                <!-- <span
                   class="product-price body-1"
                   style="margin-left: 2px; margin-top: 3px"
-                  >50</span
-                >
+                  >{{ product.price }}</span
+                > -->
               </div>
-              <del class="text-h5 mx-2" style="margin-top: 3px">38.00</del>
+              <del class="text-h6 mx-2" style="margin-top: 3px">{{
+                product.oldPrice
+              }}</del>
             </div>
             <div class="body-1 mt-3">
               <div>
                 Availability:
-                <span>Available</span>
+                <span style="color: #45f542">Available</span>
+              </div>
+              <div>
+                Vendor:
+                <span>Vuetify</span>
               </div>
             </div>
 
-            <v-btn x-large block class="mt-3 black--text">Buy Now</v-btn>
-            <v-btn x-large block class="mt-3 black--text">Add to cart </v-btn>
+            <v-btn x-large block class="mt-3 black--text  font-weight-bold"  style="background-color: rgb(243, 205, 112); border-color: rgb(243, 205, 112);" >Buy Now</v-btn>
+            <v-btn x-large block class="mt-3 black--text  font-weight-bold" style="background-color: rgb(243, 205, 112); border-color: rgb(243, 205, 112);"  @click="addToCart(product.id)">Add to cart </v-btn>
           </div>
         </div>
       </v-col>
@@ -160,25 +166,37 @@
             mb-2
             headline
             text-center
-            mt-10
+            mt-6
+            white--text
           "
         >
           Others also bought
         </div>
         <v-row class="justify-center">
-          <v-col v-for="(product, i) in 4" :key="i" cols="6" md="3">
+          <v-col
+            v-for="(item, i) in filteredProduct"
+            :key="i"
+            sm="6"
+            lg="4"
+            xl="3"
+            cols="12"
+          >
             <div class="position-relative">
-             <v-card class="rounded-card " dark
-                >
+              <v-card class="rounded-card" dark>
                 <v-sheet>
-                  <router-link to="/product">
-                    <v-img style="height: 250px" :src="product.img" class="rounded-card"> </v-img>
+                  <router-link  :to = "{name: 'Product', params: {id:item.id}}" :key="$route.path">
+                    <v-img
+                      style="height: 250px"
+                      :src="item.img"
+                      class="rounded-card"
+                    >
+                    </v-img>
                   </router-link>
                   <v-card-title class="pb-0">
-                    {{ product.title }}
+                    {{ item.title }}
                   </v-card-title>
                   <v-card-text class="pb-1">
-                    {{ product.description }}
+                    {{ item.description }}
                   </v-card-text>
                   <v-card-actions>
                     <div class="product-price d-flex pl-1">
@@ -189,27 +207,29 @@
                         >
                           $
                         </span>
-                        <span class="product-price font-weight-bold text-h5"
-                          >12</span
-                        >
-                        <span
+                        <span class="product-price font-weight-bold text-h5">{{
+                          item.price
+                        }}</span>
+                        <!-- <span
                           class="product-price body-2"
                           style="margin-left: 2px; margin-top: 5px"
                           >98</span
-                        >
+                        > -->
                       </div>
                     </div>
-                    <del class="body-1 mx-1" style="margin-top: 3px">14.94</del>
+                    <del class="body-1 mx-1" style="margin-top: 3px">{{
+                      item.oldPrice
+                    }}</del>
                     <v-spacer></v-spacer>
                     <v-btn
                       color="deep-purple lighten-2"
                       text
-                      
                       rounded
                       outlined
                       large
                       class="accent--text"
                       depressed
+                      @click="addToCart(item.id)"
                     >
                       <v-icon>mdi-basket-plus</v-icon>
                     </v-btn>
@@ -225,17 +245,48 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  name: "Product",
+  data() {
+    return {
+      productId: this.$route.params.id,
+    };
+  },
+  methods: {
+    ...mapActions(["getSingleProduct",'addToCart']),
+  },
+  computed: {
+    filteredProduct() {
+      const array = this.$store.state.products;
+      const shuffled = array.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, 4);
+    },
+    product() {
+      const productList = this.$store.state.products;
+      return productList.find((product) => product.id === this.productId);
+    },
+  },
+  created() {
+    this.getSingleProduct();
+  },
+  mounted() {
+    window.scrollTo(0, 0);
+  },
+};
 </script>
+
+
 
 <style scoped>
 .theme--light.v-divider {
   border-color: rgb(248 247 247 / 12%);
 }
-.rounded-card{
-    border-radius:15px;
+.rounded-card {
+  border-radius: 15px;
 }
-.v-application .accent--text.text--lighten-2{
-    color: #e65d5d !important
+.v-application .accent--text.text--lighten-2 {
+  color: #e65d5d !important;
 }
 </style>
