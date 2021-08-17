@@ -72,9 +72,9 @@ export default new Vuex.Store({
     USER_LOGIN(state, email, password) {
       state.users.map(user => {
         if (user.email === email && user.password === password) {
+          console.log('Success')
           return true
         }
-        else return false
       })
     },
     GET_PRODUCT(state, categories) {

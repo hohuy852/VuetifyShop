@@ -27,8 +27,7 @@ export default {
     background-color: #05090c;
     color: #edf0f2;
 }
-.dark{
-     
+.theme--light.v-btn.v-btn--outlined.v-btn--text {
+    border-color: rgb(255 255 255 / 62%);
 }
-
 </style>

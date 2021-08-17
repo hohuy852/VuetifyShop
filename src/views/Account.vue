@@ -20,10 +20,10 @@
       </tbody>
     </table>
     <v-tabs class="mt-3" background-color="transparent" center-active dark v-model="activeTab"  > 
-         <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" >
+         <v-tab v-for="tab of tabs" :key="tab.id" >
         {{ tab.name }}
       </v-tab>
-        <v-tab-item v-for="tab of tabs" :key="tab.id" :value="tab.route"  class="primary">
+        <v-tab-item v-for="tab of tabs" :key="tab.id"   class="primary">
           <router-view ></router-view>
         </v-tab-item>
     </v-tabs>
@@ -58,4 +58,7 @@ export default {
 </script>
 
 <style scoped>
+.theme--light.v-btn.v-btn--outlined.v-btn--text {
+    border-color: rgb(255 255 255 / 62%);
+}
 </style>

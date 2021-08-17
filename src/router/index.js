@@ -39,16 +39,7 @@ const routes = [
     component: () => import('../views/Account.vue'),
     props:true,
     children: [
-      {
-        path: "",
-        name: "Orders",
-        component: () => import (/* webpackChunkName: "Orders" */'../components/Orders.vue')
-      },
-      {
-        path: "info",
-        name: "Infomations",
-        component: () => import (/* webpackChunkName: "Infomation" */'../components/Infomations.vue')
-      }
+    
     ]
   }
 ]

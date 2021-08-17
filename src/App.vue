@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-app>
+    <v-app class="myFont">
        <Navigation/>
       <v-main class="primary">
         <router-view :key="$route.path" />
@@ -26,9 +26,10 @@ export default {
   }),
 };
 </script>
-<style scoped>
-
-.theme--light.v-tabs-items {
-    background-color: transparent;
+<style lang="scss" scoped>
+.myFont{
+  font-family: 'Quicksand', sans-serif;
 }
+
+
 </style>

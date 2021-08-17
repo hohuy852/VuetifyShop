@@ -71,12 +71,13 @@
             ></v-tab>
           </div>
           <div class="mb-1 min-w-0 mx-md-auto">
-            <div class="" style="position: relative">
+            <div class="" style="position: relative; " >
               <img
+                
                 :src="product.img"
                 width="auto"
                 height="auto"
-                style="max-width: 100%; max-height: 474px"
+                style="max-width: 100%; max-height: 474px; border-radius: 10px"
               />
             </div>
           </div>
@@ -290,7 +291,7 @@ export default {
 
 <style scoped>
 .theme--light.v-divider {
-  border-color: rgb(248 247 247 / 12%);
+  border-color: rgb(248 247 247 / 42%);
 }
 .rounded-card {
   border-radius: 10px;
