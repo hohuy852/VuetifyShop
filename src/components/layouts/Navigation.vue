@@ -7,7 +7,7 @@
         v-if="$vuetify.breakpoint.smAndDown"
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="inspire">
-        <router-link to="/" style="text-decoration: none" class="font-weight-bold text-uppercase white--text">BRAND</router-link>
+        <router-link to="/" style="text-decoration: none" class="font-weight-bold text-uppercase white--text">VUETIFY STORE</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn to="/login" text fab plain>
@@ -158,5 +158,9 @@ export default {
 };
 </script>
 <style >
-
+.theme--dark.v-sheet {
+      background-color: #05090c;
+    border-color: #1E1E1E;
+    color: #FFFFFF;
+}
 </style>

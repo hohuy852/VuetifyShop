@@ -117,15 +117,15 @@
               </div>
             </div>
 
-            <v-btn
+            <v-btn 
               x-large
               block
-              class="mt-3 black--text font-weight-bold"
+              class="mt-10 black--text font-weight-bold"
               style="
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              >Buy Now</v-btn
+              ><v-icon>mdi-basket-plus</v-icon><span class="flex-grow-1"  @click="addProduct(product.id)">Add to cart</span></v-btn
             >
             <v-btn
               x-large
@@ -135,8 +135,8 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              @click="addToCart(product.id)"
-              >Add to cart
+             
+              ><v-icon>mdi-send</v-icon><span class="flex-grow-1">Buy now</span>
             </v-btn>
           </div>
         </div>
@@ -253,7 +253,7 @@
                       large
                       class="accent--text"
                       depressed
-                      @click="addToCart(item.id)"
+                      @click="addProduct(item.id)"
                     >
                       <v-icon>mdi-basket-plus</v-icon>
                     </v-btn>
@@ -284,7 +284,7 @@ export default {
   },
   props: {},
   methods: {
-    ...mapActions(["getSingleProduct", "addToCart"]),
+    ...mapActions(["getSingleProduct", "addProduct"]),
   },
   computed: {
     filteredProduct() {

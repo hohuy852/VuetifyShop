@@ -183,4 +183,7 @@ export default {
     background-color: #05090c;
     color: #FFFFFF;
 }
+.theme--dark.v-btn.v-btn--outlined.v-btn--text {
+    border-color: rgba(255, 255, 255, 0.22);
+}
 </style>

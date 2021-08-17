@@ -43,6 +43,20 @@ export default new Vuex.Store({
         }
       })
     },
+    ADD_PRODUCT(state, productId){
+        state.products.find(product => {
+          if(product.id === productId){
+            var found = false
+            for (var i = 0; i < state.cart.length; i++) {
+              if (state.cart[i].id === productId) {
+                state.cart[i].quantity++;
+                found = true;
+              }
+            }
+            if (!found) state.cart.unshift(product)
+          }
+        })
+    },
     DELETE_PRODUCT(state, productId) {
       state.cart = state.cart.filter(product => product.id !== productId)
     },
@@ -68,6 +82,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    addProduct({commit}, productId){
+      commit('ADD_PRODUCT', productId)
+    },
     // addToCart({commit}, {productId, categoryId}) {
     //   commit('ADD_CART', {productId ,categoryId})
     // },
