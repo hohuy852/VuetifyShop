@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    products:[
-      
+    products: [
+
     ],
     categories: [
     ],
@@ -25,45 +25,26 @@ export default new Vuex.Store({
   },
   // plugins: [createPersistedState()],
   mutations: {
-    ADD_CART(state, productId,categoryId) {
-      console.log(productId)
-      console.log(categoryId)
-      state.categories.map(category => {
-        category.products.map(product => {
-         
-          if (product.id === productId) {
-            var found = false;
-            for (var i = 0; i < state.cart.length; i++) {
-              if (state.cart[i].id === productId) {
-                state.cart[i].quantity++;
-                found = true;
+    ADD_CART(state, { productId, categoryId }) {
+      state.categories.find(category => {
+        if (category.id === categoryId) {
+          category.products.find(product => {
+            if (product.id === productId) {
+              var found = false
+              for (var i = 0; i < state.cart.length; i++) {
+                if (state.cart[i].id === productId) {
+                  state.cart[i].quantity++;
+                  found = true;
+                }
               }
+              if (!found) state.cart.unshift(product)
             }
-            if (!found) state.cart.unshift(product)
-          }
-
-        })
-        state.snackbar = true
+          })
+        }
       })
-      // state.categories.map(product => {
-      // if (product.id === productId) {
-      //   var found = false;
-      //   for (var i = 0; i < state.cart.length; i++) {
-      //     if (state.cart[i].id === productId) {
-      //       state.cart[i].quantity++;
-      //       found = true;
-      //     }
-
-      //   }
-      //   if (!found) state.cart.unshift(product)
-      // }
-
-      // })
     },
     DELETE_PRODUCT(state, productId) {
-      state.cart = state.cart.filter(product =>
-        product.id !== productId)
-        
+      state.cart = state.cart.filter(product => product.id !== productId)
     },
     ADD_USER(state, user) {
       state.users.push(user)
@@ -81,15 +62,15 @@ export default new Vuex.Store({
       state.categories = categories
       state.loading = false
     },
-    GET_SINGLE(state, products){
+    GET_SINGLE(state, products) {
       state.products = products
       state.loadingDetails = false
     }
   },
   actions: {
-    addToCart({ commit }, productId) {
-      commit('ADD_CART', productId)
-    },
+    // addToCart({commit}, {productId, categoryId}) {
+    //   commit('ADD_CART', {productId ,categoryId})
+    // },
     deleteItem({ commit }, productId) {
       commit('DELETE_PRODUCT', productId)
     },
@@ -97,18 +78,18 @@ export default new Vuex.Store({
       try {
         const response = await axios.get('https://demo-tttn.herokuapp.com/category?fbclid=IwAR3VSOyMm_1ZnV7635OY3L-jm-MoUdH2x6S7jSIaA2ELiYM1xSxsT8NRj9o')
         commit('GET_PRODUCT', response.data)
-        
+
       }
       catch (error) {
         console.log(error)
       }
     },
-    async getSingleProduct({commit}){
-      try{
+    async getSingleProduct({ commit }) {
+      try {
         const response = await axios.get("https://demo-tttn.herokuapp.com/product")
         commit('GET_SINGLE', response.data)
       }
-      catch(error){
+      catch (error) {
         console.log(error)
       }
     }
@@ -132,9 +113,9 @@ export default new Vuex.Store({
         //console.log(state.cart[i].price * state.cart[i].quantity)
         sum += state.cart[i].price * state.cart[i].quantity
       }
-        return parseFloat(sum).toFixed(2)
+      return parseFloat(sum).toFixed(2)
     },
-    
+
 
   }
 })

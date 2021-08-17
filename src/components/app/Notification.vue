@@ -45,6 +45,9 @@ export default {
           problem: "Preview Image chưa hoành thành",
         },
          {
+          problem: "Lỗi categories",
+        },
+         {
           problem: "..................",
         },
         

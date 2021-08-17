@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-app class="myFont">
+    <v-app>
        <Navigation/>
       <v-main class="primary">
         <router-view :key="$route.path" />
@@ -26,9 +26,9 @@ export default {
   }),
 };
 </script>
-<style lang="scss" scoped>
-.myFont{
-  font-family: 'Quicksand', sans-serif;
+<style>
+#app{
+  font-family: 'Quicksand', Helvetica, Arial, sans-serif;
 }
 
 

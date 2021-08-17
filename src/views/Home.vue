@@ -75,7 +75,7 @@
                   <v-btn
                     color="deep-purple lighten-2"
                     text
-                    @click="addToCart(product.id)"
+                    @click="addToCart(product.id, category.id)"
                     rounded
                     outlined
                     large
@@ -147,14 +147,17 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
-    ...mapActions(["getProduct", "addToCart"]),
+    ...mapActions(['getProduct',]),
     // addToCart(productId, categoryId){
     //   console.log(productId)
     //   console.log(categoryId)
     // },
+    addToCart(productId, categoryId){
+      this.$store.commit('ADD_CART', {productId ,categoryId})
+    }
   },
   computed: {
-    ...mapState(["categories", "loading", "snackbar"]),
+    ...mapState(['categories', 'loading', 'snackbar']),
     // ...mapActions(['addToCart']),
     ...mapGetters([]),
     getFree(){
@@ -164,6 +167,7 @@ export default {
   },
   created() {
     this.getProduct();
+    //this.getSingleProduct();
   
   },
 };

@@ -186,7 +186,7 @@
             <div class="position-relative">
               <v-card class="rounded-card" style="border-radius:10px" dark>
                 <v-sheet>
-                  <router-link  :to = "{name: 'Product', params: {slug:item.title}}">
+                  <router-link  :to="{name: 'Product', params: {slug:item.title}}">
                     <v-img
                       style="height: 250px"
                       :src="item.img"
@@ -273,6 +273,7 @@ export default {
       return shuffled.slice(0, 4);
     },
     product() {
+      console.log(this.slug)
       const productList = this.$store.state.products;
       return productList.find((product) => product.title === this.slug);
     },
@@ -290,6 +291,7 @@ export default {
 
 
 <style scoped>
+
 .theme--light.v-divider {
   border-color: rgb(248 247 247 / 42%);
 }

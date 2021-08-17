@@ -1,5 +1,5 @@
 <template>
-  <v-container style="margin-top: 50px" >
+  <v-container style="margin-top: 50px">
     <h1 class="text-h4 mt-4 d-flex white--text">
       Account
       <v-spacer></v-spacer>
@@ -19,46 +19,43 @@
         </tr>
       </tbody>
     </table>
-    <v-tabs class="mt-3" background-color="transparent" center-active dark v-model="activeTab"  > 
-         <v-tab v-for="tab of tabs" :key="tab.id" >
-        {{ tab.name }}
-      </v-tab>
-        <v-tab-item v-for="tab of tabs" :key="tab.id"   class="primary">
-          <router-view ></router-view>
-        </v-tab-item>
+    <v-tabs class="mt-3" background-color="transparent" center-active dark>
+      <v-tab v-for="tab in tabs" :key="tab.slug">{{tab.name}}</v-tab>
+      <v-tab-item>
+        <router-view :key="$route.path"></router-view>
+      </v-tab-item>
     </v-tabs>
-   
   </v-container>
 </template>
 
 <script>
 export default {
   components: {
-   
+    
   },
-  props: ["id"],
-  data(){
-    return{
-      activeTab: `/user/${this.id}`,
+  props: {
+   slug: { type: String, require: true },
+  },
+  data() {
+    return {
+      // slug: this.$route.params.slug
       tabs:[
         {
-          id:1,
-          name: "Orders",
-          route: `/profile/${this.id}`
+          name: 'Order',
+          slug: 'orders',
         },
-        {
-          id:2,
-          name: "Infomation",
-          route: `/profile/${this.id}/Info`
+         {
+          name: 'Info',
+          slug: 'info',
         }
       ]
-    }
-  }
+    };
+  },
 };
 </script>
 
 <style scoped>
 .theme--light.v-btn.v-btn--outlined.v-btn--text {
-    border-color: rgb(255 255 255 / 62%);
+  border-color: rgb(255 255 255 / 62%);
 }
 </style>

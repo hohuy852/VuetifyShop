@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -37,11 +38,38 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Account.vue'),
-    props:true,
-    children: [
-    
-    ]
+    props: true,
+    // children: [
+    //   {
+    //     path: ':tabSlug',
+    //     name: 'OrderDetails',
+    //     props: true,
+    //     component: () => import(/* webpackChunkName: "Order" */'../components/Orders.vue')
+    //   },
+      // {
+      //   path: ':infoSlug',
+      //   name: 'Infomations',
+      //   props: true,
+      //   component: () => import(/* webpackChunkName: "Infos" */'../components/Infomations.vue')
+      // }
+    //]
   }
+  // {
+  //   path: "/profile/:id",
+  //   name: 'Profile',
+  //   component: () => import('../views/Account.vue'),
+  //   props: true,
+  //   children: [
+  //     {
+  //       path: "",
+  //       component: import(/* webpackChunkName: "Order" */'../components/Orders.vue')
+  //     },
+  //     {
+  //       path: "project",
+  //       component: import(/* webpackChunkName: "Info" */'../components/Infomations.vue')
+  //     }
+  //   ]
+  // }
 ]
 
 const router = new VueRouter({
