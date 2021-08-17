@@ -23,7 +23,7 @@
             label="Password"
             outlined
           ></v-text-field>
-          <v-btn class="primary mb-3" x-large block @click="USER_LOGIN(this.email, this.password)">Log in</v-btn>
+          <v-btn class="primary mb-3" x-large block @click="USER_LOGIN(this.email, this.password)" to="/profile">Log in</v-btn>
           <span v-if="show" style="color: red">Invalid email or password</span>
           <router-link to="/" style="text-decoration: none"
             >Forgorten Password?</router-link

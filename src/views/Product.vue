@@ -1,6 +1,6 @@
 <template>
   <v-container style="margin-top: 50px">
-    <SkeletonProduct v-if="loadingDetails"/>
+    <SkeletonProduct v-if="loadingDetails" />
     <div class="row" v-if="!loadingDetails">
       <v-col cols="12" md="8" xl="6" offset-xl="1">
         <div class="d-flex flex-column-reverse flex-md-row">
@@ -71,9 +71,8 @@
             ></v-tab>
           </div>
           <div class="mb-1 min-w-0 mx-md-auto">
-            <div class="" style="position: relative; " >
+            <div class="" style="position: relative">
               <img
-                
                 :src="product.img"
                 width="auto"
                 height="auto"
@@ -85,7 +84,7 @@
       </v-col>
       <v-col cols="12" md="4" xl="3">
         <div class="product-content white--text">
-          <h1 class="text-h5 text-lg-h4 mb-1">{{ product.title }}</h1>
+          <div class="text-h5 text-lg-h4 mb-1">{{ product.title }}</div>
           <div class="mb-2">
             <div class="product-price d-flex">
               <div class="d-flex success--text">
@@ -94,7 +93,9 @@
                   style="margin-top: 5px; margin-right: 1px"
                   >$</span
                 >
-                <span class="product-price font-weight-bold text-h4">{{ product.price }}</span>
+                <div class="product-price font-weight-bold text-h4">
+                  {{ product.price }}
+                </div>
                 <!-- <span
                   class="product-price body-1"
                   style="margin-left: 2px; margin-top: 3px"
@@ -116,8 +117,27 @@
               </div>
             </div>
 
-            <v-btn x-large block class="mt-3 black--text  font-weight-bold"  style="background-color: rgb(243, 205, 112); border-color: rgb(243, 205, 112);" >Buy Now</v-btn>
-            <v-btn x-large block class="mt-3 black--text  font-weight-bold" style="background-color: rgb(243, 205, 112); border-color: rgb(243, 205, 112);"  @click="addToCart(product.id)">Add to cart </v-btn>
+            <v-btn
+              x-large
+              block
+              class="mt-3 black--text font-weight-bold"
+              style="
+                background-color: rgb(243, 205, 112);
+                border-color: rgb(243, 205, 112);
+              "
+              >Buy Now</v-btn
+            >
+            <v-btn
+              x-large
+              block
+              class="mt-3 black--text font-weight-bold"
+              style="
+                background-color: rgb(243, 205, 112);
+                border-color: rgb(243, 205, 112);
+              "
+              @click="addToCart(product.id)"
+              >Add to cart
+            </v-btn>
           </div>
         </div>
       </v-col>
@@ -165,7 +185,7 @@
           class="
             font-weight-black
             text-uppercase
-            mb-2
+            mb-4
             headline
             text-center
             mt-6
@@ -184,9 +204,11 @@
             cols="12"
           >
             <div class="position-relative">
-              <v-card class="rounded-card" style="border-radius:10px" dark>
+              <v-card class="rounded-card" style="border-radius: 10px" dark>
                 <v-sheet>
-                  <router-link  :to="{name: 'Product', params: {slug:item.title}}">
+                  <router-link
+                    :to="{ name: 'Product', params: { slug: item.title } }"
+                  >
                     <v-img
                       style="height: 250px"
                       :src="item.img"
@@ -249,7 +271,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-import SkeletonProduct from '../components/app/SkeletonProduct.vue'
+import SkeletonProduct from "../components/app/SkeletonProduct.vue";
 export default {
   name: "Product",
   components: {
@@ -260,11 +282,9 @@ export default {
       slug: this.$route.params.slug,
     };
   },
-  props:{
-   
-  },
+  props: {},
   methods: {
-    ...mapActions(["getSingleProduct",'addToCart']),
+    ...mapActions(["getSingleProduct", "addToCart"]),
   },
   computed: {
     filteredProduct() {
@@ -273,11 +293,11 @@ export default {
       return shuffled.slice(0, 4);
     },
     product() {
-      console.log(this.slug)
+      console.log(this.slug);
       const productList = this.$store.state.products;
       return productList.find((product) => product.title === this.slug);
     },
-    ...mapState(['loadingDetails'])
+    ...mapState(["loadingDetails"]),
   },
   created() {
     this.getSingleProduct();
@@ -291,14 +311,33 @@ export default {
 
 
 <style scoped>
-
 .theme--light.v-divider {
-  border-color: rgb(248 247 247 / 42%);
+  border-color: rgb(248 247 247 / 22%);
 }
 .rounded-card {
   border-radius: 10px;
 }
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;
+}
+.v-application .text-lg-h4 .text-h4 {
+  font-size: 2.125rem !important;
+  font-weight: 400;
+  line-height: 2.5rem;
+  letter-spacing: 0.0073529412em !important;
+  font-family: "Quicksand", sans-serif !important;
+}
+.v-application .body-1 {
+  font-size: 1rem !important;
+  font-weight: 400;
+  letter-spacing: 0.03125em !important;
+  line-height: 1.5rem;
+  font-family: "Quicksand", sans-serif !important;
+}
+.mx-auto {
+  font-family: "Quicksand", sans-serif !important;
+}
+.headline {
+  font-family: "Quicksand", sans-serif !important;
 }
 </style>

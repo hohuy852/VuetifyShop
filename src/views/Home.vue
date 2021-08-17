@@ -179,4 +179,8 @@ export default {
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;
 }
+.theme--dark.v-card {
+    background-color: #05090c;
+    color: #FFFFFF;
+}
 </style>

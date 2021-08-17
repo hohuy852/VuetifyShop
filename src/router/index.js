@@ -38,21 +38,18 @@ const routes = [
     path: '/profile',
     name: 'Profile',
     component: () => import('../views/Account.vue'),
-    props: true,
-    // children: [
-    //   {
-    //     path: ':tabSlug',
-    //     name: 'OrderDetails',
-    //     props: true,
-    //     component: () => import(/* webpackChunkName: "Order" */'../components/Orders.vue')
-    //   },
-      // {
-      //   path: ':infoSlug',
-      //   name: 'Infomations',
-      //   props: true,
-      //   component: () => import(/* webpackChunkName: "Infos" */'../components/Infomations.vue')
-      // }
-    //]
+    children: [
+      {
+        path: 'orders',
+        name: 'OrderDetails',
+        component: () => import(/* webpackChunkName: "Order" */'../components/Orders.vue')
+      },
+      {
+        path: 'info',
+        name: 'Infomations',
+        component: () => import(/* webpackChunkName: "Infos" */'../components/Infomations.vue')
+      }
+    ]
   }
   // {
   //   path: "/profile/:id",
