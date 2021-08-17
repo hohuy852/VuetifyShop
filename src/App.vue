@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
        <Navigation/>
-      <v-main>
+      <v-main class="primary">
         <router-view :key="$route.path" />
       </v-main>
         <Footer/>
@@ -27,7 +27,8 @@ export default {
 };
 </script>
 <style scoped>
- .theme--light.v-application{
-   background: #111b27;
- }
+
+.theme--light.v-tabs-items {
+    background-color: transparent;
+}
 </style>

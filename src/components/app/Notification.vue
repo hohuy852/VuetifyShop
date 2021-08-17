@@ -1,9 +1,9 @@
 <template>
   <v-menu transition="scroll-y-transition" offset-y>
     <template v-slot:activator="{ on, attrs }">
-       <v-badge ri content="4">
+       <v-badge>
         <v-btn
-          color="secondary"
+          color="white"
           class="ma-2"
           v-bind="attrs"
           v-on="on"

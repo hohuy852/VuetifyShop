@@ -33,8 +33,7 @@
             dark
           ></v-skeleton-loader> -->
           <div class="position-relative">
-            <v-card class="rounded-card" dark>
-              <v-sheet>
+            <v-card class="rounded-card" style="border-radius: 10px" dark>
                 <router-link :to = "{name: 'Product', params: {slug:product.title}}" >
                   <v-img
                     style="height: 250px"
@@ -87,7 +86,6 @@
                     <v-icon>mdi-basket-plus</v-icon>
                   </v-btn>
                 </v-card-actions>
-              </v-sheet>
             </v-card>
           </div>
         </v-col>
@@ -172,7 +170,7 @@ export default {
 </script>
 <style scoped>
 .rounded-card {
-  border-radius: 15px;
+  border-radius: 10px;
 }
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;

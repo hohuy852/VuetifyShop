@@ -183,7 +183,7 @@
             cols="12"
           >
             <div class="position-relative">
-              <v-card class="rounded-card" dark>
+              <v-card class="rounded-card" style="border-radius:10px" dark>
                 <v-sheet>
                   <router-link  :to = "{name: 'Product', params: {slug:item.title}}">
                     <v-img
@@ -293,7 +293,7 @@ export default {
   border-color: rgb(248 247 247 / 12%);
 }
 .rounded-card {
-  border-radius: 15px;
+  border-radius: 10px;
 }
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;

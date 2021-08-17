@@ -7,7 +7,7 @@
         v-if="$vuetify.breakpoint.smAndDown"
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="inspire">
-        <router-link to="/" style="text-decoration: none" class="font-weight-bold text-uppercase textbase--text">BRAND</router-link>
+        <router-link to="/" style="text-decoration: none" class="font-weight-bold text-uppercase white--text">BRAND</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn to="/login" text fab plain>

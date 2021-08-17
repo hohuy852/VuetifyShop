@@ -27,10 +27,29 @@ const routes = [
     path: '/register',
     name: 'Register',
     component:()=>import (/* webpackChunkName: "register" */'../views/Register.vue')
-  },{
+  },
+  {
     path: '/login',
     name: 'Login',
     component:()=>import (/* webpackChunkName: "login" */'../views/Login.vue')
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('../views/Account.vue'),
+    props:true,
+    children: [
+      {
+        path: "",
+        name: "Orders",
+        component: () => import (/* webpackChunkName: "Orders" */'../components/Orders.vue')
+      },
+      {
+        path: "info",
+        name: "Infomations",
+        component: () => import (/* webpackChunkName: "Infomation" */'../components/Infomations.vue')
+      }
+    ]
   }
 ]
 

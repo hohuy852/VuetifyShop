@@ -7,20 +7,18 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify, Carousel3d);
 
 export default new Vuetify({
-    theme: {
-        themes: {
-          light: {
-            secondary: colors.grey.darken1,
-            accent: colors.shades.black,
-            error: colors.red.accent3,
-            background: colors.indigo.lighten5, // Not automatically applied
-           
-          },
-          dark: {
-          
-        },
-       
-        
+  theme: {
+    themes: {
+      light: {
+        primary: '111b27',
+        secondary: '#05090c',
+        accent: colors.shades.black,
+        error: colors.red.accent3,
+         
       },
-    }
+      dark: {
+        primary: '111b27',
+      },
+    },
+  },
 });
