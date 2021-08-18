@@ -320,18 +320,13 @@ export default {
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;
 }
-.v-application .text-lg-h4 .text-h4 {
-  font-size: 2.125rem !important;
-  font-weight: 400;
-  line-height: 2.5rem;
-  letter-spacing: 0.0073529412em !important;
-  font-family: "Quicksand", sans-serif !important;
+.v-application .text-lg-h4 {
+    font-family: "Quicksand", sans-serif !important;
+}
+.v-application .text-h4 {
+    font-family: "Quicksand", sans-serif !important;
 }
 .v-application .body-1 {
-  font-size: 1rem !important;
-  font-weight: 400;
-  letter-spacing: 0.03125em !important;
-  line-height: 1.5rem;
   font-family: "Quicksand", sans-serif !important;
 }
 .mx-auto {

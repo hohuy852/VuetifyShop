@@ -104,7 +104,7 @@
     >
       <v-icon>mdi-arrow-up-bold</v-icon>
     </v-btn>
-    <Pagination />
+    <!-- <Pagination /> -->
     <!-- <div class="text-center">
       <v-snackbar  v-model="snackbar" :timeout="2000">
         {{ text }}
@@ -117,7 +117,7 @@
 <script>
 import Carousel from "../components/app/Carousel.vue";
 // import Filter from "../components/app/Filter.vue"
-import Pagination from "../components/app/Pagination.vue";
+//import Pagination from "../components/app/Pagination.vue";
 import skeleton from "../components/skeletonLoader.vue";
 //import SnackBar from "../components/app/SnackBar.vue"
 import { mapState, mapActions, mapGetters } from "vuex";
@@ -128,7 +128,7 @@ export default {
     //    HelloWorld,
     Carousel,
     // Filter,
-    Pagination,
+   // Pagination,
     //  SnackBar,
     skeleton,
   },
