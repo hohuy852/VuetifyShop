@@ -1,8 +1,9 @@
 <template>
   <v-container>
-    <v-card class="px-2">
+    <section class="my-2 mb-md-12">
       <Carousel />
-    </v-card>
+    </section>
+
     <v-btn
       text
       @click="expand = !expand"
@@ -11,7 +12,7 @@
       <v-icon>mdi-filter-menu-outline</v-icon> Filter
     </v-btn>
     <v-expand-transition v-model="expand"> </v-expand-transition>
-    <section class="mt-6 mb-3" >
+    <section class="mt-6 mb-3">
       <skeleton v-if="loading" />
       <div v-else class="row" v-for="category in categories" :key="category.id">
         <v-col cols="12" class="mt-12 mb-5">
@@ -34,58 +35,79 @@
           ></v-skeleton-loader> -->
           <div class="position-relative">
             <v-card class="rounded-card" style="border-radius: 10px" dark>
-                <router-link :to = "{name: 'Product', params: {slug:product.title}}" >
-                  <v-img
-                    style="height: 250px"
-                    :src="product.img"
-                    class="rounded-card"
-                  >
-                  </v-img>
-                </router-link>
-                <v-card-title class="pb-0">
-                  {{ product.title }}
-                </v-card-title>
-                <v-card-text class="pb-1">
-                  {{ product.description }}
-                </v-card-text>
-                <v-card-actions>
-                  <div class="product-price d-flex pl-1">
-                    <div class="d-flex align-start">
-                      <span
-                        class="product-price body-2"
-                        style="margin-top: 5px; margin-right: 1px"
-                      >
-                        $ 
-                      </span>
-                      <span class="product-price font-weight-bold text-h5"
-                        >{{product.price}}</span
-                      >
-                      <!-- <span  v-else class="product-price font-weight-bold text-h5"
-                        >{{parseFloat(product.price).toFixed(2)}}</span
-                      > -->
-                      <!-- <span
+              <router-link
+                :to="{ name: 'Product', params: { slug: product.title } }"
+              >
+                <v-img
+                  style="height: 250px"
+                  :src="product.img"
+                  class="rounded-card"
+                >
+                </v-img>
+              </router-link>
+              <v-card-title class="pb-0">
+                {{ product.title }}
+              </v-card-title>
+              <v-card-text class="pb-1">
+                by {{ product.ventor }} in
+                <router-link
+                  to="/"
+                  style="text-decoration: none; color: #03c6fc"
+                  >{{ product.category }}</router-link
+                >
+              </v-card-text>
+              <v-card-actions>
+                <div class="product-price d-flex pl-1">
+                  <div class="d-flex align-start">
+                    <span
+                      v-if="product.price != 0"
+                      class="product-price body-2"
+                      style="margin-top: 5px; margin-right: 1px"
+                    >
+                      $
+                    </span>
+                    <span
+                      v-if="product.price == 0"
+                      class="product-price font-weight-bold text-h5"
+                      >Free</span
+                    >
+                    <span
+                      v-else
+                      class="product-price font-weight-bold text-h5"
+                      >{{ parseFloat(product.price).toFixed(2) }}</span
+                    >
+
+                    <!-- <span
                         class="product-price body-2"
                         style="margin-left: 2px; margin-top: 5px"
                         >98</span
                       > -->
-                    </div>
                   </div>
-                  <del class="body-1 mx-1" style="margin-top: 3px">{{parseFloat(product.oldPrice).toFixed(2)}}</del>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="addToCart(product.id, category.id)"
-                    rounded
-                    outlined
-                    large
-                    class="accent--text"
-                    depressed
-                    
-                  >
-                    <v-icon>mdi-basket-plus</v-icon>
-                  </v-btn>
-                </v-card-actions>
+                </div>
+                <del
+                  v-if="product.price != 0"
+                  class="body-1 mx-1"
+                  style="margin-top: 3px"
+                  >{{ parseFloat(product.oldPrice).toFixed(2) }}</del
+                >
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="deep-purple lighten-2"
+                  text
+                  @click="
+                    addToCart(product.id, category.id);
+                    remove
+                  "
+                  rounded
+                  outlined
+                  large
+                  class="accent--text"
+                  depressed
+                  
+                >
+                  <v-icon>mdi-basket-plus</v-icon>
+                </v-btn>
+              </v-card-actions>
             </v-card>
           </div>
         </v-col>
@@ -123,19 +145,19 @@ import skeleton from "../components/skeletonLoader.vue";
 import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
-
   components: {
     //    HelloWorld,
     Carousel,
     // Filter,
-   // Pagination,
+    // Pagination,
     //  SnackBar,
     skeleton,
   },
   data() {
     return {
       expand: false,
-      text: 'Added to cart',
+      text: "Added to cart",
+      buttonLoading: false,
     };
   },
   methods: {
@@ -147,28 +169,30 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
-    ...mapActions(['getProduct',]),
+    ...mapActions(["getProduct"]),
     // addToCart(productId, categoryId){
     //   console.log(productId)
     //   console.log(categoryId)
     // },
-    addToCart(productId, categoryId){
-      this.$store.commit('ADD_CART', {productId ,categoryId})
-    }
+    addToCart(productId, categoryId) {
+      this.$store.commit("ADD_CART", { productId, categoryId });
+    },
+    async remove() {
+      this.buttonLoading = true;
+
+     await  new Promise((resolve) => setTimeout(resolve, 3000));
+
+      this.buttonLoading = false;
+    },
   },
   computed: {
-    ...mapState(['categories', 'loading', 'snackbar']),
+    ...mapState(["categories", "loading", "snackbar"]),
     // ...mapActions(['addToCart']),
     ...mapGetters([]),
-    getFree(){
-      
-      return true
-    }
   },
   created() {
     this.getProduct();
     //this.getSingleProduct();
-  
   },
 };
 </script>
@@ -180,10 +204,10 @@ export default {
   color: #e65d5d !important;
 }
 .theme--dark.v-card {
-    background-color: #05090c;
-    color: #FFFFFF;
+  background-color: #05090c;
+  color: #ffffff;
 }
 .theme--dark.v-btn.v-btn--outlined.v-btn--text {
-    border-color: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 </style>

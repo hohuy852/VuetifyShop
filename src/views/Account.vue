@@ -26,7 +26,7 @@
       dark
       v-model="activeTab"
     >
-      <v-tab v-for="tab in tabs" :key="tab.id" :id="tab.id" :to="tab.route">{{tab.name}}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab.id" :id="tab.id" :to="tab.route" >{{tab.name}}</v-tab>
       <v-tabs-items v-model="activeTab" @change="updateRouter($event)">
         <v-tab-item
           v-for="tab of tabs"
@@ -38,6 +38,7 @@
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
+    
   </v-container>
 </template>
 
@@ -60,6 +61,7 @@ export default {
           id: 1,
           name: "Orders",
           route: "/profile/orders",
+          isDisable: 'false'
         },
         {
           id: 2,
@@ -87,5 +89,8 @@ export default {
 .v-application .text-h3, .v-application .text-h4 {
     font-weight: 400;
     font-family: Quicksand,sans-serif!important;
+}
+tab{
+  color: white
 }
 </style>

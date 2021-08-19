@@ -56,6 +56,14 @@
               type="paragraph"
               class="mt-3"
             ></v-skeleton-loader>
+             <v-skeleton-loader
+              type="paragraph"
+              class="mt-3"
+            ></v-skeleton-loader>
+             <v-skeleton-loader
+              type="paragraph"
+              class="mt-3"
+            ></v-skeleton-loader>
             <v-skeleton-loader
               type="image"
               class="mt-3"

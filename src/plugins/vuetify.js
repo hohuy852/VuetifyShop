@@ -7,6 +7,11 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify, Carousel3d);
 
 export default new Vuetify({
+  defaultAssets: {
+    font: {
+      family: 'Quicksand'
+    }
+  },
   theme: {
     themes: {
       light: {

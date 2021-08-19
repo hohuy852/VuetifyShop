@@ -16,12 +16,13 @@
                 rounded
                 transparent
               "
+              v-for="img in product.previewImage" :key="img._id"
               ><v-img
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                :src="img.src"
                 style="height: 48px; max-width: 48px"
               ></v-img
             ></v-tab>
-            <v-tab
+            <!-- <v-tab
               class="
                 d-inline-block d-md-block
                 mb-md-3
@@ -68,7 +69,7 @@
                 src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                 style="height: 48px; max-width: 48px"
               ></v-img
-            ></v-tab>
+            ></v-tab> -->
           </div>
           <div class="mb-1 min-w-0 mx-md-auto">
             <div class="" style="position: relative">
@@ -88,13 +89,23 @@
           <div class="mb-2">
             <div class="product-price d-flex">
               <div class="d-flex success--text">
+                <div
+                  v-if="product.price == 0"
+                  class="product-price font-weight-bold text-h4"
+                >
+                  Free
+                </div>
                 <span
+                  v-else
                   class="product-price body-2"
                   style="margin-top: 5px; margin-right: 1px"
                   >$</span
                 >
-                <div class="product-price font-weight-bold text-h4">
-                  {{ product.price }}
+                <div
+                  v-if="product.price != 0"
+                  class="product-price font-weight-bold text-h4"
+                >
+                  {{ parseFloat(product.price).toFixed(2) }}
                 </div>
                 <!-- <span
                   class="product-price body-1"
@@ -102,9 +113,12 @@
                   >{{ product.price }}</span
                 > -->
               </div>
-              <del class="text-h6 mx-2" style="margin-top: 3px">{{
-                product.oldPrice
-              }}</del>
+              <del
+                v-if="product.price != 0"
+                class="text-h6 mx-2"
+                style="margin-top: 3px"
+                >{{ product.oldPrice }}</del
+              >
             </div>
             <div class="body-1 mt-3">
               <div>
@@ -117,7 +131,7 @@
               </div>
             </div>
 
-            <v-btn 
+            <v-btn
               x-large
               block
               class="mt-10 black--text font-weight-bold"
@@ -125,7 +139,10 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              ><v-icon>mdi-basket-plus</v-icon><span class="flex-grow-1"  @click="addProduct(product.id)">Add to cart</span></v-btn
+              ><v-icon>mdi-basket-plus</v-icon
+              ><span class="flex-grow-1" @click="addProduct(product.id)"
+                >Add to cart</span
+              ></v-btn
             >
             <v-btn
               x-large
@@ -135,8 +152,7 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-             
-              ><v-icon>mdi-send</v-icon><span class="flex-grow-1">Buy now</span>
+              ><v-icon>mdi-send</v-icon><span class="flex-grow-1" >Buy now</span>
             </v-btn>
           </div>
         </div>
@@ -220,20 +236,33 @@
                     {{ item.title }}
                   </v-card-title>
                   <v-card-text class="pb-1">
-                    {{ item.description }}
+                    by {{ item.ventor }} in
+                    <router-link
+                      to="/"
+                      style="text-decoration: none; color: #03c6fc"
+                      >{{ item.category }}</router-link
+                    >
                   </v-card-text>
                   <v-card-actions>
                     <div class="product-price d-flex pl-1">
                       <div class="d-flex align-start">
                         <span
+                          v-if="item.price == 0"
+                          class="product-price font-weight-bold text-h5"
+                          >Free</span
+                        >
+                        <span
+                          v-else
                           class="product-price body-2"
                           style="margin-top: 5px; margin-right: 1px"
                         >
                           $
                         </span>
-                        <span class="product-price font-weight-bold text-h5">{{
-                          item.price
-                        }}</span>
+                        <span
+                          v-if="item.price != 0"
+                          class="product-price font-weight-bold text-h5"
+                          >{{ parseFloat(item.price).toFixed(2) }}</span
+                        >
                         <!-- <span
                           class="product-price body-2"
                           style="margin-left: 2px; margin-top: 5px"
@@ -241,9 +270,12 @@
                         > -->
                       </div>
                     </div>
-                    <del class="body-1 mx-1" style="margin-top: 3px">{{
-                      item.oldPrice
-                    }}</del>
+                    <del
+                      v-if="item.price != 0"
+                      class="body-1 mx-1"
+                      style="margin-top: 3px"
+                      >{{ item.oldPrice }}</del
+                    >
                     <v-spacer></v-spacer>
                     <v-btn
                       color="deep-purple lighten-2"
@@ -285,6 +317,9 @@ export default {
   props: {},
   methods: {
     ...mapActions(["getSingleProduct", "addProduct"]),
+    // addProduct(productId){
+    //   console.log(productId)
+    // }
   },
   computed: {
     filteredProduct() {
@@ -293,7 +328,6 @@ export default {
       return shuffled.slice(0, 4);
     },
     product() {
-      console.log(this.slug);
       const productList = this.$store.state.products;
       return productList.find((product) => product.title === this.slug);
     },
@@ -321,10 +355,10 @@ export default {
   color: #e65d5d !important;
 }
 .v-application .text-lg-h4 {
-    font-family: "Quicksand", sans-serif !important;
+  font-family: "Quicksand", sans-serif !important;
 }
 .v-application .text-h4 {
-    font-family: "Quicksand", sans-serif !important;
+  font-family: "Quicksand", sans-serif !important;
 }
 .v-application .body-1 {
   font-family: "Quicksand", sans-serif !important;

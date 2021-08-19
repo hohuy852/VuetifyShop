@@ -11,17 +11,14 @@ export default new Vuex.Store({
     ],
     categories: [
     ],
-    cart: [],
-    users: [
-      {
-        email: "a",
-        password: "a",
-      }
-
+    cart: [
+      
     ],
+    user: null,
     loading: true,
     loadingDetails: true,
-    snackbar: false
+    snackbar: false,
+    cartToggle: false,
   },
   // plugins: [createPersistedState()],
   mutations: {
@@ -64,14 +61,14 @@ export default new Vuex.Store({
       state.users.push(user)
       state.snackbar = true
     },
-    USER_LOGIN(state, email, password) {
-      state.users.map(user => {
-        if (user.email === email && user.password === password) {
-          console.log('Success')
-          return true
-        }
-      })
-    },
+    // USER_LOGIN(state, email, password) {
+    //   state.users.map(user => {
+    //     if (user.email === email && user.password === password) {
+    //       console.log('Success')
+    //       return true
+    //     }
+    //   })
+    // },
     GET_PRODUCT(state, categories) {
       state.categories = categories
       state.loading = false
