@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     products: [
-
+      
     ],
     categories: [
     ],
@@ -131,5 +131,8 @@ export default new Vuex.Store({
     },
 
 
+  },
+  created(){
+    this.getSingleProduct()
   }
 })

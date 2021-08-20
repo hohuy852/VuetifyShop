@@ -15,9 +15,45 @@
         >
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-text-field class="mt-7 mr-10" dense solo-inverted single-line placeholder="Search" rounded style="max-width:450px" flat  append-icon="mdi-magnify">
-        
-      </v-text-field>
+      <v-autocomplete
+        :disabled="isDisabled"
+        v-model="searchString"
+        :items="products"
+        class="mt-0 mr-10"
+        dense
+        solo-inverted
+        single-line
+        color="pink"
+        placeholder="Search"
+        hide-no-data
+        rounded
+        hide-details
+        style="max-width: 450px"
+        flat
+        append-icon=""
+        prepend-inner-icon="mdi-magnify"
+      >
+        <template slot="no-data">
+          <v-list-tile>
+            <v-list-title>
+              Search for your favorite
+              <strong>Product</strong>
+            </v-list-title>
+          </v-list-tile>
+        </template>
+        <template slot="item" slot-scope="data">
+          <template>
+            <v-avatar class="mr-3" rounded width="50" height="40">
+              <v-img  width="50" height="40" :src="data.item.img"></v-img>
+            </v-avatar>
+            <v-list-item-content>
+                <v-list-item-title   class="font-weight-bold" v-html="data.item.title"></v-list-item-title>   
+                 <v-list-item-subtitle class="font-weight-bold pink--text" v-if="data.item.price == 0">Free</v-list-item-subtitle>
+                  <v-list-item-subtitle class="font-weight-bold pink--text" v-else v-html="parseFloat(data.item.price).toFixed(2) + '$'"></v-list-item-subtitle>
+              </v-list-item-content>
+          </template>
+        </template>
+      </v-autocomplete>
 
       <v-btn to="/login" text fab plain>
         <v-icon fab> mdi-account </v-icon>
@@ -91,24 +127,16 @@
               <div class="min-w-0 flex-grow-1">
                 <v-list-item-title class="mb-1 font-weight-bold truncate">
                   {{ product.title }}</v-list-item-title
-                > 
-                 <v-list-item-subtitle v-if="product.price == 0"
-                  class="
-                    red--text
-                    text--darken-4
-                    font-weight-black 
-                    mb-1
-                  "
+                >
+                <v-list-item-subtitle
+                  v-if="product.price == 0"
+                  class="red--text text--darken-4 font-weight-black mb-1"
                   >Free</v-list-item-subtitle
                 >
-                
-                <v-list-item-subtitle  v-else
-                  class="
-                    red--text
-                    text--darken-4
-                    font-weight-black 
-                    mb-1
-                  "
+
+                <v-list-item-subtitle
+                  v-else
+                  class="red--text text--darken-4 font-weight-black mb-1"
                   >${{ product.price }}</v-list-item-subtitle
                 >
               </div>
@@ -151,6 +179,7 @@ export default {
     Notification,
   },
   data: () => ({
+    searchString: "",
     toggleLeftMenu: false,
     toggleCart: false,
     buttons: [
@@ -177,14 +206,17 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(["cart", 'cartToggle']),
+    ...mapState(["cart", "cartToggle", "products"]),
     ...mapGetters(["totalProduct", "totalPrice"]),
   },
   methods: {
-    ...mapActions(["deleteItem"]),
+    ...mapActions(["deleteItem", "getSingleProduct"]),
     // deleteItem(productId){
     //   console.log(productId)
     // }
+  },
+  created() {
+    this.getSingleProduct();
   },
 };
 </script>
@@ -200,6 +232,6 @@ export default {
   text-overflow: ellipsis;
 }
 .v-application .text-h6 {
-    font-family: "Quicksand", sans-serif !important;
+  font-family: "Quicksand", sans-serif !important;
 }
 </style>
