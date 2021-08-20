@@ -16,37 +16,42 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-autocomplete
-        v-model="searchString"
-        :items="products"
-        class="mt-0 mr-10"
+        v-model="model"
+        :items="entries"
+        :loading="isLoading"
+        :search-input.sync="search"
         dense
-        solo-inverted
         single-line
-        color="pink"
-        placeholder="Search"
-        hide-no-data
-        rounded
         hide-details
-        style="max-width: 450px"
-        flat
-        append-icon=""
+        hide-selected
+        item-text="title"
+        placeholder="Search"
         prepend-inner-icon="mdi-magnify"
-        outlined
+        append-icon=""
+        clearable
+        rounded
+        return-object
+        style="max-width: 450px"
+        solo-inverted
+        
       >
         <template slot="no-data">
-          <v-list-tile>
-            <v-list-title>
-              Search for your favorite
-              <strong>Product</strong>
-            </v-list-title>
-          </v-list-tile>
+          <v-list-item>
+            <v-list-item-title>
+              There is no product named 
+              <strong>{{search}}</strong>
+            </v-list-item-title>
+          </v-list-item>
         </template>
         <template slot="item" slot-scope="data">
           <template>
             <v-avatar class="mr-3" rounded width="50" height="40">
               <v-img width="50" height="40" :src="data.item.img"></v-img>
             </v-avatar>
-            <router-link style="text-decoration: none; "  :to="{ name: 'Product', params: { slug: data.item.title } }" :key="$route.path">
+            <router-link
+              style="text-decoration: none"
+              :to="{ name: 'Product', params: { slug: data.item.title } }"
+            >
               <v-list-item-content>
                 <v-list-item-title
                   class="font-weight-bold"
@@ -66,7 +71,6 @@
           </template>
         </template>
       </v-autocomplete>
-
       <v-btn to="/login" text fab plain>
         <v-icon fab> mdi-account </v-icon>
       </v-btn>
@@ -191,7 +195,10 @@ export default {
     Notification,
   },
   data: () => ({
-    searchString: "",
+    entries: [],
+    isLoading: false,
+    model: [{}],
+    search: null,
     toggleLeftMenu: false,
     toggleCart: false,
     buttons: [
@@ -227,8 +234,30 @@ export default {
     //   console.log(productId)
     // }
   },
-  created() {
-    this.getSingleProduct();
+  created() {},
+  watch: {
+    search() {
+      // Items have already been loaded
+      if (this.entries.length > 0) return;
+      console.log(this.entries);
+      // Items have already been requested
+      if (this.isLoading) return;
+
+      this.isLoading = true;
+
+      // Lazily load input items
+      fetch("https://demo-tttn.herokuapp.com/product")
+        .then((res) => res.json())
+        .then((res) => {
+          const { count, entries } = res;
+          this.count = count;
+          this.entries = entries;
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => (this.isLoading = false));
+    },
   },
 };
 </script>
