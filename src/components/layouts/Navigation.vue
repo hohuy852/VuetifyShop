@@ -38,8 +38,7 @@
         <template slot="no-data">
           <v-list-item>
             <v-list-item-title>
-              There is no product named 
-              <strong>{{search}}</strong>
+              <strong class="font-weigth-bold">Search for products you like</strong>
             </v-list-item-title>
           </v-list-item>
         </template>
@@ -81,7 +80,6 @@
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
-
       <!-- <template
         v-slot:extension
         class="justify-space-around layout-menu"
@@ -225,7 +223,7 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(["cart", "cartToggle", "products"]),
+    ...mapState(["cart", "cartToggle"]),
     ...mapGetters(["totalProduct", "totalPrice"]),
   },
   methods: {
@@ -244,7 +242,6 @@ export default {
       if (this.isLoading) return;
 
       this.isLoading = true;
-
       // Lazily load input items
       fetch("https://demo-tttn.herokuapp.com/product")
         .then((res) => res.json())
