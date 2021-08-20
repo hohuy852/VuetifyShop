@@ -16,7 +16,6 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-autocomplete
-        :disabled="isDisabled"
         v-model="searchString"
         :items="products"
         class="mt-0 mr-10"
@@ -32,6 +31,7 @@
         flat
         append-icon=""
         prepend-inner-icon="mdi-magnify"
+        outlined
       >
         <template slot="no-data">
           <v-list-tile>
@@ -44,13 +44,25 @@
         <template slot="item" slot-scope="data">
           <template>
             <v-avatar class="mr-3" rounded width="50" height="40">
-              <v-img  width="50" height="40" :src="data.item.img"></v-img>
+              <v-img width="50" height="40" :src="data.item.img"></v-img>
             </v-avatar>
-            <v-list-item-content>
-                <v-list-item-title   class="font-weight-bold" v-html="data.item.title"></v-list-item-title>   
-                 <v-list-item-subtitle class="font-weight-bold pink--text" v-if="data.item.price == 0">Free</v-list-item-subtitle>
-                  <v-list-item-subtitle class="font-weight-bold pink--text" v-else v-html="parseFloat(data.item.price).toFixed(2) + '$'"></v-list-item-subtitle>
-              </v-list-item-content>
+            <router-link style="text-decoration: none; "  :to="{ name: 'Product', params: { slug: data.item.title } }" :key="$route.path">
+              <v-list-item-content>
+                <v-list-item-title
+                  class="font-weight-bold"
+                  v-html="data.item.title"
+                ></v-list-item-title>
+                <v-list-item-subtitle
+                  class="font-weight-bold pink--text"
+                  v-if="data.item.price == 0"
+                  >Free</v-list-item-subtitle
+                >
+                <v-list-item-subtitle
+                  class="font-weight-bold pink--text"
+                  v-else
+                  v-html="parseFloat(data.item.price).toFixed(2) + '$'"
+                ></v-list-item-subtitle> </v-list-item-content
+            ></router-link>
           </template>
         </template>
       </v-autocomplete>
