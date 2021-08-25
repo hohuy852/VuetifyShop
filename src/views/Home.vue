@@ -95,8 +95,7 @@
                   color="deep-purple lighten-2"
                   text
                   @click="
-                    addToCart(product.id, category.id);
-                    remove
+                    addProductToCart(product)
                   "
                   rounded
                   outlined
@@ -146,11 +145,7 @@ import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
   components: {
-    //    HelloWorld,
     Carousel,
-    // Filter,
-    // Pagination,
-    //  SnackBar,
     skeleton,
   },
   data() {
@@ -169,14 +164,7 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
-    ...mapActions(["getProduct"]),
-    // addToCart(productId, categoryId){
-    //   console.log(productId)
-    //   console.log(categoryId)
-    // },
-    addToCart(productId, categoryId) {
-      this.$store.commit("ADD_CART", { productId, categoryId });
-    },
+    ...mapActions(["getProduct",'addProductToCart']),
     async remove() {
       this.buttonLoading = true;
 
@@ -187,8 +175,7 @@ export default {
   },
   computed: {
     ...mapState(["categories", "loading", "snackbar"]),
-    // ...mapActions(['addToCart']),
-    ...mapGetters([]),
+    ...mapGetters(['loading', 'categories','cart']), 
   },
   created() {
     this.getProduct();

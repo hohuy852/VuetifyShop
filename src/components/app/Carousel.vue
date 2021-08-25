@@ -1,12 +1,11 @@
 <template>
-      <v-carousel class="my-10" hide-delimiters cycle style="height: 205px;">
-        <v-carousel-item v-for="(slide, i) in slides" :key="i" >
-          <v-sheet  tile rounded="15" >
-            <v-img :src="slide.src" height="205" >
-            </v-img>
-          </v-sheet>
-        </v-carousel-item>
-      </v-carousel>
+    <v-carousel class="my-10" hide-delimiters cycle height="335">
+      <v-carousel-item v-for="(slide, i) in slides" :key="i">
+        <v-sheet tile rounded="15">
+          <v-img :src="slide.src"> </v-img>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
 </template>
 
 <script>

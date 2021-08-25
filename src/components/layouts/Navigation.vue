@@ -35,7 +35,7 @@
         solo-inverted
         
       >
-        <template slot="no-data">
+        <template slot="no-data"> 
           <v-list-item>
             <v-list-item-title>
               <strong class="font-weigth-bold">Search for products you like</strong>
@@ -132,7 +132,7 @@
           <v-badge overlap color="pink">
             <span slot="badge"> {{ product.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
-              <v-img :src="product.img" width="70" height="60"></v-img>
+              <v-img :src="product.product.img" width="70" height="60"></v-img>
             </v-avatar>
           </v-badge>
 
@@ -140,23 +140,22 @@
             <v-list-item-content>
               <div class="min-w-0 flex-grow-1">
                 <v-list-item-title class="mb-1 font-weight-bold truncate">
-                  {{ product.title }}</v-list-item-title
+                  {{ product.product.title }}</v-list-item-title
                 >
                 <v-list-item-subtitle
-                  v-if="product.price == 0"
+                  v-if="product.product.price == 0"
                   class="red--text text--darken-4 font-weight-black mb-1"
                   >Free</v-list-item-subtitle
                 >
-
                 <v-list-item-subtitle
                   v-else
                   class="red--text text--darken-4 font-weight-black mb-1"
-                  >${{ product.price }}</v-list-item-subtitle
+                  >${{ parseFloat(product.product.price).toFixed(2) }}</v-list-item-subtitle
                 >
               </div>
             </v-list-item-content>
             <v-list-item-action>
-              <v-btn text fab @click="deleteItem(product.id)"
+              <v-btn text fab @click="deleteItem(product.product.id)"
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
             </v-list-item-action>
@@ -223,11 +222,11 @@ export default {
     ],
   }),
   computed: {
-    ...mapState(["cart", "cartToggle"]),
-    ...mapGetters(["totalProduct", "totalPrice"]),
+    ...mapState([ "cartToggle"]),
+    ...mapGetters(["totalProduct", "totalPrice","cart", "cartProducts"]),
   },
   methods: {
-    ...mapActions(["deleteItem", "getSingleProduct"]),
+    ...mapActions(["deleteItem"]),
     // deleteItem(productId){
     //   console.log(productId)
     // }
@@ -237,7 +236,7 @@ export default {
     search() {
       // Items have already been loaded
       if (this.entries.length > 0) return;
-      console.log(this.entries);
+     // console.log(this.entries);
       // Items have already been requested
       if (this.isLoading) return;
 
