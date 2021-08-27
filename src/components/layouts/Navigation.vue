@@ -173,8 +173,15 @@
       </div>
       <v-row align="center" class="pt-2 px-3 mt-3">
         <v-col class="d-flex justify-center" cols="12">
-          <v-btn
+           <v-btn v-if="cart.length == 0" @click="toggleCart = !toggleCart"
             class="theme--light v-size--large pink white--text font-weight-bold"
+          >
+            Continue shopping
+          </v-btn>
+          <v-btn
+          v-else
+            class="theme--light v-size--large pink white--text font-weight-bold"
+            to="/checkout"
           >
             Check out: {{ totalPrice }} $ | items: ({{ totalProduct }})
           </v-btn>
@@ -223,7 +230,7 @@ export default {
   }),
   computed: {
     ...mapState([ "cartToggle"]),
-    ...mapGetters(["totalProduct", "totalPrice","cart", "cartProducts"]),
+    ...mapGetters(["totalProduct", "totalPrice","cart"]),
   },
   methods: {
     ...mapActions(["deleteItem"]),

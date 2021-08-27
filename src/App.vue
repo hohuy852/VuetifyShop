@@ -28,7 +28,6 @@ export default {
 </script>
 <style>
 #app{
-  font-family: 'Quicksand', Helvetica, Arial, sans-serif;
 }
 
 

@@ -8,9 +8,6 @@ Vue.use(Vuetify, Carousel3d);
 
 export default new Vuetify({
   defaultAssets: {
-    font: {
-      family: 'Quicksand'
-    }
   },
   theme: {
     themes: {
