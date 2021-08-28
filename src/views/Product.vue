@@ -353,19 +353,4 @@ export default {
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;
 }
-.v-application .text-lg-h4 {
-  font-family: "Quicksand", sans-serif !important;
-}
-.v-application .text-h4 {
-  font-family: "Quicksand", sans-serif !important;
-}
-.v-application .body-1 {
-  font-family: "Quicksand", sans-serif !important;
-}
-.mx-auto {
-  font-family: "Quicksand", sans-serif !important;
-}
-.headline {
-  font-family: "Quicksand", sans-serif !important;
-}
 </style>

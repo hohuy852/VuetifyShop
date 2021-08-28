@@ -1,6 +1,6 @@
 
 const state = {
-  cartToggle: false,
+  toggleCart: false,
   items: [],
 }
 const actions = {
@@ -14,13 +14,12 @@ const actions = {
     if(!cartItem){
     //push to cart
     commit('PUSH_TO_CART', productItem)
-    console.log(cartItem)
     }
     else{
       //increase Qty
       commit('INCREASE_QTY', cartItem)
     }
-  }
+  },
 }
 const mutations = {
   DELETE_PRODUCT(state, productId) {
@@ -34,6 +33,9 @@ const mutations = {
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
+  },
+  TOGGLE_CART(state, toggle){
+    state.toggleCart = toggle
   }
 }
 const getters = {
@@ -56,7 +58,6 @@ const getters = {
     return state.items.length;
   },
   cart: state => state.items,
-
 }
 export default {
   state,

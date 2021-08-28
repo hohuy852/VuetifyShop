@@ -43,11 +43,11 @@
           >
           <v-checkbox v-model="checkbox"
             ><template v-slot:label>
-              <div class="black--text">I agree</div>
+              <div class="black--text font-weight-bold" >I agree</div>
             </template></v-checkbox
           >
           <v-divider aria-orientation="horizontal" class="mb-5"></v-divider>
-          <router-link to="/login" style="text-decoration: none"
+          <router-link to="/login" style="text-decoration: none" class="font-weight-bold"
             >Already have an account? Click here.</router-link
           >
         </v-form>

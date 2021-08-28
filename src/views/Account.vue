@@ -86,10 +86,6 @@ export default {
 .theme--light.v-tabs-items {
     background-color:transparent;
 }
-.v-application .text-h3, .v-application .text-h4 {
-    font-weight: 400;
-    font-family: Quicksand,sans-serif!important;
-}
 tab{
   color: white
 }

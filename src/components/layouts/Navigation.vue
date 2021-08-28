@@ -33,12 +33,13 @@
         return-object
         style="max-width: 450px"
         solo-inverted
-        
       >
-        <template slot="no-data"> 
+        <template slot="no-data">
           <v-list-item>
             <v-list-item-title>
-              <strong class="font-weigth-bold">Search for products you like</strong>
+              <strong class="font-weigth-bold"
+                >Search for products you like</strong
+              >
             </v-list-item-title>
           </v-list-item>
         </template>
@@ -139,7 +140,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <div class="min-w-0 flex-grow-1">
-                <v-list-item-title class="mb-1 font-weight-bold truncate">
+                <v-list-item-title class="mb-1 font-weight-bold wrap-text">
                   {{ product.product.title }}</v-list-item-title
                 >
                 <v-list-item-subtitle
@@ -150,12 +151,20 @@
                 <v-list-item-subtitle
                   v-else
                   class="red--text text--darken-4 font-weight-black mb-1"
-                  >${{ parseFloat(product.product.price).toFixed(2) }}</v-list-item-subtitle
+                  >${{
+                    parseFloat(product.product.price).toFixed(2)
+                  }}</v-list-item-subtitle
                 >
               </div>
             </v-list-item-content>
             <v-list-item-action>
-              <v-btn text fab @click="deleteItem(product.product.id)"
+              <v-btn
+                text
+                fab
+                @click="
+                  deleteItem(product.product.id);
+                  snackBar = true;
+                "
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
             </v-list-item-action>
@@ -173,13 +182,15 @@
       </div>
       <v-row align="center" class="pt-2 px-3 mt-3">
         <v-col class="d-flex justify-center" cols="12">
-           <v-btn v-if="cart.length == 0" @click="toggleCart = !toggleCart"
+          <v-btn
+            v-if="cart.length == 0"
+            @click="toggleCart = !toggleCart"
             class="theme--light v-size--large pink white--text font-weight-bold"
           >
             Continue shopping
           </v-btn>
           <v-btn
-          v-else
+            v-else
             class="theme--light v-size--large pink white--text font-weight-bold"
             to="/checkout"
           >
@@ -188,6 +199,9 @@
         </v-col>
       </v-row>
     </v-navigation-drawer>
+    <v-snackbar v-model="snackBar" timeout="1500">
+      Removed from cart!
+    </v-snackbar>
   </div>
 </template>
 
@@ -199,12 +213,16 @@ export default {
     Notification,
   },
   data: () => ({
+    // props:{
+    //   toggleCart: Boolean
+    // },
+    snackBar: false,
     entries: [],
     isLoading: false,
     model: [{}],
     search: null,
     toggleLeftMenu: false,
-    toggleCart: false,
+    // toggleCart: false,
     buttons: [
       {
         icon: "mdi-home",
@@ -229,8 +247,17 @@ export default {
     ],
   }),
   computed: {
-    ...mapState([ "cartToggle"]),
-    ...mapGetters(["totalProduct", "totalPrice","cart"]),
+    ...mapState({}),
+    ...mapGetters(["totalProduct", "totalPrice", "cart"]),
+
+    toggleCart: {
+      get() {
+        return this.$store.state.cart.toggleCart;
+      },
+      set(value) {
+        this.$store.commit("TOGGLE_CART", value);
+      },
+    },
   },
   methods: {
     ...mapActions(["deleteItem"]),
@@ -243,7 +270,7 @@ export default {
     search() {
       // Items have already been loaded
       if (this.entries.length > 0) return;
-     // console.log(this.entries);
+      // console.log(this.entries);
       // Items have already been requested
       if (this.isLoading) return;
 
@@ -270,12 +297,7 @@ export default {
   border-color: #1e1e1e;
   color: #ffffff;
 }
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.v-application .text-h6 {
-  font-family: "Quicksand", sans-serif !important;
+.wrap-text {
+  white-space: normal;
 }
 </style>

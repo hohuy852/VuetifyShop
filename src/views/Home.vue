@@ -95,14 +95,16 @@
                   color="deep-purple lighten-2"
                   text
                   @click="
-                    addProductToCart(product)
+                    addProductToCart(product);
+                    toggleCart = !toggleCart;
+                    snackBar = true;
                   "
+                  :loading="buttonLoading"
                   rounded
                   outlined
                   large
                   class="accent--text"
                   depressed
-                  
                 >
                   <v-icon>mdi-basket-plus</v-icon>
                 </v-btn>
@@ -132,6 +134,7 @@
       </v-snackbar>
     </div> -->
     <!-- //  <SnackBar/> -->
+    <v-snackbar v-model="snackBar" timeout="1500"> Added to cart! </v-snackbar>
   </v-container>
 </template>
 
@@ -153,6 +156,7 @@ export default {
       expand: false,
       text: "Added to cart",
       buttonLoading: false,
+      snackBar: false,
     };
   },
   methods: {
@@ -164,18 +168,28 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
-    ...mapActions(["getProduct",'addProductToCart']),
+    ...mapActions(["getProduct", "addProductToCart"]),
     async remove() {
       this.buttonLoading = true;
 
-     await  new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       this.buttonLoading = false;
+      this.snackBar = true;
+      this.toggleCart = !this.toggleCart;
     },
   },
   computed: {
     ...mapState(["categories", "loading", "snackbar"]),
-    ...mapGetters(['loading', 'categories','cart']), 
+    ...mapGetters(["loading", "categories", "cart"]),
+    toggleCart: {
+      get() {
+        return this.$store.state.cart.toggleCart;
+      },
+      set(value) {
+        this.$store.commit("TOGGLE_CART", value);
+      },
+    },
   },
   created() {
     this.getProduct();
