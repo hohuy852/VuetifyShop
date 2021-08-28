@@ -33,6 +33,7 @@
         return-object
         style="max-width: 450px"
         solo-inverted
+        
       >
         <template slot="no-data">
           <v-list-item>

@@ -140,7 +140,7 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              @click="addProductToCart(product)"
+              @click="addProductToCart(product);  toggleCart = !toggleCart"
               ><v-icon>mdi-basket-plus</v-icon
               ><span class="flex-grow-1"
                 >Add to cart</span
@@ -287,7 +287,7 @@
                       large
                       class="accent--text"
                       depressed
-                      @click="addProductToCart(item)"
+                      @click="addProductToCart(item); toggleCart = !toggleCart"
                     >
                       <v-icon>mdi-basket-plus</v-icon>
                     </v-btn>
@@ -319,6 +319,7 @@ export default {
   props: {},
   methods: {
     ...mapActions(["getSingleProduct", "addProductToCart"]),
+    
   },
   computed: {
     ...mapGetters(["products","loadingDetails"]),
@@ -330,6 +331,14 @@ export default {
     product() {
       const productList =this.products
       return productList.find((product) => product.title === this.slug);
+    },
+    toggleCart: {
+      get() {
+        return this.$store.state.cart.toggleCart;
+      },
+      set(value) {
+        this.$store.commit("TOGGLE_CART", value);
+      },
     },
   },
   created() {

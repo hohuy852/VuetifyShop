@@ -13,12 +13,7 @@ export default new Vuex.Store({
     categories,
   },
   state: {
-   
     user: null,
-  
-   
-    snackbar: false,
-
   },
   // plugins: [createPersistedState()],
   mutations: {

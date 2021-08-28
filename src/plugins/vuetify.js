@@ -7,6 +7,9 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify, Carousel3d);
 
 export default new Vuetify({
+  icons:{
+    iconfont: 'fa'
+  },
   defaultAssets: {
   },
   theme: {
