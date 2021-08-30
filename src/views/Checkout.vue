@@ -159,7 +159,7 @@
                 <div
                   class="text-h5 font-weight-bold"    
                 >Total: </div>
-               
+                <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold" style="color: #eb3452"  
                 >{{totalPrice}}$</div>
@@ -175,7 +175,7 @@
         <v-container>
           <div class="row justify-center">
             <v-col  cols="12" sm="6" md="4">
-              <v-simple-table style="border-style: solid; border-width: 1px ">
+              <v-simple-table style="border-style: solid; border-width: 1px; border-radius: 5px ">
                 <tbody>
                   <tr>
                     <td>Contact</td>

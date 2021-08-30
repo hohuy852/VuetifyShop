@@ -1,4 +1,4 @@
-
+import createPersistedState from "vuex-persistedstate";
 const state = {
   toggleCart: false,
   items: [],
@@ -60,6 +60,7 @@ const getters = {
   cart: state => state.items,
 }
 export default {
+  plugins: [createPersistedState()],  
   state,
   actions,
   mutations,

@@ -15,7 +15,7 @@
         >
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-autocomplete
+      <v-autocomplete 
         v-model="model"
         :items="entries"
         :loading="isLoading"
@@ -33,6 +33,7 @@
         return-object
         style="max-width: 450px"
         solo-inverted
+        class="mr-7"
         
       >
         <template slot="no-data">

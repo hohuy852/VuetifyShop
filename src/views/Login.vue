@@ -23,9 +23,14 @@
             label="Password"
             outlined
           ></v-text-field>
-          <v-btn class="primary mb-3" x-large block @click="login">Log in</v-btn>
+          <v-btn class="primary mb-3" x-large block @click="login()"
+            >Log in</v-btn
+          >
           <span v-if="show" style="color: red">Invalid email or password</span>
-          <router-link to="/" style="text-decoration: none;" class="font-weight-bold"
+          <router-link
+            to="/"
+            style="text-decoration: none"
+            class="font-weight-bold"
             >Forgorten Password?</router-link
           >
           <v-divider aria-orientation="horizontal" class="ma-5"></v-divider>
@@ -39,9 +44,10 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
+//
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     return {
       password: null,
@@ -53,14 +59,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState([]),
+    ...mapGetters(["users"]),
   },
   methods: {
-    ...mapMutations(["USER_LOGIN"]),
-    login(){
-      this.user == this.email
-      this.$route.push('/account')
-    }
+    ...mapMutations(["login"]),
+    
   },
 };
 </script>

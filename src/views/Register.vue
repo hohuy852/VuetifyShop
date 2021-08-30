@@ -58,6 +58,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -77,13 +78,18 @@ export default {
   methods: {
     ...mapMutations(["ADD_USER"]),
     addUser() {
-      this.ADD_USER({
-        id: 1,
-        firstname: this.firstname,
-        lastname: this.lastname,
-        email: this.email,
-        password: this.password,
-      });
+     axios.post("https://demo-tttn.herokuapp.com/register", {
+          email: this.email,
+          password: this.password,
+          firstName: this.firstname,
+          lastName: this.lastname
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   computed: {},

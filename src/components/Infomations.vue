@@ -12,11 +12,7 @@
         <v-card-text>
           <v-text-field outlined label="First Name"></v-text-field>
           <v-text-field outlined label="Last Name"></v-text-field>
-          <v-checkbox
-            ><template v-slot:label>
-              <div>I agree</div>
-            </template></v-checkbox
-          >
+          
           <v-btn class="cyan font-weight-bold"> Update </v-btn>
         </v-card-text>
       </v-card>
