@@ -45,7 +45,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapState } from "vuex";
-//
+import axios from 'axios'
 export default {
   name: "Login",
   data() {
@@ -63,7 +63,19 @@ export default {
     ...mapGetters(["users"]),
   },
   methods: {
-    ...mapMutations(["login"]),
+    ...mapMutations([""]),
+      login() {
+        axios.post("https://demo-tttn.herokuapp.com/login", {
+            email: this.email,
+            password: this.password,
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
     
   },
 };
