@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
-
+//import store from "../store/index";
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,22 +50,6 @@ const routes = [
     ],
     meta: {requiresAuth : true}
   },
-  // {
-  //   path: "/profile/:id",
-  //   name: 'Profile',
-  //   component: () => import('../views/Account.vue'),
-  //   props: true,
-  //   children: [
-  //     {
-  //       path: "",
-  //       component: import(/* webpackChunkName: "Order" */'../components/Orders.vue')
-  //     },
-  //     {
-  //       path: "project",
-  //       component: import(/* webpackChunkName: "Info" */'../components/Infomations.vue')
-  //     }
-  //   ]
-  // }
   {
     path: "*",
     name: "notFound",
@@ -79,16 +63,20 @@ const router = new VueRouter({
   routes,
  
 })
-// router.beforeEach((to, from, next) => {
-//   // redirect to login page if not logged in and trying to access a restricted page
-//   const publicPages = ['/login', '/register'];
-//   const authRequired = !publicPages.includes(to.path);
-//   const loggedIn = localStorage.getItem('user');
 
-//   if (authRequired && !loggedIn) {
-//     return next('/login');
-//   }
+router.beforeEach((to, from, next) => {
+   const loggedIn = localStorage.getItem('user');
+    if(to.matched.some(record => record.meta.requiresAuth)){
+      if (!loggedIn) {
+        next({ name: "Login"});
+      } else {
+        next();
+      }
+     }
+    else {
+      next();
+    }
 
-//   next();
-// })
+})
+
 export default router

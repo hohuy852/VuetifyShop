@@ -7,7 +7,7 @@ const state = {
 const actions = {
     async getProduct({ commit }) {
         try {
-            const response = await axios.get('https://demo-tttn.herokuapp.com/category?fbclid=IwAR3VSOyMm_1ZnV7635OY3L-jm-MoUdH2x6S7jSIaA2ELiYM1xSxsT8NRj9o')
+            const response = await axios.get('https://web-demo.online/category?fbclid=IwAR3VSOyMm_1ZnV7635OY3L-jm-MoUdH2x6S7jSIaA2ELiYM1xSxsT8NRj9o')
             commit('GET_PRODUCT', response.data.entries)
 
         }

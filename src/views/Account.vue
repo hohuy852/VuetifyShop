@@ -1,21 +1,23 @@
 <template>
   <v-container style="margin-top: 50px">
-    <div class="text-h4 mt-4 d-flex white--text ">
+    <div class="text-h4 mt-4 d-flex white--text">
       Account
       <v-spacer></v-spacer>
-      <v-btn depressed text outlined class="white--text font-weight-bold" to="/">Log out</v-btn>
+      <v-btn depressed text outlined class="white--text font-weight-bold" to="/"
+        >Log out</v-btn
+      >
     </div>
     <v-divider class="white my-2"></v-divider>
 
     <table class="text-left white--text">
       <tbody>
         <tr>
-          Name: 
-          <td class="px-2"> ho huy</td>
+          Name:
+          <td class="px-2">{{ users.firstName + " " + users.lastName }}</td>
         </tr>
         <tr>
-          Email: 
-          <td class="px-2"> hohuy@gmail.com</td>
+          Email:
+          <td class="px-2">{{ users.email }}</td>
         </tr>
       </tbody>
     </table>
@@ -26,19 +28,18 @@
       dark
       v-model="activeTab"
     >
-      <v-tab v-for="tab in tabs" :key="tab.id" :id="tab.id" :to="tab.route" >{{tab.name}}</v-tab>
+      <v-tab v-for="tab in tabs" :key="tab.id" :id="tab.id" :to="tab.route">{{
+        tab.name
+      }}</v-tab>
       <v-tabs-items v-model="activeTab" @change="updateRouter($event)">
-        <v-tab-item
-          v-for="tab of tabs"
-          :key="tab.id"
-          :value="tab.route"
-        >
-         <!-- <Orders/> -->
-         <router-view v-if="tab.route === $route.path && tab.route === activeTab" />
+        <v-tab-item v-for="tab of tabs" :key="tab.id" :value="tab.route">
+          <!-- <Orders/> -->
+          <router-view
+            v-if="tab.route === $route.path && tab.route === activeTab"
+          />
         </v-tab-item>
       </v-tabs-items>
     </v-tabs>
-    
   </v-container>
 </template>
 
@@ -46,13 +47,16 @@
 //import Orders from "../components/Orders.vue"
 export default {
   components: {
-  //  Orders
+    //  Orders
   },
-  props: {
-   
-  },
+  props: {},
   data() {
     return {
+      users: {
+        firstName: "Ho",
+        lastName: "Huy",
+        email: "hohuy@gmail.com",
+      },
       activeTab: "",
       tab: String,
       // slug: this.$route.params.slug
@@ -61,7 +65,7 @@ export default {
           id: 1,
           name: "Orders",
           route: "/profile/orders",
-          isDisable: 'false'
+          isDisable: "false",
         },
         {
           id: 2,
@@ -75,6 +79,10 @@ export default {
     updateRouter(tab) {
       this.$router.push(tab);
     },
+    logOut() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    },
   },
 };
 </script>
@@ -84,9 +92,9 @@ export default {
   border-color: rgb(255 255 255 / 62%);
 }
 .theme--light.v-tabs-items {
-    background-color:transparent;
+  background-color: transparent;
 }
-tab{
-  color: white
+tab {
+  color: white;
 }
 </style>

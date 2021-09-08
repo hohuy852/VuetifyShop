@@ -13,20 +13,25 @@
         <v-divider aria-orientation="horizontal"></v-divider>
         <v-form ref="form" class="pa-7">
           <v-text-field
-            v-model="email"
+            v-model="model.email"
             label="Email"
             required
             outlined
           ></v-text-field>
           <v-text-field
-            v-model="password"
+            v-model="model.password"
             label="Password"
             outlined
           ></v-text-field>
-          <v-btn class="primary mb-3" x-large block @click="login()"
+          <div v-html="ErrorMessage"></div>
+          <v-btn
+            class="primary mb-3"
+            x-large
+            block
+            @click="handleLogin(model.email, model.pass)"
             >Log in</v-btn
           >
-          <span v-if="show" style="color: red">Invalid email or password</span>
+
           <router-link
             to="/"
             style="text-decoration: none"
@@ -44,39 +49,54 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState } from "vuex";
-import axios from 'axios'
+import { mapMutations } from "vuex";
+// import axios from 'axios'
 export default {
   name: "Login",
   data() {
     return {
-      password: null,
-      email: null,
+      model: {
+        email: "",
+        pass: "",
+      },
       checkbox: false,
       //text: '***',
       show: false,
       rules: {},
+      loading: false,
+      ErrorMessage: "",
     };
   },
   computed: {
-    ...mapState([]),
-    ...mapGetters(["users"]),
+    //...mapState([""]),
   },
   methods: {
     ...mapMutations([""]),
-      login() {
-        axios.post("https://demo-tttn.herokuapp.com/login", {
-            email: this.email,
-            password: this.password,
-          })
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      },
-    
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+    handleLogin(user) {
+      this.loading = true;
+      this.$store.dispatch("auth/login", user).then(
+        () => {
+          this.$router.push("/profile");
+        },
+        (error) => {
+          this.loading = false;
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    },
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push("/profile");
+    }
   },
 };
 </script>

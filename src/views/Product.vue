@@ -16,9 +16,11 @@
                 rounded
                 transparent
               "
-              v-for="img in product.previewImage"
+              
+              v-for="(img) in product.previewImage"
               :key="img._id"
               ><v-img
+                @click="handleChangeImage(img)"
                 :src="img.src"
                 style="height: 48px; max-width: 48px"
               ></v-img
@@ -75,7 +77,7 @@
           <div class="mb-1 min-w-0 mx-md-auto">
             <div class="" style="position: relative">
               <img
-                :src="product.img"
+                :src="imgSelected"
                 width="auto"
                 height="auto"
                 style="max-width: 100%; max-height: 474px; border-radius: 10px"
@@ -314,12 +316,21 @@ export default {
   data() {
     return {
       slug: this.$route.params.slug,
+      selectedImg: 0,
+      imgSelected: '',
     };
   },
   props: {},
   methods: {
     ...mapActions(["getSingleProduct", "addProductToCart"]),
-    
+    redirect(){
+      this.$route.push('/checkout')
+    },
+    handleChangeImage(img){
+      console.log(img)
+
+      this.imgSelected = img.src
+    }
   },
   computed: {
     ...mapGetters(["products","loadingDetails"]),
