@@ -77,7 +77,7 @@
           <div class="mb-1 min-w-0 mx-md-auto">
             <div class="" style="position: relative">
               <img
-                :src="imgSelected"
+                :src="product.img"
                 width="auto"
                 height="auto"
                 style="max-width: 100%; max-height: 474px; border-radius: 10px"

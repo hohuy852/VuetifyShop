@@ -1,18 +1,12 @@
 import axios from 'axios';
-const API_URL = 'https://web-demo.online/login';
-
+const API_URL = 'https://web-demo.online/product'
 class AuthService {
   login(user) {
     return axios
       .post(API_URL, {
         email: user.email,
         password: user.password
-      },
-      {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
-})
+      })
       .then(response => {
         if (response.data.accessToken) {
           localStorage.setItem('user', JSON.stringify(response.data));

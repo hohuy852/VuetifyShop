@@ -13,22 +13,18 @@
         <v-divider aria-orientation="horizontal"></v-divider>
         <v-form ref="form" class="pa-7">
           <v-text-field
-            v-model="model.email"
+            v-model="user.email"
             label="Email"
             required
             outlined
           ></v-text-field>
           <v-text-field
-            v-model="model.password"
+            v-model="user.password"
             label="Password"
             outlined
           ></v-text-field>
           <div v-html="ErrorMessage"></div>
-          <v-btn
-            class="primary mb-3"
-            x-large
-            block
-            @click="handleLogin(model.email, model.pass)"
+          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)"
             >Log in</v-btn
           >
 
@@ -50,15 +46,16 @@
 
 <script>
 import { mapMutations } from "vuex";
-// import axios from 'axios'
+import axios from "axios";
 export default {
   name: "Login",
   data() {
     return {
-      model: {
+      user: {
         email: "",
-        pass: "",
+        password: "",
       },
+
       checkbox: false,
       //text: '***',
       show: false,
@@ -91,6 +88,31 @@ export default {
             error.toString();
         }
       );
+    },
+    login() {
+      axios
+        .post(
+          "https://demo-tttn.herokuapp.com/login",
+          {
+            email: this.email,
+            password: this.password,
+          },
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods":
+                "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+              "Access-Control-Allow-Headers":
+                "Origin, Content-Type, X-Auth-Token",
+            },
+          }
+        )
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
   created() {
