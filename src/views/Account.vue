@@ -3,7 +3,7 @@
     <div class="text-h4 mt-4 d-flex white--text">
       Account
       <v-spacer></v-spacer>
-      <v-btn depressed text outlined class="white--text font-weight-bold" to="/"
+      <v-btn depressed text outlined class="white--text font-weight-bold" @click="logOut"
         >Log out</v-btn
       >
     </div>
@@ -13,11 +13,11 @@
       <tbody>
         <tr>
           Name:
-          <td class="px-2">{{ users.firstName + " " + users.lastName }}</td>
+          <td class="px-2">{{ getUser.user.firstName + " " + getUser.user.lastName }}</td>
         </tr>
         <tr>
           Email:
-          <td class="px-2">{{ users.email }}</td>
+          <td class="px-2">{{ getUser.user.email }}</td>
         </tr>
       </tbody>
     </table>
@@ -84,6 +84,11 @@ export default {
       this.$router.push("/login");
     },
   },
+  computed:{
+    getUser(){
+     return ('user', JSON.parse(localStorage.getItem('user')))
+    }
+  }
 };
 </script>
 

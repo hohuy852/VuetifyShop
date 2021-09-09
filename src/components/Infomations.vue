@@ -10,8 +10,8 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <v-text-field outlined label="First Name"></v-text-field>
-          <v-text-field outlined label="Last Name"></v-text-field>
+          <v-text-field outlined label="First Name" :value="getUser.user.firstName"></v-text-field>
+          <v-text-field outlined label="Last Name" :value="getUser.user.lastName"></v-text-field>
           
           <v-btn class="cyan font-weight-bold"> Update </v-btn>
         </v-card-text>
@@ -21,7 +21,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed:{
+    getUser(){
+     return ('user', JSON.parse(localStorage.getItem('user')))
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -22,6 +22,8 @@
             v-model="user.password"
             label="Password"
             outlined
+            type="password"
+
           ></v-text-field>
           <div v-html="ErrorMessage"></div>
           <v-btn class="primary mb-3" x-large block @click="handleLogin(user)"
@@ -46,7 +48,7 @@
 
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
+//import axios from "axios";
 export default {
   name: "Login",
   data() {
@@ -88,31 +90,6 @@ export default {
             error.toString();
         }
       );
-    },
-    login() {
-      axios
-        .post(
-          "https://demo-tttn.herokuapp.com/login",
-          {
-            email: this.email,
-            password: this.password,
-          },
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods":
-                "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-              "Access-Control-Allow-Headers":
-                "Origin, Content-Type, X-Auth-Token",
-            },
-          }
-        )
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
     },
   },
   created() {

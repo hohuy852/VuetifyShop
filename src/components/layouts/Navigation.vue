@@ -15,7 +15,7 @@
         >
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-autocomplete 
+      <v-autocomplete
         v-model="model"
         :items="entries"
         :loading="isLoading"
@@ -34,7 +34,6 @@
         style="max-width: 450px"
         solo-inverted
         class="mr-7"
-        
       >
         <template slot="no-data">
           <v-list-item>
@@ -124,7 +123,7 @@
     </v-navigation-drawer> -->
     <!-- Cart -->
     <v-navigation-drawer v-model="toggleCart" temporary right :width="360" app>
-      <v-list nav dense>
+      <v-list nav dense class="mb-3">
         <v-list-item>
           <v-list-item-content>
             <span class="px-2 py-2 text-h6 black--text">Shopping Cart</span>
@@ -174,6 +173,21 @@
         </v-list-item>
         <v-divider></v-divider>
       </v-list>
+      <div v-if="cart.length > 0" class="row px-3 pt-5 align-center ">
+          <v-col cols="12" class="pb-0 text-right">
+            <v-responsive>
+              <v-text-field
+                dense
+                single-line
+                flat
+                placeholder="Discount Code"
+
+                outlined
+                
+              ></v-text-field>
+            </v-responsive>
+          </v-col>
+        </div>
       <div class="ma-2 mt-6" v-if="cart.length === 0">
         <div class="text-center">
           <v-icon> mdi-block-helper </v-icon>
@@ -293,7 +307,7 @@ export default {
   },
 };
 </script>
-<style >
+<style scoped >
 .theme--dark.v-sheet {
   background-color: #05090c;
   border-color: #1e1e1e;
@@ -302,4 +316,5 @@ export default {
 .wrap-text {
   white-space: normal;
 }
+
 </style>
