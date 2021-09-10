@@ -93,7 +93,7 @@ export default {
 
       this.$store.dispatch("auth/register", user).then(
         (data) => {
-          this.message = data.message;
+          this.message = data.msg;
           this.successful = true;
           this.loading = false;
         },

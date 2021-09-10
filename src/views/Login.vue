@@ -11,7 +11,7 @@
       <v-card>
         <h2 class="py-4">Login</h2>
         <v-divider aria-orientation="horizontal"></v-divider>
-        <v-form ref="form" class="pa-7">
+        <v-form ref="form" class="pa-7" type="submit">
           <v-text-field
             v-model="user.email"
             label="Email"
@@ -25,7 +25,7 @@
             type="password"
           ></v-text-field>
           <div v-html="message" style="color:red"></div>
-          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)" :loading="isLoading"
+          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)"  :loading="isLoading"
             >Log in</v-btn
           >
 
@@ -77,9 +77,10 @@ export default {
       this.isLoading = true;
       this.$store.dispatch("auth/login", user).then(
         () => {
-          this.$router.push("/profile");
+          this.$router.push("/");
         },
         (error) => {
+          console.log(error.response)
           this.message = error.response.data.msg
             this.isLoading = false;
         }
