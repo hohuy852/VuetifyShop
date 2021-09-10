@@ -12,7 +12,6 @@ class AuthService {
           localStorage.setItem('user', JSON.stringify(response.data));
           //console.log(localStorage)
         }
-        console.log(response);
         return response.data;
       });
       // .then(function (response) {
@@ -30,9 +29,6 @@ class AuthService {
       lastName: user.lastName,
       email: user.email,
       password: user.password
-    })
-    .then(response =>{
-      console.log(response)
     })
     ;
   }

@@ -39,9 +39,10 @@
             outlined
             @click:append="show = !show"
           ></v-text-field>
-          <v-btn class="success" x-large block @click="handleRegister(user)"
-            >Register</v-btn
-          >
+         
+          <v-btn class="success" x-large block @click="handleRegister(user)" :loading="loading"
+            >Register</v-btn>
+              <div v-html="message" style="color:#f542a1" class="py-2"></div>
           <v-checkbox v-model="checkbox"
             ><template v-slot:label>
               <div class="black--text font-weight-bold">I agree</div>
@@ -79,6 +80,8 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
       },
+      message: '',
+      loading:false
     };
   },
   methods: {
@@ -95,12 +98,8 @@ export default {
           this.loading = false;
         },
         (error) => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = error.response.data.msg
+          //   error.toString();
           this.successful = false;
           this.loading = false;
         }

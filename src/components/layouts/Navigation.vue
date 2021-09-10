@@ -263,6 +263,8 @@ export default {
     model: [{}],
     search: null,
     toggleLeftMenu: false,
+    discount: '',
+    code: '123',
     // toggleCart: false,
     buttons: [
       {

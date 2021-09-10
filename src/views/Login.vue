@@ -23,10 +23,9 @@
             label="Password"
             outlined
             type="password"
-
           ></v-text-field>
-          <div v-html="ErrorMessage"></div>
-          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)"
+          <div v-html="message" style="color:red"></div>
+          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)" :loading="isLoading"
             >Log in</v-btn
           >
 
@@ -62,8 +61,8 @@ export default {
       //text: '***',
       show: false,
       rules: {},
-      loading: false,
-      ErrorMessage: "",
+      isLoading: false,
+      message: "",
     };
   },
   computed: {
@@ -75,19 +74,14 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     handleLogin(user) {
-      this.loading = true;
+      this.isLoading = true;
       this.$store.dispatch("auth/login", user).then(
         () => {
           this.$router.push("/profile");
         },
         (error) => {
-          this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          this.message = error.response.data.msg
+            this.isLoading = false;
         }
       );
     },
