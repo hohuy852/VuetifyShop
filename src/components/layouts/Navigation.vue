@@ -173,21 +173,42 @@
         </v-list-item>
         <v-divider></v-divider>
       </v-list>
-      <div v-if="cart.length > 0" class="row px-3 pt-5 align-center ">
-          <v-col cols="12" class="pb-0 text-right">
-            <v-responsive>
-              <v-text-field
-                dense
-                single-line
-                flat
-                placeholder="Discount Code"
-
-                outlined
-                
-              ></v-text-field>
-            </v-responsive>
-          </v-col>
-        </div>
+      <div v-if="cart.length > 0" class="row px-3 pt-5 align-center">
+        <v-col cols="12" class="pb-0 text-right">
+          <v-responsive style="max-width: 230px" class="ml-auto">
+            <v-text-field
+              dense
+              single-line
+              flat
+              placeholder="Discount Code"
+              rounded
+              filled
+            ></v-text-field>
+          </v-responsive>
+        </v-col>
+      </div>
+      <v-col
+        v-if="cart.length > 0"
+        cols="12"
+        class="text-right pt-5 d-flex align-center justify-end"
+      >
+        <span class="text-body-2 grey--text text--darken-1 pr-2"
+          >Subtotal: ({{ totalProduct }} item): </span
+        >
+        <v-responsive
+          class="
+            red--text
+            headline
+            text--darken-4
+            font-weight-medium
+            shrink
+            d-inline-flex
+            justify-end
+          "
+          style="max-width: 100px"
+          >${{ totalPrice }}</v-responsive
+        >
+      </v-col>
       <div class="ma-2 mt-6" v-if="cart.length === 0">
         <div class="text-center">
           <v-icon> mdi-block-helper </v-icon>
@@ -196,12 +217,14 @@
           <span>Shopping Cart Empty</span>
         </div>
       </div>
-      <v-row align="center" class="pt-2 px-3 mt-3">
-        <v-col class="d-flex justify-center" cols="12">
+      <v-row class="pt-2 mt-3 px-5" align="center">
+        <v-col cols="12">
           <v-btn
             v-if="cart.length == 0"
             @click="toggleCart = !toggleCart"
             class="theme--light v-size--large pink white--text font-weight-bold"
+            block
+            large
           >
             Continue shopping
           </v-btn>
@@ -209,8 +232,10 @@
             v-else
             class="theme--light v-size--large pink white--text font-weight-bold"
             to="/checkout"
+            block
+            large
           >
-            Check out: {{ totalPrice }} $ | items: ({{ totalProduct }})
+            Checkout
           </v-btn>
         </v-col>
       </v-row>
@@ -307,7 +332,7 @@ export default {
   },
 };
 </script>
-<style scoped >
+<style scoped lang="scss" >
 .theme--dark.v-sheet {
   background-color: #05090c;
   border-color: #1e1e1e;
@@ -316,5 +341,5 @@ export default {
 .wrap-text {
   white-space: normal;
 }
-
+$text-field-rounded-border-radius: 7px;
 </style>
