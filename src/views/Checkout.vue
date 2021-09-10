@@ -21,6 +21,7 @@
                     label="Email"
                     outlined
                     dense
+                    v-model="email"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -34,6 +35,7 @@
                       :rules="[rules.required]"
                       label="First name"
                       outlined
+                       v-model="firstName"
                     ></v-text-field>
                   </v-col>
                   <v-col>
@@ -42,6 +44,7 @@
                       label="Last name"
                       outlined
                       dense
+                       v-model="lastName"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -55,6 +58,7 @@
                   label="Address"
                   outlined
                   dense
+                   v-model="address"
                 ></v-text-field>
                 <v-text-field
                   label="Apartment,suite,etc... "
@@ -66,6 +70,7 @@
                   label="City"
                   outlined
                   dense
+                  v-model="city"
                 ></v-text-field>
                 <v-row>
                   <v-col>
@@ -74,6 +79,7 @@
                       label="Country/Region"
                       outlined
                       dense
+                      v-model="country"
                     ></v-select>
                   </v-col>
                   <v-col>
@@ -82,6 +88,7 @@
                       label="Postal Code"
                       outlined
                       dense
+                      type="number"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -91,6 +98,7 @@
                   label="Phone"
                   outlined
                   dense
+                   v-model="phone"
                 ></v-text-field>
               </v-form>
               <v-btn color="primary" :disabled="!valid" large @click="e1 = 2">
@@ -158,6 +166,17 @@
                  <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold"    
+                >Applied Discount code: </div>
+                <v-spacer></v-spacer>
+                <div
+                  class="text-h5 font-weight-bold" style="color: #eb3452"  
+                >LUCKY100</div>
+              </v-row>
+              
+              <v-row justify="center" v-if="cart.length > 0">
+                 <v-spacer></v-spacer>
+                <div
+                  class="text-h5 font-weight-bold"    
                 >Total: </div>
                 <v-spacer></v-spacer>
                 <div
@@ -179,11 +198,11 @@
                 <tbody>
                   <tr>
                     <td>Contact</td>
-                    <td>example@gmail.com</td>
+                    <td>{{email}}</td>
                   </tr>
                   <tr>
                     <td>Billing</td>
-                    <td>example, example, VietNam</td>
+                    <td>{{address +', '+ city +', '+ country}}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
@@ -279,15 +298,38 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
       },
+      email:'',
+      firstName: '',
+      lastName: '',
+      address: '',
+      phone: '',
+      city: '',
+      country: ''
     };
   },
   computed: {
     ...mapGetters(["cart", "totalPrice"]),
+    loggedIn(){
+      return  this.$store.state.auth.status.loggedIn;
+    },
+    getUser(){
+     return ('user', JSON.parse(localStorage.getItem('user')))
+    }
   },
   methods: {
     validate() {
       this.$refs.form.validate();
     },
   },
+  mounted(){
+    if(this.loggedIn){
+      //
+      this.email = this.getUser.user.email
+      this.firstName = this.getUser.user.firstName
+      this.lastName = this.getUser.user.lastName
+     // this.address = this.getUser.user.address
+      //this.phone =  this.getUser.user.phone
+    }
+  }
 };
 </script>
