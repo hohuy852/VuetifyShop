@@ -5,13 +5,21 @@
         <v-card-title>
           Orders history
           <v-spacer></v-spacer>
-          <v-btn depressed dark outlined text class="font-weight-bold">
+          <v-btn
+            depressed
+            dark
+            outlined
+            text
+            class="font-weight-bold"
+            :loading="isLoading"
+            @click="refresh"
+          >
             Refresh
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <v-expansion-panels multiple>
-            <v-expansion-panel>
+          <v-expansion-panels>
+            <v-expansion-panel v-for="order in orders" :key="order._id">
               <v-expansion-panel-header expand-icon="mdi-menu-down">
                 <div class="d-flex">
                   <div
@@ -19,18 +27,24 @@
                     style="min-width: 96px"
                   >
                     <span>Order:</span>
-                    <span>#27428</span>
+                    <span class="pl-3" v-text="order._id"></span>
                   </div>
                   <div class="d-flex flex-grow-1">
                     <v-spacer></v-spacer>
                     <div class="font-weight-bold mx-1">Fulfilled/Paid</div>
-                    <div class="mx-2 font-weight-bold">Free</div>
+                    <div class="mx-2 font-weight-bold"></div>
                   </div>
                 </div>
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <v-divider></v-divider>
-                <v-data-table :headers="headers" hide-default-footer :items="data" style="background-color: #000000" :disable-sort ="true" >
+                <v-data-table
+                  :headers="headers"
+                  hide-default-footer
+                  :items="order.OrderItems"
+                  style="background-color: #000000"
+                  :disable-sort="true"
+                >
                 </v-data-table>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -41,38 +55,50 @@
   </v-window>
 </template>
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
+  name: "Orders",
   data() {
     return {
-      sortBy: '',
-        sortDesc: false,
-      data:[
-        {
-          Product: '33123',
-          Quantity: '3',
-          Total: '3'
-        }
-
-      ],
-
+      sortBy: "",
+      sortDesc: false,
+      data: [],
+      isLoading: false,
       headers: [
         {
           text: "Product",
-          value:'Product',
-          align: "start"
+          value: "name",
+          align: "start",
         },
         {
           text: "Quantity",
-          value: "Quantity",
-          align: 'right'
+          value: "quantity",
+          align: "right",
         },
         {
-          text: "Total",
-          value: "Total",
-          align: 'right'
+          text: "Price",
+          value: "price",
+          align: "right",
         },
       ],
     };
+  },
+  watch: {},
+  methods: {
+    ...mapActions(["getOrders"]),
+    refresh() {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.getOrders();
+        this.isLoading = false;
+      }, 580);
+    },
+  },
+  computed: {
+    ...mapGetters(["orders"]),
+  },
+  mounted() {
+    this.getOrders();
   },
 };
 </script>
@@ -86,6 +112,6 @@ export default {
   border-color: rgba(255, 255, 255, 0.62);
 }
 .theme--dark.v-expansion-panels .v-expansion-panel {
-    background-color: #000000;
+  background-color: #000000;
 }
 </style>
