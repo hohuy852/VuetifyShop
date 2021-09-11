@@ -29,20 +29,17 @@ export default {
   data() {
     return {
       list: [
-        {
-          problem: "Login chưa hoàn thành",
-        },
-        {
-          problem: "Register chưa hoàn thành",
+         {
+          problem: "Order",
         },
          {
-          problem: "Profile Page chưa hoàn thành",
+          problem: "Preview",
         },
          {
-          problem: "Preview Image chưa hoành thành",
+          problem: "Discount",
         },
          {
-          problem: "..................",
+          problem: "Description",
         },
         
       ],

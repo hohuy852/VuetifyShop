@@ -14,23 +14,25 @@ class AuthService {
         }
         return response.data;
       });
-      // .then(function (response) {
-      //   console.log(response);
-      // })
+    // .then(function (response) {
+    //   console.log(response);
+    // })
   }
   logout() {
-    localStorage.removeItem('user');
+    return axios
+      .post(API_URL + 'logout')
+      .then(localStorage.removeItem('user'))
   }
 
   register(user) {
     return axios
-     .post(API_URL + 'register', {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password
-    })
-    ;
+      .post(API_URL + 'register', {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password
+      })
+      ;
   }
 }
 
