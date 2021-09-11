@@ -80,7 +80,7 @@ export default {
           this.$router.push("/");
         },
         (error) => {
-          console.log(error.response)
+         
           this.message = error.response.data.msg
             this.isLoading = false;
         }

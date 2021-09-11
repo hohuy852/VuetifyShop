@@ -72,9 +72,16 @@
           </template>
         </template>
       </v-autocomplete>
+
+      <!-- <template v-slot:badge>
+          <span v-if="!!count">{{ count }}</span>
+        </template> -->
       <v-btn to="/login" text fab plain>
-        <v-icon fab> mdi-account </v-icon>
+        <v-badge right dot color="green" :content="loggedIn" :value="loggedIn"> 
+          <v-icon> mdi-account </v-icon>
+        </v-badge>
       </v-btn>
+
       <Notification />
       <v-btn text fab @click="toggleCart = !toggleCart">
         <v-badge right overlap color="pink">
@@ -193,8 +200,8 @@
         class="text-right pt-5 d-flex align-center justify-end"
       >
         <span class="text-body-2 grey--text text--darken-1 pr-2"
-          >Subtotal: ({{ totalProduct }} item): </span
-        >
+          >Subtotal: ({{ totalProduct }} item):
+        </span>
         <v-responsive
           class="
             red--text
@@ -263,8 +270,7 @@ export default {
     model: [{}],
     search: null,
     toggleLeftMenu: false,
-    discount: '',
-    code: '123',
+    code: "123",
     // toggleCart: false,
     buttons: [
       {
@@ -301,6 +307,9 @@ export default {
         this.$store.commit("TOGGLE_CART", value);
       },
     },
+    loggedIn(){
+       return  this.$store.state.auth.status.loggedIn;
+    }
   },
   methods: {
     ...mapActions(["deleteItem"]),

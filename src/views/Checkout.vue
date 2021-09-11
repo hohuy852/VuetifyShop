@@ -17,7 +17,7 @@
               <v-row>
                 <v-col>
                   <v-text-field
-                    :rules="[rules.required]"
+                    :rules="emailRules"
                     label="Email"
                     outlined
                     dense
@@ -177,7 +177,7 @@
                  <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold"    
-                >Total: </div>
+                >Total:</div>
                 <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold" style="color: #eb3452"  
@@ -304,7 +304,11 @@ export default {
       address: '',
       phone: '',
       city: '',
-      country: ''
+      country: '',
+       emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
     };
   },
   computed: {

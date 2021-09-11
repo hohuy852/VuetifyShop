@@ -157,7 +157,7 @@
                 border-color: rgb(243, 205, 112);
 
               "
-              @click="buy"
+              @click="buy(product)"
               ><v-icon>mdi-send</v-icon><span class="flex-grow-1">Buy now</span>
             </v-btn>
           </div>
@@ -325,8 +325,9 @@ export default {
   props: {},
   methods: {
     ...mapActions(["getSingleProduct", "addProductToCart"]),
-    buy(){
+    buy(p){
       this.$router.push('/checkout')
+      this.$store.dispatch('addProductToCart', p)
     },
     handleChangeImage(img){
       console.log(img)

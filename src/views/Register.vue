@@ -11,7 +11,7 @@
       <v-card>
         <h2 class="py-4">Create Account</h2>
         <v-divider aria-orientation="horizontal"></v-divider>
-        <v-form ref="form" class="pa-7">
+        <v-form ref="form" class="pa-7" v-model="valid" lazy-validation>
           <v-text-field
             :rules="[rules.required]"
             v-model="user.firstName"
@@ -25,7 +25,7 @@
             outlined
           ></v-text-field>
           <v-text-field
-            :rules="[rules.required]"
+            :rules="emailRules"
             v-model="user.email"
             label="Email"
             outlined
@@ -39,15 +39,21 @@
             outlined
             @click:append="show = !show"
           ></v-text-field>
-         
-          <v-btn class="success" x-large block @click="handleRegister(user)" :loading="loading"
-            >Register</v-btn>
-              <div v-html="message" style="color:#f542a1" class="py-2"></div>
-          <v-checkbox v-model="checkbox"
+
+          <v-btn
+            class="success"
+            x-large
+            block
+            @click="handleRegister(user); validate"
+            :loading="loading"
+            >Register</v-btn
+          >
+          <div v-html="message" style="color: #f542a1" class="py-2"></div>
+          <!-- <v-checkbox v-model="checkbox"
             ><template v-slot:label>
               <div class="black--text font-weight-bold">I agree</div>
             </template></v-checkbox
-          >
+          > -->
           <v-divider aria-orientation="horizontal" class="mb-5"></v-divider>
           <router-link
             to="/login"
@@ -64,24 +70,27 @@
 <script>
 import { mapMutations } from "vuex";
 export default {
-   name:'Register',
+  name: "Register",
   data() {
     return {
-     
       //text: '***',
       checkbox: false,
       show: false,
-      user:{
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
       },
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
       rules: {
         required: (value) => !!value || "Required.",
       },
-      message: '',
-      loading:false
+      message: "",
+      loading: false,
     };
   },
   methods: {
@@ -98,13 +107,16 @@ export default {
           this.loading = false;
         },
         (error) => {
-          this.message = error.response.data.msg
+          this.message = error.response.data.msg;
           //   error.toString();
           this.successful = false;
           this.loading = false;
         }
       );
     },
+     validate () {
+        this.$refs.form.validate()
+      },
   },
   computed: {},
 };
