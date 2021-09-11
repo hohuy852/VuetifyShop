@@ -328,7 +328,7 @@ export default {
 
       this.isLoading = true;
       // Lazily load input items
-      fetch("https://demo-tttn.herokuapp.com/product")
+      fetch("https://web-demo.online/product")
         .then((res) => res.json())
         .then((res) => {
           const { count, entries } = res;
