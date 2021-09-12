@@ -22,6 +22,7 @@
 
 <script>
 export default {
+  name: 'Info',
   computed:{
     getUser(){
      return ('user', JSON.parse(localStorage.getItem('user')))

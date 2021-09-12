@@ -3,7 +3,12 @@
     <div class="text-h4 mt-4 d-flex white--text">
       Account
       <v-spacer></v-spacer>
-      <v-btn depressed text outlined class="white--text font-weight-bold" @click="logOut"
+      <v-btn
+        depressed
+        text
+        outlined
+        class="white--text font-weight-bold"
+        @click="logOut"
         >Log out</v-btn
       >
     </div>
@@ -13,7 +18,9 @@
       <tbody>
         <tr>
           Name:
-          <td class="px-2">{{ getUser.user.firstName + " " + getUser.user.lastName }}</td>
+          <td class="px-2">
+            {{ getUser.user.firstName + " " + getUser.user.lastName }}
+          </td>
         </tr>
         <tr>
           Email:
@@ -21,7 +28,7 @@
         </tr>
       </tbody>
     </table>
-    <v-tabs
+    <!-- <v-tabs
       class="mt-3"
       background-color="transparent"
       center-active
@@ -33,12 +40,25 @@
       }}</v-tab>
       <v-tabs-items v-model="activeTab" @change="updateRouter($event)">
         <v-tab-item v-for="tab of tabs" :key="tab.id" :value="tab.route">
-          <!-- <Orders/> -->
+     
           <router-view
             v-if="tab.route === $route.path && tab.route === activeTab"
           />
         </v-tab-item>
       </v-tabs-items>
+    </v-tabs> -->
+    <v-tabs  class="mt-3"
+      background-color="transparent"
+      center-active
+      dark
+      v-model="activeTab">
+      <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
+        {{ tab.name }}
+      </v-tab>
+
+      <v-tab-item v-for="tab of tabs" :key="tab.id" :value="tab.route" style="background:#111B27">
+        <router-view></router-view>
+      </v-tab-item>
     </v-tabs>
   </v-container>
 </template>
@@ -46,10 +66,11 @@
 <script>
 //import Orders from "../components/Orders.vue"
 export default {
+  name: 'Account',
   components: {
     //  Orders
   },
-  props: {},
+
   data() {
     return {
       users: {
@@ -57,20 +78,17 @@ export default {
         lastName: "Huy",
         email: "hohuy@gmail.com",
       },
-      activeTab: "",
-      tab: String,
       // slug: this.$route.params.slug
       tabs: [
         {
           id: 1,
-          name: "Orders",
-          route: "/profile/orders",
-          isDisable: "false",
+          name: "orders",
+          route: `/profile/`,
         },
         {
           id: 2,
-          name: "Infomation",
-          route: "/profile/info",
+          name: "infomation",
+          route: `/profile/infomation`,
         },
       ],
     };
@@ -84,11 +102,11 @@ export default {
       this.$router.push("/login");
     },
   },
-  computed:{
-    getUser(){
-     return ('user', JSON.parse(localStorage.getItem('user')))
-    }
-  }
+  computed: {
+    getUser() {
+      return "user", JSON.parse(localStorage.getItem("user"));
+    },
+  },
 };
 </script>
 

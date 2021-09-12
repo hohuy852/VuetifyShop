@@ -12,23 +12,23 @@ const actions = {
             commit('GET_ORDER', response.data)
         })
     },
-    postOrder({commit}, order){
+    postOrder(order){
         return axios
-        .post('https://web-demo.online/order', {
+        .post('https://web-demo.online/addOrder', {
             email : order.email,
             firstName : order.firstName,
             lastName : order.lastName,
-            company : order.company,
+            //company : order.company,
             address: order.address,
-            apartment : order.apartment,
+            //apartment : order.apartment,
+            phone : order.phone,
             city : order.city,
             country : order.country,
-            postalCode : order.postalCode,
-            phone : order.phone,
-            total: order.total,
-            OrderItems: order.OrderItems
+            //postalCode : order.postalCode,
+           
+            // total: order.total,
+            // OrderItems: order.OrderItems
         })
-        .then (commit('POST_ORDER'))
     }
 }
 

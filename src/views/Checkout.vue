@@ -21,7 +21,7 @@
                     label="Email"
                     outlined
                     dense
-                    v-model="email"
+                    v-model="order.email"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -35,7 +35,7 @@
                       :rules="[rules.required]"
                       label="First name"
                       outlined
-                       v-model="firstName"
+                       v-model="order.firstName"
                     ></v-text-field>
                   </v-col>
                   <v-col>
@@ -44,7 +44,7 @@
                       label="Last name"
                       outlined
                       dense
-                       v-model="lastName"
+                       v-model="order.lastName"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -58,7 +58,7 @@
                   label="Address"
                   outlined
                   dense
-                   v-model="address"
+                   v-model="order.address"
                 ></v-text-field>
                 <v-text-field
                   label="Apartment,suite,etc... "
@@ -70,7 +70,7 @@
                   label="City"
                   outlined
                   dense
-                  v-model="city"
+                  v-model="order.city"
                 ></v-text-field>
                 <v-row>
                   <v-col>
@@ -79,7 +79,7 @@
                       label="Country/Region"
                       outlined
                       dense
-                      v-model="country"
+                      v-model="order.country"
                     ></v-select>
                   </v-col>
                   <v-col>
@@ -98,7 +98,7 @@
                   label="Phone"
                   outlined
                   dense
-                   v-model="phone"
+                   v-model="order.phone"
                 ></v-text-field>
               </v-form>
               <v-btn color="primary" :disabled="!valid" large @click="e1 = 2">
@@ -198,11 +198,11 @@
                 <tbody>
                   <tr>
                     <td>Contact</td>
-                    <td>{{email}}</td>
+                    <td>{{order.email}}</td>
                   </tr>
                   <tr>
                     <td>Billing</td>
-                    <td>{{address +', '+ city +', '+ country}}</td>
+                    <td>{{order.address +', '+ order.city +', '+ order.country}}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
@@ -253,7 +253,7 @@
                 </v-row>
 
               </v-form>
-               <v-btn color="primary"> Complete Payment </v-btn>
+               <v-btn color="primary" @click="checkout(order)"> Complete Payment </v-btn>
 
         <v-btn text @click="e1 = 1"> Return </v-btn>
             </v-col>
@@ -298,13 +298,17 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
       },
-      email:'',
-      firstName: '',
-      lastName: '',
-      address: '',
-      phone: '',
-      city: '',
-      country: '',
+      order: {
+          email:'',
+          firstName: '',
+          lastName: '',
+          company: '',
+          address: '',
+          phone: '',
+          city: '',
+          country: '',
+      },
+     
        emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -324,13 +328,16 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
+    checkout(order){
+        this.$store.dispatch('postOrder', order)
+    }
   },
   mounted(){
     if(this.loggedIn){
       //
-      this.email = this.getUser.user.email
-      this.firstName = this.getUser.user.firstName
-      this.lastName = this.getUser.user.lastName
+      this.order.email = this.getUser.user.email
+      this.order.firstName = this.getUser.user.firstName
+      this.order.lastName = this.getUser.user.lastName
      // this.address = this.getUser.user.address
       //this.phone =  this.getUser.user.phone
     }
