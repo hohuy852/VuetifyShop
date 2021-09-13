@@ -1,4 +1,3 @@
-import createPersistedState from "vuex-persistedstate";
 const state = {
   toggleCart: false,
   items: [],
@@ -30,6 +29,7 @@ const mutations = {
       product,
       quantity: 1
     })
+  //  window.localStorage.setItem('items', JSON.stringify(state.items));
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
@@ -60,7 +60,6 @@ const getters = {
   cart: state => state.items,
 }
 export default {
-  plugins: [createPersistedState()],  
   state,
   actions,
   mutations,

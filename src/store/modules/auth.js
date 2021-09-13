@@ -24,6 +24,7 @@ const auth = {
       commit('logout');
     },
     register({ commit }, user) {
+      console.log(user)
       return AuthService.register(user).then(
         response => {
           commit('registerSuccess');

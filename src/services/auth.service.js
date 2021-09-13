@@ -32,7 +32,6 @@ class AuthService {
         email: user.email,
         password: user.password
       })
-      ;
   }
 }
 

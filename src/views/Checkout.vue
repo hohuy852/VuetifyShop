@@ -9,7 +9,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <v-container>
+      <v-container>
           <div class="row justify-center">
             <v-col cols="12" sm="6" md="4" class="mr-5">
               <div class="text-h6 mb-4">Contact Infomation</div>
@@ -52,6 +52,7 @@
                   label="Company(Optional)"
                   outlined
                   dense
+                  v-model="order.company"
                 ></v-text-field>
                 <v-text-field
                   :rules="[rules.required]"
@@ -64,6 +65,7 @@
                   label="Apartment,suite,etc... "
                   outlined
                   dense
+                  v-model="order.apartment"
                 ></v-text-field>
                 <v-text-field
                   :rules="[rules.required]"
@@ -89,6 +91,7 @@
                       outlined
                       dense
                       type="number"
+                      v-model="order.postalCode"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -193,45 +196,53 @@
       <v-stepper-content step="2">
         <v-container>
           <div class="row justify-center">
-            <v-col  cols="12" sm="6" md="4">
-              <v-simple-table style="border-style: solid; border-width: 1px; border-radius: 5px ">
+            <v-col cols="12" sm="6" md="4">
+              <v-simple-table
+                style="
+                  border-style: solid;
+                  border-width: 1px;
+                  border-radius: 5px;
+                "
+              >
                 <tbody>
                   <tr>
                     <td>Contact</td>
-                    <td>{{order.email}}</td>
+                    <td>{{ order.email }}</td>
                   </tr>
                   <tr>
                     <td>Billing</td>
-                    <td>{{order.address +', '+ order.city +', '+ order.country}}</td>
+                    <td>
+                      {{
+                        order.address + ", " + order.city + ", " + order.country
+                      }}
+                    </td>
                   </tr>
                 </tbody>
               </v-simple-table>
-               <div class="text-h6 mt-4">Add tip</div>
+              <div class="text-h6 mt-4">Add tip</div>
               <v-divider class="mb-4"></v-divider>
-                <v-text-field outlined label="Support our team" type="number"></v-text-field>
-               <div class="text-h6 mt-4">Payment</div>
+              <v-text-field
+                outlined
+                label="Support our team"
+                type="number"
+              ></v-text-field>
+              <div class="text-h6 mt-4">Payment</div>
               <v-divider class="mb-4"></v-divider>
               <v-form ref="form" v-model="valid" class="my-6">
                 <v-radio-group row>
-                  <v-radio label="MasterCard">
-                    
-                  </v-radio>
-                  <v-radio label="Visa">
-                    
-                  </v-radio>
-                  <v-radio label="Napas">
-                   
-                  </v-radio>
+                  <v-radio label="MasterCard"> </v-radio>
+                  <v-radio label="Visa"> </v-radio>
+                  <v-radio label="Napas"> </v-radio>
                 </v-radio-group>
                 <v-text-field
                   label="Card number"
                   outlined
-                   :rules="[rules.required]"
+                  :rules="[rules.required]"
                 ></v-text-field>
                 <v-text-field
                   :rules="[rules.required]"
                   label="Name on card"
-                  outlined           
+                  outlined
                 ></v-text-field>
                 <v-row>
                   <v-col>
@@ -239,7 +250,6 @@
                       :rules="[rules.required]"
                       label="Expiration date (MM/YY)"
                       outlined
-                    
                     ></v-text-field>
                   </v-col>
                   <v-col>
@@ -247,25 +257,24 @@
                       :rules="[rules.required]"
                       label="Security code"
                       outlined
-                    
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
               </v-form>
-               <v-btn color="primary" @click="checkout(order)"> Complete Payment </v-btn>
+              <v-btn color="primary" @click="handlePostOrder(order)">
+                Complete Payment
+              </v-btn>
 
-        <v-btn text @click="e1 = 1"> Return </v-btn>
+              <v-btn text @click="e1 = 1"> Return </v-btn>
             </v-col>
           </div>
         </v-container>
-       
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -298,17 +307,35 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
       },
+      message: 'heelo',
       order: {
-          email:'',
-          firstName: '',
-          lastName: '',
-          company: '',
-          address: '',
-          phone: '',
-          city: '',
-          country: '',
+          orderItems:this.$store.getters.cart,
+          status: "Paid",
+          idUser: '',
+          Datetime: Date(),
+          total: '',
+          discount: "",
+          email: "",
+          firstName: "",
+          lastName: "",
+          company: "",
+          address: "",
+          apartment: "",
+          city: "",
+          country: "",
+          postalCode: "",
+          phone: ""
       },
-     
+        // {
+        //     "name": "ssvsdv33dsvd",
+        //     "quantity": 1,
+        //     "price": 12.98
+        // }, 
+        // {
+        //     "name": "ssvsdvds1vd",
+        //     "quantity": 1,
+        //     "price": 12.98
+        // }
        emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -316,20 +343,27 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "totalPrice"]),
+    ...mapGetters(["cart"]),
     loggedIn(){
       return  this.$store.state.auth.status.loggedIn;
     },
     getUser(){
      return ('user', JSON.parse(localStorage.getItem('user')))
+    },
+    totalPrice(){
+      return this.$store.getters.totalPrice
     }
   },
   methods: {
+    // ...mapActions(['postOrder']),
     validate() {
       this.$refs.form.validate();
     },
-    checkout(order){
-        this.$store.dispatch('postOrder', order)
+    checkcart(){
+      console.log(this.cart)
+    },
+    handlePostOrder(order){
+        this.$store.dispatch("postOrder", order)
     }
   },
   mounted(){
@@ -340,6 +374,8 @@ export default {
       this.order.lastName = this.getUser.user.lastName
      // this.address = this.getUser.user.address
       //this.phone =  this.getUser.user.phone
+      this.order.idUser = this.getUser.user._id
+      this.order.total = this.totalPrice
     }
   }
 };

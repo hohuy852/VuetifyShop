@@ -51,7 +51,7 @@
       background-color="transparent"
       center-active
       dark
-      v-model="activeTab">
+      >
       <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
         {{ tab.name }}
       </v-tab>
@@ -91,6 +91,9 @@ export default {
           route: `/profile/infomation`,
         },
       ],
+      tt:{
+        
+      }
     };
   },
   methods: {
