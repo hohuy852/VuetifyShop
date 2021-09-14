@@ -6,15 +6,16 @@ import categories from '../store/modules/categories'
 import auth from '../store/modules/auth'
 import order from '../store/modules/order'
 import createPersistedState from "vuex-persistedstate";
-import Cookies from 'js-cookie'
+import resetPassword from './modules/resetPassword'
+//import Cookies from 'js-cookie'
 Vue.use(Vuex)
 const dataState = createPersistedState({
   paths: ['cart'],
-  storage: {
-    getItem: key => Cookies.get(key),
-    setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: true }),
-    removeItem: key => Cookies.remove(key)
-  }
+  // storage: {
+  //   getItem: key => Cookies.get(key),
+  //   setItem: (key, value) => Cookies.set(key, value, { expires: 3, secure: true }),
+  //   removeItem: key => Cookies.remove(key)
+  // }
 })
 export default new Vuex.Store({
   modules: {
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     categories,
     auth,
     order,
+    resetPassword
   },
   state: {
    // auth: true

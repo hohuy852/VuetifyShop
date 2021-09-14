@@ -30,7 +30,7 @@
           >
 
           <router-link
-            to="/"
+            to="/forgot-password"
             style="text-decoration: none"
             class="font-weight-bold"
             >Forgorten Password?</router-link

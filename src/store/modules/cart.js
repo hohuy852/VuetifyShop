@@ -59,6 +59,7 @@ const getters = {
   },
   cart: state => state.items,
 }
+
 export default {
   state,
   actions,

@@ -17,6 +17,7 @@
             Refresh
           </v-btn>
         </v-card-title>
+        <v-card-text v-if="orders.length == 0"> No orders yet </v-card-text>
         <v-card-text>
           <v-expansion-panels>
             <v-expansion-panel v-for="order in orders" :key="order._id">

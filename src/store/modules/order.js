@@ -33,7 +33,13 @@ const actions = {
                 country: order.country,
                 postalCode: order.postalCode,
                 phone: order.phone
-            })
+            },
+            // {
+            //     headers: {
+            //         Authorization: token
+            //     }
+            // }
+            )
             .then(
                 commit('POSTED_ORDER')
             )

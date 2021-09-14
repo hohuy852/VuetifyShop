@@ -33,6 +33,11 @@ const routes = [
     component:()=>import (/* webpackChunkName: "login" */'../views/Checkout.vue')
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import (/* webpackChunkName: "forgorpassword" */'../views/ForgotPassword.vue')
+  },
+  {
     path: '/profile',
     component: () => import('../views/Account.vue'),
     children: [
