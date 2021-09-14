@@ -1,6 +1,8 @@
+const cart = window.localStorage.getItem('cart')
+
 const state = {
   toggleCart: false,
-  items: [],
+  items: cart ? JSON.parse(cart) : []
 }
 const actions = {
   deleteItem({ commit }, productId) {
@@ -8,8 +10,9 @@ const actions = {
   },
   addProductToCart({ commit }, productItem) {
     //find cartItem 
-    const cartItem = state.items.find(item => item.product.id === productItem.id)
-
+    // const cartItems =('vuex', JSON.parse(localStorage.getItem('vuex')))
+    const cartItem = state.items.find(item => item.product._id === productItem._id)
+    //console.log(cartItems)
     if(!cartItem){
     //push to cart
     commit('PUSH_TO_CART', productItem)
@@ -18,6 +21,8 @@ const actions = {
       //increase Qty
       commit('INCREASE_QTY', cartItem)
     }
+    window.localStorage.setItem('cart', JSON.stringify(state.items));
+  
   },
 }
 const mutations = {
@@ -29,14 +34,18 @@ const mutations = {
       product,
       quantity: 1
     })
-  //  window.localStorage.setItem('items', JSON.stringify(state.items));
+    //this.commit('SAVE_DATA')
+ 
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
   },
   TOGGLE_CART(state, toggle){
     state.toggleCart = toggle
-  }
+  },
+  // SAVE_CART(state){
+  //   window.localStorage.setItem('cart', JSON.stringify(state.items))
+  // }
 }
 const getters = {
   totalProduct(state) {

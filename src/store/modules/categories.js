@@ -1,6 +1,6 @@
 import axios from "axios"
 const state = {
-    items: [],
+    catItems: [],
     loading: true,
 }
 
@@ -18,13 +18,13 @@ const actions = {
 }
 const mutations = {
     GET_PRODUCT(state, categories) {
-        state.items = categories
+        state.catItems = categories
         state.loading = false
     },
 }
 const getters = {
     loading: state => state.loading,
-    categories: state => state.items,
+    categories: state => state.catItems,
 }
 export default {
     state,
