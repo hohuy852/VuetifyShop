@@ -132,11 +132,12 @@
                 <span>Vuetify</span>
               </div>
             </div>
-             <v-btn
+            <v-btn
               x-large
               block
               class="mt-3 black--text font-weight-bold cyan text-center"
-              href="https://lux-admin-pro.indielayer.com/dashboard/analytics" target="_blank"
+              href="https://lux-admin-pro.indielayer.com/dashboard/analytics"
+              target="_blank"
               ><span class="flex-grow-1">Live Preview</span>
             </v-btn>
             <v-btn
@@ -288,21 +289,28 @@
                       >{{ item.oldPrice }}</del
                     >
                     <v-spacer></v-spacer>
-                    <v-btn
-                      color="deep-purple lighten-2"
-                      text
-                      rounded
-                      outlined
-                      large
-                      class="accent--text"
-                      depressed
-                      @click="
-                        addProductToCart(item);
-                        toggleCart = !toggleCart;
-                      "
-                    >
-                      <v-icon>mdi-basket-plus</v-icon>
-                    </v-btn>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          color="deep-purple lighten-2"
+                          text
+                          rounded
+                          outlined
+                          large
+                          class="accent--text"
+                          depressed
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="
+                            addProductToCart(item);
+                            toggleCart = !toggleCart;
+                          "
+                        >
+                          <v-icon>mdi-basket-plus</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Add to cart</span>
+                    </v-tooltip>
                   </v-card-actions>
                 </v-sheet>
               </v-card>
@@ -365,7 +373,10 @@ export default {
     this.getSingleProduct();
   },
   mounted() {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
+    setTimeout(() =>{
+      this.imgSelected = this.product.img
+    },200)
   },
 };
 </script>

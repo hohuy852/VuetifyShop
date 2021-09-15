@@ -91,6 +91,8 @@
                   >{{ parseFloat(product.oldPrice).toFixed(2) }}</del
                 >
                 <v-spacer></v-spacer>
+                 <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   color="deep-purple lighten-2"
                   text
@@ -100,26 +102,38 @@
                   large
                   class="accent--text"
                   depressed
+                  v-bind="attrs"
+                  v-on="on"
                 >
                   <v-icon>mdi-heart-plus</v-icon>
                 </v-btn>
-                <v-btn
-                  color="deep-purple lighten-2"
-                  text
-                  @click="
-                    addProductToCart(product);
-                    toggleCart = !toggleCart;
-                    snackBar = true;
-                  "
-                  :loading="buttonLoading"
-                  rounded
-                  outlined
-                  large
-                  class="accent--text"
-                  depressed
-                >
-                  <v-icon>mdi-basket-plus</v-icon>
-                </v-btn>
+                 </template>
+                  <span>Add to wishlist</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="deep-purple lighten-2"
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="
+                        addProductToCart(product);
+                        toggleCart = !toggleCart;
+                        snackBar = true;
+                      "
+                      :loading="buttonLoading"
+                      rounded
+                      outlined
+                      large
+                      class="accent--text"
+                      depressed
+                    >
+                      <v-icon>mdi-basket-plus</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Add to cart</span>
+                </v-tooltip>
               </v-card-actions>
             </v-card>
           </div>
