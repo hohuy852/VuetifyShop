@@ -89,6 +89,11 @@ export default {
           name: "infomation",
           route: `/profile/infomation`,
         },
+        {
+          id: 3,
+          name: "whishlist (beta)",
+          route: `/profile/wishlist`,
+        },
       ],
       tt:{
         

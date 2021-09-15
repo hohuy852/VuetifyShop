@@ -7,6 +7,7 @@ const state = {
 const actions = {
   deleteItem({ commit }, productId) {
     commit('DELETE_PRODUCT', productId)
+    commit('SAVE_CART')
   },
   addProductToCart({ commit }, productItem) {
     //find cartItem 
@@ -21,8 +22,7 @@ const actions = {
       //increase Qty
       commit('INCREASE_QTY', cartItem)
     }
-    window.localStorage.setItem('cart', JSON.stringify(state.items));
-  
+    commit('SAVE_CART')
   },
 }
 const mutations = {
@@ -43,9 +43,9 @@ const mutations = {
   TOGGLE_CART(state, toggle){
     state.toggleCart = toggle
   },
-  // SAVE_CART(state){
-  //   window.localStorage.setItem('cart', JSON.stringify(state.items))
-  // }
+  SAVE_CART(state){
+    window.localStorage.setItem('cart', JSON.stringify(state.items))
+  }
 }
 const getters = {
   totalProduct(state) {

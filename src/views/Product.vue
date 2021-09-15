@@ -1,6 +1,6 @@
 <template>
   <v-container style="margin-top: 50px">
-    <SkeletonProduct v-if="loadingDetails"/>
+    <SkeletonProduct v-if="loadingDetails" />
     <div class="row" v-if="!loadingDetails">
       <v-col cols="12" md="8" xl="6" offset-xl="1">
         <div class="d-flex flex-column-reverse flex-md-row">
@@ -16,8 +16,7 @@
                 rounded
                 transparent
               "
-              
-              v-for="(img) in product.previewImage"
+              v-for="img in product.previewImage"
               :key="img._id"
               ><v-img
                 @click="handleChangeImage(img)"
@@ -133,7 +132,13 @@
                 <span>Vuetify</span>
               </div>
             </div>
-
+             <v-btn
+              x-large
+              block
+              class="mt-3 black--text font-weight-bold cyan text-center"
+              href="https://lux-admin-pro.indielayer.com/dashboard/analytics" target="_blank"
+              ><span class="flex-grow-1">Live Preview</span>
+            </v-btn>
             <v-btn
               x-large
               block
@@ -142,11 +147,12 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              @click="addProductToCart(product);  toggleCart = !toggleCart"
+              @click="
+                addProductToCart(product);
+                toggleCart = !toggleCart;
+              "
               ><v-icon>mdi-basket-plus</v-icon
-              ><span class="flex-grow-1"
-                >Add to cart</span
-              ></v-btn 
+              ><span class="flex-grow-1">Add to cart</span></v-btn
             >
             <v-btn
               x-large
@@ -155,7 +161,6 @@
               style="
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
-
               "
               @click="buy(product)"
               ><v-icon>mdi-send</v-icon><span class="flex-grow-1">Buy now</span>
@@ -291,7 +296,10 @@
                       large
                       class="accent--text"
                       depressed
-                      @click="addProductToCart(item); toggleCart = !toggleCart"
+                      @click="
+                        addProductToCart(item);
+                        toggleCart = !toggleCart;
+                      "
                     >
                       <v-icon>mdi-basket-plus</v-icon>
                     </v-btn>
@@ -319,29 +327,29 @@ export default {
     return {
       slug: this.$route.params.slug,
       selectedImg: 0,
-      imgSelected:'',
+      imgSelected: "",
     };
   },
   props: {},
   methods: {
     ...mapActions(["getSingleProduct", "addProductToCart"]),
-    buy(p){
-      this.$router.push('/checkout')
-      this.$store.dispatch('addProductToCart', p)
+    buy(p) {
+      this.$router.push("/checkout");
+      this.$store.dispatch("addProductToCart", p);
     },
-    handleChangeImage(img){ 
-      this.imgSelected = img.src
-    }
+    handleChangeImage(img) {
+      this.imgSelected = img.src;
+    },
   },
   computed: {
-    ...mapGetters(["products","loadingDetails"]),
+    ...mapGetters(["products", "loadingDetails"]),
     filteredProduct() {
-      const array = this.products
+      const array = this.products;
       const shuffled = array.sort(() => 0.5 - Math.random());
       return shuffled.slice(0, 4);
     },
     product() {
-      const productList =this.products
+      const productList = this.products;
       return productList.find((product) => product.title === this.slug);
     },
     toggleCart: {
@@ -357,8 +365,7 @@ export default {
     this.getSingleProduct();
   },
   mounted() {
-    this.imgSelected = this.product.img
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); 
   },
 };
 </script>

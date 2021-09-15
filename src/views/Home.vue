@@ -94,6 +94,18 @@
                 <v-btn
                   color="deep-purple lighten-2"
                   text
+                  :loading="buttonLoading"
+                  rounded
+                  outlined
+                  large
+                  class="accent--text"
+                  depressed
+                >
+                  <v-icon>mdi-heart-plus</v-icon>
+                </v-btn>
+                <v-btn
+                  color="deep-purple lighten-2"
+                  text
                   @click="
                     addProductToCart(product);
                     toggleCart = !toggleCart;

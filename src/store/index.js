@@ -5,17 +5,11 @@ import products from '../store/modules/product'
 import categories from '../store/modules/categories'
 import auth from '../store/modules/auth'
 import order from '../store/modules/order'
-//import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
+// import Cookies from 'js-cookie'
 import resetPassword from './modules/resetPassword'
-//import Cookies from 'js-cookie'
-//import VuexPersist from "vuex-persist";
+//import VuexPersistence from 'vuex-persist';
 Vue.use(Vuex)
-// const vuexCookie = new VuexPersist({
-//   key: "myLocalStore", // The key to store the state on in the storage provider.
-//   storage: localStorage, // or window.sessionStorage or localForage
-//   modules: ["cart"]
-// });
-
 export default new Vuex.Store({
   modules: {
     cart,
@@ -40,5 +34,11 @@ export default new Vuex.Store({
    
     
   },
-//  plugins: [vuexCookie.plugin]
+  // plugins: [createPersistedState({
+  //   storage: {
+  //     getItem: (key) => Cookies.get(key),
+  //     setItem: () => {} ,
+  //     removeItem: (key) => Cookies.remove(key)
+  //   }
+  // })]
 })
