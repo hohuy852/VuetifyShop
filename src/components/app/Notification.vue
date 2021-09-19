@@ -1,7 +1,6 @@
 <template>
   <v-menu transition="scroll-y-transition" offset-y>
     <template v-slot:activator="{ on, attrs }">
-       <v-badge>
         <v-btn
           color="white"
           class="ma-2"
@@ -13,7 +12,6 @@
         >
           <v-icon fab>mdi-bell</v-icon>
         </v-btn>
-      </v-badge>
     </template>
     <v-list>
       <v-list-item v-for="(n, i) in list" :key="i" >

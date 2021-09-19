@@ -289,6 +289,24 @@
                       >{{ item.oldPrice }}</del
                     >
                     <v-spacer></v-spacer>
+                      <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="deep-purple lighten-2"
+                  text
+                  rounded
+                  outlined
+                  large
+                  class="accent--text"
+                  depressed
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon>mdi-heart-plus</v-icon>
+                </v-btn>
+                 </template>
+                  <span>Add to wishlist</span>
+                </v-tooltip>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn

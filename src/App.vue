@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-       <Navigation/>
+       <Navigation :key="navId"/>
       <v-main class="primary">
         <router-view :key="$route.path" />
       </v-main>
@@ -14,7 +14,6 @@
 <script>
 import Navigation from "./components/layouts/Navigation.vue"
 import Footer from "./components/layouts/Footer.vue"
-
 export default {
   name: "App",
   components: {
@@ -24,6 +23,11 @@ export default {
   data: () => ({
     //
   }),
+  computed:{
+    navId(){
+      return this.$store.state.cart.navId
+    }
+  }
 };
 </script>
 <style>

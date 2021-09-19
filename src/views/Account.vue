@@ -91,7 +91,7 @@ export default {
         },
         {
           id: 3,
-          name: "whishlist (beta)",
+          name: "wishlist (beta)",
           route: `/profile/wishlist`,
         },
       ],

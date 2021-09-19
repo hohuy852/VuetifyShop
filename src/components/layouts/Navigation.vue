@@ -1,6 +1,26 @@
 <template>
   <div>
     <!-- NavigationBar -->
+    <v-system-bar
+      app
+      dark
+      style="
+        height: 50px;
+        background-color: rgb(7, 146, 5);
+        border-color: rgb(7, 146, 5);
+      "
+    >
+      <v-container
+        class="
+          font-weight-black
+          text-body-2 text-md-h6 text-center
+          white--text
+          w-full
+        "
+      >
+        🧨 UI Lib themes 40% off for a limited time
+      </v-container>
+    </v-system-bar>
     <v-app-bar app dark>
       <v-app-bar-nav-icon
         @click="toggleLeftMenu = !toggleLeftMenu"
@@ -77,7 +97,7 @@
           <span v-if="!!count">{{ count }}</span>
         </template> -->
       <v-btn to="/login" text fab plain>
-        <v-badge right dot color="green" :content="loggedIn" :value="loggedIn"> 
+        <v-badge right dot color="green" :content="loggedIn" :value="loggedIn">
           <v-icon> mdi-account </v-icon>
         </v-badge>
       </v-btn>
@@ -89,11 +109,7 @@
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
-      <!-- <template
-        v-slot:extension
-        class="justify-space-around layout-menu"
-        v-if="$vuetify.breakpoint.mdAndUp"
-      >
+      <template v-slot:extension class="justify-space-around layout-menu">
         <v-container class="py-0 d-none d-md-block fill-height">
           <div
             class="
@@ -105,13 +121,20 @@
               layout-menu
             "
           >
-            <v-btn text> HOME </v-btn>
+            <router-link
+              :to="item.route"
+              class="white--text font-weight-bold"
+              style="text-decoration: none"
+              v-for="item in buttons"
+              :key="item.route"
+              >{{ item.title }}</router-link
+            >
           </div>
         </v-container>
-      </template> -->
+      </template>
     </v-app-bar>
     <!-- LeftNav -->
-    <!-- <v-navigation-drawer v-model="toggleLeftMenu" fixed>
+    <v-navigation-drawer v-model="toggleLeftMenu" fixed>
       <v-list nav dense>
         <v-list-item-group active-class="deep-purple--text text--accent-4">
           <v-list-item
@@ -127,7 +150,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
     <!-- Cart -->
     <v-navigation-drawer v-model="toggleCart" temporary right :width="360" app>
       <v-list nav dense class="mb-3">
@@ -137,11 +160,11 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="product in cart" :key="product.id">
+        <v-list-item v-for="item in cart" :key="item._id">
           <v-badge overlap color="pink">
-            <span slot="badge"> {{ product.quantity }}</span>
+            <span slot="badge"> {{ item.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
-              <v-img :src="product.product.img" width="70" height="60"></v-img>
+              <v-img :src="item.idProduct.img" width="70" height="60"></v-img>
             </v-avatar>
           </v-badge>
 
@@ -149,10 +172,10 @@
             <v-list-item-content>
               <div class="min-w-0 flex-grow-1">
                 <v-list-item-title class="mb-1 font-weight-bold wrap-text">
-                  {{ product.product.title }}</v-list-item-title
+                  {{ item.idProduct.title }}</v-list-item-title
                 >
                 <v-list-item-subtitle
-                  v-if="product.product.price == 0"
+                  v-if="item.idProduct.price == 0"
                   class="red--text text--darken-4 font-weight-black mb-1"
                   >Free</v-list-item-subtitle
                 >
@@ -160,7 +183,7 @@
                   v-else
                   class="red--text text--darken-4 font-weight-black mb-1"
                   >${{
-                    parseFloat(product.product.price).toFixed(2)
+                    parseFloat(item.idProduct.price).toFixed(2)
                   }}</v-list-item-subtitle
                 >
               </div>
@@ -170,7 +193,7 @@
                 text
                 fab
                 @click="
-                  deleteItem(product.product.id);
+                  deleteItem(item.idProduct._id, getUser.access_token);
                   snackBar = true;
                 "
                 ><v-icon>mdi-delete </v-icon></v-btn
@@ -180,7 +203,7 @@
         </v-list-item>
         <v-divider></v-divider>
       </v-list>
-      <div v-if="cart.length > 0" class="row px-3 pt-5 align-center">
+      <div v-if="cart && cart.length > 0" class="row px-3 pt-5 align-center">
         <v-col cols="12" class="pb-0 text-right">
           <v-responsive style="max-width: 230px" class="ml-auto">
             <v-text-field
@@ -195,12 +218,12 @@
         </v-col>
       </div>
       <v-col
-        v-if="cart.length > 0"
+        v-if="cart && cart.length > 0"
         cols="12"
         class="text-right pt-5 d-flex align-center justify-end"
       >
         <span class="text-body-2 grey--text text--darken-1 pr-2"
-          >Subtotal: ({{ totalProduct }} item):
+          >Subtotal: ( {{ totalProduct }} item):
         </span>
         <v-responsive
           class="
@@ -213,10 +236,10 @@
             justify-end
           "
           style="max-width: 100px"
-          >${{ totalPrice }}</v-responsive
+          >$ {{ totalPrice }}</v-responsive
         >
       </v-col>
-      <div class="ma-2 mt-6" v-if="cart.length === 0">
+      <div class="ma-2 mt-6" v-if="cart && cart.length === 0">
         <div class="text-center">
           <v-icon> mdi-block-helper </v-icon>
         </div>
@@ -227,7 +250,7 @@
       <v-row class="pt-2 mt-3 px-5" align="center">
         <v-col cols="12">
           <v-btn
-            v-if="cart.length == 0"
+            v-if="cart && cart.length == 0"
             @click="toggleCart = !toggleCart"
             class="theme--light v-size--large pink white--text font-weight-bold"
             block
@@ -254,51 +277,42 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import Notification from "../app/Notification.vue";
 export default {
   components: {
     Notification,
   },
   data: () => ({
-    // props:{
-    //   toggleCart: Boolean
-    // },
     snackBar: false,
     entries: [],
     isLoading: false,
+    loadingCart: false,
     model: [{}],
     search: null,
     toggleLeftMenu: false,
-    code: "123",
-    // toggleCart: false,
     buttons: [
       {
-        icon: "mdi-home",
         title: "HOME",
-        link: "/",
+        route: "/",
       },
       {
-        icon: "mdi-map",
-        title: "THEME",
-        link: "/map",
+        title: "THEMES",
+        route: "/themes",
       },
       {
-        icon: "mdi-infomation",
         title: "UI KITS",
-        link: "/about",
+        route: "/uikits",
       },
       {
-        icon: "mdi-infomation",
         title: "FREEBIES",
-        link: "/freebie",
+        route: "/freebies",
       },
     ],
   }),
   computed: {
-    ...mapState({}),
-    ...mapGetters(["totalProduct", "totalPrice", "cart"]),
-
+    ...mapState([]),
+    ...mapGetters(["cart", "totalProduct", "totalPrice", "addCartState"]),
     toggleCart: {
       get() {
         return this.$store.state.cart.toggleCart;
@@ -307,17 +321,32 @@ export default {
         this.$store.commit("TOGGLE_CART", value);
       },
     },
-    loggedIn(){
-       return  this.$store.state.auth.status.loggedIn;
-    }
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+    getUser() {
+      return "user", JSON.parse(localStorage.getItem("user"));
+    },
   },
   methods: {
-    ...mapActions(["deleteItem"]),
+    ...mapActions(["getCartItems"]),
     // deleteItem(productId){
     //   console.log(productId)
     // }
+    deleteItem(productId, access_token) {
+      const promise = new Promise((resolve, reject) => {
+        if (this.$store.dispatch("deleteItem", { productId, access_token }))
+          resolve();
+        else {
+          reject(Error());
+        }
+      });
+      promise.then(() => {
+        
+      });
+    },
   },
-  created() {},
+
   watch: {
     search() {
       // Items have already been loaded
@@ -341,6 +370,11 @@ export default {
         .finally(() => (this.isLoading = false));
     },
   },
+  mounted() {
+    if (this.loggedIn) {
+      this.getCartItems(this.getUser.access_token);
+    }
+  },
 };
 </script>
 <style scoped lang="scss" >
@@ -348,6 +382,9 @@ export default {
   background-color: #05090c;
   border-color: #1e1e1e;
   color: #ffffff;
+}
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+  background-color: #05090c;
 }
 .wrap-text {
   white-space: normal;

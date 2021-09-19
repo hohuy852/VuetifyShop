@@ -1,17 +1,10 @@
 <template>
   <v-container>
-    <v-btn text @click="expand = !expand">
-      <v-icon>mdi-menu-filter</v-icon> Filter
-    </v-btn>
-    <v-expand-transition v-model="expand">
-      <v-card
-        flat
-        v-show="expand"
-        height="300"
-        width="600"
-        class="mx-auto secondary"
-      ></v-card>
-    </v-expand-transition>
+    <v-row>
+      <v-col cols="12" sm="6" lg="4" xl="3">
+        <v-select dense rounded outlined label="One"> </v-select>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

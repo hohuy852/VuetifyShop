@@ -3,21 +3,26 @@
     <section class="my-2 mb-md-12">
       <Carousel />
     </section>
-
-    <v-btn
-      text
-      @click="expand = !expand"
-      class="font-weight-bold text-uppercase textbase--text white"
-    >
-      <v-icon>mdi-filter-menu-outline</v-icon> Filter
-    </v-btn>
-    <v-expand-transition v-model="expand"> </v-expand-transition>
-    <section class="mt-6 mb-3">
+    <!-- <v-row>
+      <v-col cols="12" sm="6" lg="4" xl="3">
+        <v-select dense rounded outlined label="One"> </v-select>
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" xl="3">
+        <v-select dense rounded outlined label="One"> </v-select>
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" xl="3">
+        <v-select dense rounded outlined label="One"> </v-select>
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" xl="3">
+        <v-select dense rounded outlined label="One"> </v-select>
+      </v-col>
+    </v-row> -->
+    <section class="mb-3">
       <skeleton v-if="loading" />
       <div v-else class="row" v-for="category in categories" :key="category.id">
-        <v-col cols="12" class="mt-12 mb-5">
+        <v-col cols="12" class="mt-2 mb-5">
           <strong style="color: white">{{ category.name }}</strong>
-          <v-divider class="my-6 white"></v-divider>
+          <v-divider class="my-6 white"></v-divider>ss
         </v-col>
 
         <v-col
@@ -91,23 +96,23 @@
                   >{{ parseFloat(product.oldPrice).toFixed(2) }}</del
                 >
                 <v-spacer></v-spacer>
-                 <v-tooltip bottom>
+                <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="deep-purple lighten-2"
-                  text
-                  :loading="buttonLoading"
-                  rounded
-                  outlined
-                  large
-                  class="accent--text"
-                  depressed
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-heart-plus</v-icon>
-                </v-btn>
-                 </template>
+                    <v-btn
+                      color="deep-purple lighten-2"
+                      text
+                      rounded
+                      outlined
+                      large
+                      class="accent--text"
+                      depressed
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="addToWishlist(product)"
+                    >
+                      <v-icon>mdi-heart-plus</v-icon>
+                    </v-btn>
+                  </template>
                   <span>Add to wishlist</span>
                 </v-tooltip>
                 <v-tooltip bottom>
@@ -118,11 +123,10 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="
-                        addProductToCart(product);
-                        toggleCart = !toggleCart;
+                        addToCart(product._id, getUser.access_token);
+
                         snackBar = true;
                       "
-                      :loading="buttonLoading"
                       rounded
                       outlined
                       large
@@ -166,7 +170,6 @@
 
 <script>
 import Carousel from "../components/app/Carousel.vue";
-// import Filter from "../components/app/Filter.vue"
 //import Pagination from "../components/app/Pagination.vue";
 import skeleton from "../components/skeletonLoader.vue";
 //import SnackBar from "../components/app/SnackBar.vue"
@@ -181,8 +184,8 @@ export default {
     return {
       expand: false,
       text: "Added to cart",
-      buttonLoading: false,
       snackBar: false,
+      buttonLoading: false,
     };
   },
   methods: {
@@ -195,18 +198,33 @@ export default {
       this.$vuetify.goTo(0);
     },
     ...mapActions(["getProduct", "addProductToCart"]),
-    async remove() {
+    addToCart(productId, access_token) {
+      //console.log(productId, access_token)
       this.buttonLoading = true;
-
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      this.buttonLoading = false;
-      this.snackBar = true;
-      this.toggleCart = !this.toggleCart;
+      const promise = new Promise((resolve, reject) => {
+        if (
+          this.$store.dispatch("addProductToCart", { productId, access_token })
+        )
+          resolve();
+        else {
+          reject(Error());
+        }
+      });
+      promise.then(() => {
+        this.$store.state.cart.navId++;
+        this.toggleCart = !this.toggleCart
+      });
+    },
+    addToWishlist(product) {
+      if (this.loggedIn) {
+        console.log("added " + product.title + " to wishlist");
+      } else {
+        this.$router.push("/login");
+      }
     },
   },
   computed: {
-    ...mapState(["categories", "loading", "snackbar"]),
+    ...mapState(["categories", "loading"]),
     ...mapGetters(["loading", "categories", "cart"]),
     toggleCart: {
       get() {
@@ -215,6 +233,12 @@ export default {
       set(value) {
         this.$store.commit("TOGGLE_CART", value);
       },
+    },
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+    getUser() {
+      return "user", JSON.parse(localStorage.getItem("user"));
     },
   },
   created() {

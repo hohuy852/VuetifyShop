@@ -21,7 +21,7 @@
                     label="Email"
                     outlined
                     dense
-                    v-model="order.email"
+                    v-model="email"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -35,7 +35,7 @@
                       :rules="[rules.required]"
                       label="First name"
                       outlined
-                       v-model="order.firstName"
+                       v-model="firstName"
                     ></v-text-field>
                   </v-col>
                   <v-col>
@@ -44,7 +44,7 @@
                       label="Last name"
                       outlined
                       dense
-                       v-model="order.lastName"
+                       v-model="lastName"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -52,27 +52,27 @@
                   label="Company(Optional)"
                   outlined
                   dense
-                  v-model="order.company"
+                  v-model="company"
                 ></v-text-field>
                 <v-text-field
                   :rules="[rules.required]"
                   label="Address"
                   outlined
                   dense
-                   v-model="order.address"
+                   v-model="address"
                 ></v-text-field>
                 <v-text-field
                   label="Apartment,suite,etc... "
                   outlined
                   dense
-                  v-model="order.apartment"
+                  v-model="apartment"
                 ></v-text-field>
                 <v-text-field
                   :rules="[rules.required]"
                   label="City"
                   outlined
                   dense
-                  v-model="order.city"
+                  v-model="city"
                 ></v-text-field>
                 <v-row>
                   <v-col>
@@ -81,7 +81,7 @@
                       label="Country/Region"
                       outlined
                       dense
-                      v-model="order.country"
+                      v-model="country"
                     ></v-select>
                   </v-col>
                   <v-col>
@@ -91,7 +91,7 @@
                       outlined
                       dense
                       type="number"
-                      v-model="order.postalCode"
+                      v-model="postalCode"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -101,10 +101,10 @@
                   label="Phone"
                   outlined
                   dense
-                   v-model="order.phone"
+                   v-model="phone"
                 ></v-text-field>
               </v-form>
-              <v-btn color="primary" :disabled="!valid" large @click="e1 = 2">
+              <v-btn color="primary" :disabled="!valid"  large @click="e1 = 2">
                 Continue
               </v-btn>
             </v-col>
@@ -115,14 +115,14 @@
               <v-row class="ml-5" justify="center">
                 <v-list-item
                   v-for="product in cart"
-                  :key="product.id"
+                  :key="product._id"
                   class="my-3"
                 >
                   <v-badge overlap color="pink">
                     <span slot="badge"> {{ product.quantity }}</span>
                     <v-avatar class="pt-3" rounded width="70" height="60">
                       <v-img
-                        :src="product.product.img"
+                        :src="product.idProduct.img"
                         width="70"
                         height="60"
                       ></v-img>
@@ -135,10 +135,10 @@
                         <v-list-item-title
                           class="mb-1 font-weight-bold truncate"
                         >
-                          {{ product.product.title }}</v-list-item-title
+                          {{ product.idProduct.title }}</v-list-item-title
                         >
                         <v-list-item-subtitle
-                          v-if="product.product.price == 0"
+                          v-if="product.idProduct.price == 0"
                           class="
                             red--text
                             text--darken-4
@@ -156,7 +156,7 @@
                             mb-1
                           "
                           >${{
-                            parseFloat(product.product.price).toFixed(2)
+                            parseFloat(product.idProduct.price).toFixed(2)
                           }}</v-list-item-subtitle
                         >
                       </div>
@@ -164,8 +164,8 @@
                   </v-list-item>
                 </v-list-item>
               </v-row>
-              <v-divider class="my-4" v-if="cart.length > 0"></v-divider>
-              <v-row justify="center" v-if="cart.length > 0">
+              <v-divider class="my-4" v-if="cart && cart.length > 0"></v-divider>
+              <v-row justify="center" v-if="cart && cart.length > 0">
                  <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold"    
@@ -176,7 +176,7 @@
                 >LUCKY100</div>
               </v-row>
               
-              <v-row justify="center" v-if="cart.length > 0">
+              <v-row justify="center" v-if="cart && cart.length > 0">
                  <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold"    
@@ -184,7 +184,7 @@
                 <v-spacer></v-spacer>
                 <div
                   class="text-h5 font-weight-bold" style="color: #eb3452"  
-                >{{totalPrice}}$</div>
+                >${{totalPrice}}</div>
               </v-row>
             </v-col>
           </div>
@@ -207,13 +207,13 @@
                 <tbody>
                   <tr>
                     <td>Contact</td>
-                    <td>{{ order.email }}</td>
+                    <td>{{ email }}</td>
                   </tr>
                   <tr>
                     <td>Billing</td>
                     <td>
                       {{
-                        order.address + ", " + order.city + ", " + order.country
+                        address + ", " + city + ", " + country
                       }}
                     </td>
                   </tr>
@@ -261,10 +261,9 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary" @click="handlePostOrder(order)">
+              <v-btn color="primary"  @click="handlePostOrder()">
                 Complete Payment
               </v-btn>
-
               <v-btn text @click="e1 = 1"> Return </v-btn>
             </v-col>
           </div>
@@ -308,34 +307,21 @@ export default {
         required: (value) => !!value || "Required.",
       },
       message: 'heelo',
-      order: {
-          orderItems:this.$store.getters.cart,
-          status: "Paid",
-          idUser: '',
-          Datetime: Date(),
-          total: '',
-          discount: "",
-          email: "",
-          firstName: "",
-          lastName: "",
-          company: "",
-          address: "",
-          apartment: "",
-          city: "",
-          country: "",
-          postalCode: "",
-          phone: ""
-      },
-        // {
-        //     "name": "ssvsdv33dsvd",
-        //     "quantity": 1,
-        //     "price": 12.98
-        // }, 
-        // {
-        //     "name": "ssvsdvds1vd",
-        //     "quantity": 1,
-        //     "price": 12.98
-        // }
+      status: "Paid",
+      idUser: '',
+        //Datetime: Date(),
+      total: '',
+      discount: "",
+      email: "",
+      firstName: "",
+      lastName: "",
+      company: "",
+      address: "",
+      apartment: "",
+      city: "",
+      country: "",
+      postalCode: "",
+      phone: "",
        emailRules: [
         (v) => !!v || "E-mail is required",
         (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -343,17 +329,50 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart"]),
+    ...mapGetters(["cart","totalPrice"]),
     loggedIn(){
       return  this.$store.state.auth.status.loggedIn;
     },
     getUser(){
      return ('user', JSON.parse(localStorage.getItem('user')))
     },
-    totalPrice(){
-      return this.$store.getters.totalPrice
+    // totalPrice(){
+    //   return this.$store.getters.totalPrice
+    // },
+    cartItems(){
+      let cart = this.$store.state.cart.items.cart
+      let cart2 = cart.map(item => {
+        return {
+          idProduct: item.idProduct._id,
+          name: item.idProduct.title,
+          quantity: item.quantity,
+          price: item.idProduct.price    
+        }
+      })
+      return {
+          orderItems: cart2,
+          status: this.status,
+          idUser: this.idUser,
+          total: this.totalPrice,
+          discount: '',
+          email: this.email,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          company: this.company,
+          address: this.address,
+          apartment: this.apartment,
+          city: this.city,
+          country: this.country,
+          postalCode: this.postalCode,
+          phone: this.phone,
+      }
     }
   },
+  // watch:{
+  //   cartItems:{
+      
+  //   }
+  // },
   methods: {
     // ...mapActions(['postOrder']),
     validate() {
@@ -362,20 +381,23 @@ export default {
     checkcart(){
       console.log(this.cart)
     },
-    handlePostOrder(order){
-        this.$store.dispatch("postOrder", order)
-    }
+    handlePostOrder(){
+        this.$store.dispatch("postOrder", this.cartItems)
+      //  console.log(this.cartItems)
+
+    },
+    
   },
   mounted(){
     if(this.loggedIn){
       //
-      this.order.email = this.getUser.user.email
-      this.order.firstName = this.getUser.user.firstName
-      this.order.lastName = this.getUser.user.lastName
+      this.email = this.getUser.user.email
+      this.firstName = this.getUser.user.firstName
+      this.lastName = this.getUser.user.lastName
      // this.address = this.getUser.user.address
       //this.phone =  this.getUser.user.phone
-      this.order.idUser = this.getUser.user._id
-      this.order.total = this.totalPrice
+      this.idUser = this.getUser.user._id
+      this.total = this.totalPrice
     }
   }
 };

@@ -77,6 +77,7 @@ export default {
       this.isLoading = true;
       this.$store.dispatch("auth/login", user).then(
         () => {
+           this.$store.state.cart.navId++
           this.$router.push("/");
         },
         (error) => {

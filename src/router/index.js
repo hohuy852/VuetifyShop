@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/checkout',
     name: 'Checkout',
-    component:()=>import (/* webpackChunkName: "login" */'../views/Checkout.vue')
+    component:()=>import (/* webpackChunkName: "checkout" */'../views/Checkout.vue')
   },
   {
     path: '/forgot-password',

@@ -2,32 +2,35 @@ import axios from 'axios'
 
 const state = {
     orderList: [],
+    postState: false,
 }
 
 const actions = {
-    getOrders({ commit }) {
+    getOrders({ commit }, access_token) {
         return axios
-            .get('https://web-demo.online/order')
+            .get('https://web-demo.online/order',{
+                headers: {
+                      Authorization: access_token
+                }
+            })
             .then(response => {
                 commit('GET_ORDER', response.data)
+                console.log(response.data)
             })
     },
     postOrder({ commit }, order) {
-        // console.log(order)
-
         return axios
             .post('https://web-demo.online/addOrder', {
                 orderItems: order.orderItems,
                 status: order.status,
                 idUser: order.idUser,
-                Datetime: order.Datetime,
-                total: order.total,
+                total: parseFloat(order.total),
                 discount: "",
                 email: order.email,
                 firstName: order.firstName,
                 lastName: order.lastName,
                 company: order.company,
-                address: order.lastName,
+                address: order.address,
                 apartment: order.apartment,
                 city: order.city,
                 country: order.country,
@@ -41,7 +44,8 @@ const actions = {
             // }
             )
             .then(
-                commit('POSTED_ORDER')
+                commit('POSTED_ORDER'),
+               console.log(response => response.data)
             )
     }
 }
@@ -51,7 +55,7 @@ const mutations = {
         state.orderList = orderList
     },
     POSTED_ORDER(state) {
-        state.postState = true
+      state.postState = true
     }
 }
 const getters = {
