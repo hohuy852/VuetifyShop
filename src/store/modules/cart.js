@@ -6,7 +6,7 @@ const state = {
   toggleCart: false,
   items: [],
   cartState: false,
-  navId: 0
+  navId: 0,
 }
 const actions = {
   deleteItem({ commit }, cartInfo) {
@@ -63,7 +63,8 @@ const actions = {
       })
       .then(response => {
         //console.log(access_token),
-        commit('GET_CART_ITEMS', response.data)
+        commit('GET_CART_ITEMS', response.data),
+        console.log(response.data)
       })
   }
 }
@@ -77,8 +78,8 @@ const mutations = {
     //     product,
     //  })
     state.cartState = true
+    state.navId++
     //this.commit('SAVE_DATA')
-  
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
@@ -92,6 +93,9 @@ const mutations = {
   GET_CART_ITEMS(state, cart) {
     state.items = cart
     state.cartState = true
+    if( state.items.cart != 0  && state.navId>0 )
+      state.toggleCart = !state.toggleCart
+
   },
 }
 const getters = {
@@ -103,7 +107,10 @@ const getters = {
       // console.log(totalProduct)
       return totalProduct
     }
-
+    if(state.items == 0)
+    {
+      return 0
+    }
   },
   totalPrice(state) {
     if (state.cartState == true) {
@@ -113,6 +120,10 @@ const getters = {
         sum += state.items.cart[i].idProduct.price * state.items.cart[i].quantity
       }
       return parseFloat(sum).toFixed(2)
+    }
+    if(state.items == 0)
+    {
+      return 0
     }
   },
   cart: state => state.items.cart

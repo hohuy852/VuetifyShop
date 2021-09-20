@@ -239,7 +239,7 @@
           >$ {{ totalPrice }}</v-responsive
         >
       </v-col>
-      <div class="ma-2 mt-6" v-if="cart && cart.length === 0">
+      <div class="ma-2 mt-6" v-if="(cart && cart.length === 0) || items == 0">
         <div class="text-center">
           <v-icon> mdi-block-helper </v-icon>
         </div>
@@ -327,6 +327,9 @@ export default {
     getUser() {
       return "user", JSON.parse(localStorage.getItem("user"));
     },
+    items() {
+      return this.$store.state.cart.items;
+    },
   },
   methods: {
     ...mapActions(["getCartItems"]),
@@ -334,16 +337,15 @@ export default {
     //   console.log(productId)
     // }
     deleteItem(productId, access_token) {
-      const promise = new Promise((resolve, reject) => {
-        if (this.$store.dispatch("deleteItem", { productId, access_token }))
-          resolve();
-        else {
-          reject(Error());
-        }
-      });
-      promise.then(() => {
-        
-      });
+        const promise = new Promise((resolve, reject) => {
+          if (this.$store.dispatch("deleteItem", { productId, access_token }))
+            resolve();
+          else {
+            reject(Error());
+          }
+        });
+        promise.then(() => {});
+
     },
   },
 

@@ -149,8 +149,7 @@
                 border-color: rgb(243, 205, 112);
               "
               @click="
-                addProductToCart(product);
-                toggleCart = !toggleCart;
+                addToCart(product._id, getUser.access_token);
               "
               ><v-icon>mdi-basket-plus</v-icon
               ><span class="flex-grow-1">Add to cart</span></v-btn
@@ -163,7 +162,7 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              @click="buy(product)"
+              @click="buy(product._id, getUser.access_token)"
               ><v-icon>mdi-send</v-icon><span class="flex-grow-1">Buy now</span>
             </v-btn>
           </div>
@@ -320,7 +319,7 @@
                           v-bind="attrs"
                           v-on="on"
                           @click="
-                            addProductToCart(item);
+                            addToCart(item._id, getUser.access_token);
                             toggleCart = !toggleCart;
                           "
                         >
@@ -358,13 +357,35 @@ export default {
   },
   props: {},
   methods: {
-    ...mapActions(["getSingleProduct", "addProductToCart"]),
-    buy(p) {
+    ...mapActions(["getSingleProduct"]),
+    buy(productId, access_token) {
+      this.$store.dispatch("addProductToCart", {productId, access_token});
       this.$router.push("/checkout");
-      this.$store.dispatch("addProductToCart", p);
+     
     },
     handleChangeImage(img) {
       this.imgSelected = img.src;
+    },
+    addToCart(productId, access_token) {
+      //console.log(productId, access_token)
+      this.buttonLoading = true;
+          const promise = new Promise((resolve, reject) => {
+        if (
+          this.$store.dispatch("addProductToCart", { productId, access_token })
+        )
+          resolve();
+        else {
+          reject(Error());
+        }
+      });
+      promise.then(() => {
+        this.$store.state.cart.navId++;
+        setTimeout(() => {
+          this.toggleCart = !this.toggleCart
+        }, 300);
+        
+      });
+      
     },
   },
   computed: {
@@ -386,6 +407,10 @@ export default {
         this.$store.commit("TOGGLE_CART", value);
       },
     },
+    getUser(){
+      return ("user", JSON.parse(localStorage.getItem("user")));
+    },
+    
   },
   created() {
     this.getSingleProduct();

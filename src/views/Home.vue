@@ -123,7 +123,7 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="
-                        addToCart(product._id, getUser.access_token);
+                        addToCart(product._id, getToken);
 
                         snackBar = true;
                       "
@@ -200,20 +200,10 @@ export default {
     ...mapActions(["getProduct", "addProductToCart"]),
     addToCart(productId, access_token) {
       //console.log(productId, access_token)
-      this.buttonLoading = true;
-      const promise = new Promise((resolve, reject) => {
-        if (
-          this.$store.dispatch("addProductToCart", { productId, access_token })
-        )
-          resolve();
-        else {
-          reject(Error());
-        }
-      });
-      promise.then(() => {
-        this.$store.state.cart.navId++;
-        this.toggleCart = !this.toggleCart
-      });
+      if(this.loggedIn)
+        this.$store.dispatch("addProductToCart", { productId, access_token })
+      else
+        this.$router.push('/login')
     },
     addToWishlist(product) {
       if (this.loggedIn) {
@@ -237,8 +227,13 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
-    getUser() {
-      return "user", JSON.parse(localStorage.getItem("user"));
+    getToken() {
+      if(this.loggedIn){
+        return ("user", JSON.parse(localStorage.getItem("user"))).access_token;
+      } 
+      else{
+        return null
+      }
     },
   },
   created() {
