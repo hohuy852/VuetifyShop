@@ -340,7 +340,7 @@ export default {
     //   return this.$store.getters.totalPrice
     // },
     cartItems(){
-      let cart = this.$store.state.cart.items.cart
+      let cart = this.$store.state.cart.items
       let cart2 = cart.map(item => {
         return {
           idProduct: item.idProduct._id,

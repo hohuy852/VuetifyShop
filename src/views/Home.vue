@@ -123,7 +123,7 @@
                       v-bind="attrs"
                       v-on="on"
                       @click="
-                        addToCart(product._id, getToken);
+                        addToCart(product._id, getToken, product);
 
                         snackBar = true;
                       "
@@ -198,12 +198,12 @@ export default {
       this.$vuetify.goTo(0);
     },
     ...mapActions(["getProduct", "addProductToCart"]),
-    addToCart(productId, access_token) {
+    addToCart(productId, access_token, product) {
       //console.log(productId, access_token)
       if(this.loggedIn)
         this.$store.dispatch("addProductToCart", { productId, access_token })
       else
-        this.$router.push('/login')
+        this.$store.dispatch("addLocalCart", product)
     },
     addToWishlist(product) {
       if (this.loggedIn) {

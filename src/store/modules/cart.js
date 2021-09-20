@@ -28,19 +28,6 @@ const actions = {
 
   },
   addProductToCart({ commit }, productInfo) {
-    //find cartItem 
-    // const cartItems =('vuex', JSON.parse(localStorage.getItem('vuex')))
-    //const cartItem = state.items.find(item => item.product._id === productItem._id)
-    //console.log(cartItems)
-    //if (!cartItem) {
-    //push to cart
-    // commit('PUSH_TO_CART', productItem)
-    //}
-    //else {
-    //increase Qty
-    //  commit('INCREASE_QTY', cartItem)
-    //}
-    //commit('SAVE_CART')
     return axios
       .post(API_URL + 'addCart',
         {
@@ -54,6 +41,24 @@ const actions = {
         })
       .then(commit('PUSH_TO_CART'))
   },
+  addLocalCart({ commit }, productItem) {
+    //find cartItem 
+    // const cartItems =('vuex', JSON.parse(localStorage.getItem('vuex')))
+    const cartItem = state.items.find(item => item.idProduct._id === productItem._id)
+    //console.log(cartItems)
+    if (!cartItem) {
+      //push to cart
+      commit('PUSH_TO_LOCAL_CART', productItem)
+    }
+    else {
+      //increase Qty
+      commit('INCREASE_QTY', cartItem)
+    }
+    commit('SAVE_CART')
+  },
+  deleteLocalCart({commit}, productId){
+    commit('DELETE_PRODUCT', productId)
+  },
   getCartItems({ commit }, access_token) {
     return axios
       .get(API_URL + 'cart', {
@@ -63,23 +68,29 @@ const actions = {
       })
       .then(response => {
         //console.log(access_token),
-        commit('GET_CART_ITEMS', response.data),
-        console.log(response.data)
+        commit('GET_CART_ITEMS', response.data.cart),
+          console.log(response.data.cart)
       })
   }
 }
 const mutations = {
   DELETE_PRODUCT(state, productId) {
-    state.items.cart = state.items.cart.filter(item => item.idProduct._id !== productId)
+    state.items = state.items.filter(item => item.idProduct._id !== productId)
     state.cartState = true
   },
   PUSH_TO_CART(state) {
-    //  state.items.cart.unshift({
-    //     product,
-    //  })
+
     state.cartState = true
     state.navId++
     //this.commit('SAVE_DATA')
+  },
+  PUSH_TO_LOCAL_CART(state, idProduct) {
+    state.items.unshift({
+      idProduct,
+      quantity: 1,
+    })
+    state.cartState = true
+    state.toggleCart = !state.toggleCart
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
@@ -93,7 +104,7 @@ const mutations = {
   GET_CART_ITEMS(state, cart) {
     state.items = cart
     state.cartState = true
-    if( state.items.cart != 0  && state.navId>0 )
+    if (state.items != 0 && state.navId > 0)
       state.toggleCart = !state.toggleCart
 
   },
@@ -101,32 +112,30 @@ const mutations = {
 const getters = {
   totalProduct(state) {
     if (state.cartState == true) {
-      var totalProduct = state.items.cart.reduce((pre, cur) => {
+      var totalProduct = state.items.reduce((pre, cur) => {
         return pre + cur.quantity
       }, 0)
       // console.log(totalProduct)
       return totalProduct
     }
-    if(state.items == 0)
-    {
+    if (state.items == 0) {
       return 0
     }
   },
   totalPrice(state) {
     if (state.cartState == true) {
       var sum = 0;
-      for (var i = 0; i < state.items.cart.length; i++) {
+      for (var i = 0; i < state.items.length; i++) {
         //console.log(state.cart[i].price * state.cart[i].quantity)
-        sum += state.items.cart[i].idProduct.price * state.items.cart[i].quantity
+        sum += state.items[i].idProduct.price * state.items[i].quantity
       }
       return parseFloat(sum).toFixed(2)
     }
-    if(state.items == 0)
-    {
+    if (state.items == 0) {
       return 0
     }
   },
-  cart: state => state.items.cart
+  cart: state => state.items
 }
 
 export default {
