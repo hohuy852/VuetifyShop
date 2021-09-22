@@ -1,10 +1,10 @@
 import axios from "axios"
 const API_URL = 'https://web-demo.online/'
 const state = {
-
+    updateStatus: false,
 }
 const actions = {
-    updateProfile({commit}, profile){
+    updateProfile({commit}, profile){   
         return axios
         .post(API_URL + 'changeInfo',
         {
@@ -25,13 +25,11 @@ const actions = {
 }
 const mutations = {
     UPDATE_PROFILE(state){
-        state
+        state.updateStatus = false
     }
 }
 const getters = {
-
-  
-  
+    updateStatus: state => state.updateStatus
 }
 export default {
     state,

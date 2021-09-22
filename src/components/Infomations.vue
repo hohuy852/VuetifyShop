@@ -24,25 +24,33 @@
           <v-btn
             class="cyan font-weight-bold"
             @click="updateProfile(first, last, getUser.access_token)"
+            :loading= "updateStatus"
           >
             Update
           </v-btn>
         </v-card-text>
       </v-card>
     </v-window-item>
+     <v-snackbar v-model="snackBar" timeout="1500"> {{message}} </v-snackbar>
   </v-window>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       first: '',
-      last: ''
+      last: '',
+      updateStatus: false,
+      snackBar:false,
+      message: ''
     };
   },
   name: "Info",
   computed: {
+    ...mapGetters([])
+    ,
     getUser() {
       return "user", JSON.parse(localStorage.getItem("user"));
     },
@@ -65,7 +73,21 @@ export default {
   },
   methods: {
     updateProfile(firstName, lastName, access_token) {
-       this.$store.dispatch("updateProfile", {firstName, lastName, access_token });
+        this.updateStatus = true
+       this.$store.dispatch("updateProfile", {firstName, lastName, access_token })
+       .then(
+         () =>{
+           this.updateStatus = false
+           this.message = "Update successful!"
+           this.snackBar = true
+         } ,
+         (error) =>{
+           console.log(error.response.data)
+           this.updateStatus = false,
+           this.message = "Update failed!",
+           this.snackBar = true
+         }
+       )
     },
     refresh(){
 

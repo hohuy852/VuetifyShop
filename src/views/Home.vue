@@ -26,7 +26,7 @@
         </v-col>
 
         <v-col
-          v-for="product in category.products"
+          v-for="(product, i) in category.products"
           :key="`${product.id}${category.id}`"
           cols="12"
           sm="6"
@@ -124,12 +124,15 @@
                       v-on="on"
                       @click="
                         addToCart(product._id, getToken, product);
+                        loader = 'buttonLoading';
+                        index = i;
                       "
                       rounded
                       outlined
                       large
                       class="accent--text"
                       depressed
+                      :loading="buttonLoading && i == index"
                     >
                       <v-icon>mdi-basket-plus</v-icon>
                     </v-btn>
@@ -162,7 +165,7 @@
       </v-snackbar>
     </div> -->
     <!-- //  <SnackBar/> -->
-    <v-snackbar v-model="snackBar" timeout="1500"> Added to cart! </v-snackbar>
+    <v-snackbar v-model="snackBar" timeout="1500"> {{ text }} </v-snackbar>
   </v-container>
 </template>
 
@@ -181,9 +184,11 @@ export default {
   data() {
     return {
       expand: false,
-      text: "Added to cart",
+      text: "",
       buttonLoading: false,
       snackBar: false,
+      index: -1,
+      loader: null,
     };
   },
   methods: {
@@ -198,11 +203,35 @@ export default {
     ...mapActions(["getProduct", "addProductToCart"]),
     addToCart(productId, access_token, product) {
       //console.log(productId, access_token)
-      if(this.loggedIn)
-        this.$store.dispatch("addProductToCart", { productId, access_token })
-      else
-        this.$store.dispatch("addLocalCart", product)
-      this.snackBar = true
+      if (this.loggedIn) {
+        this.buttonLoading = true;
+        this.$store
+          .dispatch("addProductToCart", { productId, access_token })
+          .then(
+            () => {
+              this.buttonLoading = false;
+              this.text = "Added to cart!";
+              this.$store.state.cart.navId++;
+              setTimeout(() => {
+                this.toggleCart = !this.toggleCart;
+              }, 300);
+              this.snackBar = true;
+            },
+            (error) => {
+              console.log(error.response.data);
+              this.buttonLoading = false;
+              this.text = "An error occur!";
+              
+              this.snackBar = true;
+            }
+          );
+      } else {
+        this.$store.dispatch("addLocalCart", product);
+        this.text = "Added to cart!";
+        this.toggleCart = !this.toggleCart;
+        this.snackBar = true;
+        
+      }
     },
     addToWishlist(product) {
       if (this.loggedIn) {
@@ -227,11 +256,10 @@ export default {
       return this.$store.state.auth.status.loggedIn;
     },
     getToken() {
-      if(this.loggedIn){
+      if (this.loggedIn) {
         return ("user", JSON.parse(localStorage.getItem("user"))).access_token;
-      } 
-      else{
-        return null
+      } else {
+        return null;
       }
     },
   },

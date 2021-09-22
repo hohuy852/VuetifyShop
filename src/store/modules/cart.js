@@ -80,7 +80,7 @@ const mutations = {
   },
   PUSH_TO_CART(state) {6
     state.cartState = true
-    state.navId++
+    //state.navId++
     state.addSnackbar = true
     //this.commit('SAVE_DATA')
   },

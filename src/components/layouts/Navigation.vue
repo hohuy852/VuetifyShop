@@ -160,7 +160,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="item in cart" :key="item._id">
+        <v-list-item v-for="item, i in cart" :key="item._id">
           <v-badge overlap color="pink">
             <span slot="badge"> {{ item.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
@@ -192,7 +192,9 @@
               <v-btn
                 text
                 fab
-                @click="deleteItem(item.idProduct._id, getUser.access_token)"
+                :loading ="isLoading && i == index"
+                @click="deleteItem(item.idProduct._id, getUser.access_token);
+                    loader = 'isLoading'; index = i"
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
             </v-list-item-action>
@@ -268,7 +270,7 @@
       </v-row>
     </v-navigation-drawer>
     <v-snackbar v-model="snackBar" timeout="1500">
-      Removed from cart!
+      {{message}}
     </v-snackbar>
   </div>
 </template>
@@ -284,10 +286,12 @@ export default {
     snackBar: false,
     entries: [],
     isLoading: false,
-    loadingCart: false,
     model: [{}],
     search: null,
     toggleLeftMenu: false,
+    message: '',
+    index: -1,
+    loader:null,
     buttons: [
       {
         title: "HOME",
@@ -336,17 +340,25 @@ export default {
     // }
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
-        const promise = new Promise((resolve, reject) => {
-          if (this.$store.dispatch("deleteItem", { productId, access_token })) {
-            resolve(), (this.snackBar = true);
-          } else {
-            reject(Error());
+        this.isLoading = true
+        this.$store.dispatch("deleteItem", { productId, access_token })
+        .then(
+          () =>{
+            this.isLoading = false
+            this.message = "Removed from cart!"
+            this.snackBar = true
+          },
+          (error) =>{
+            console.log(error.response.data)
+            this.isLoading = false
+            this.message ="Remove failed !",
+            this.snackBar = true
           }
-        });
-        promise.then(() => {});
+        )
       } else {
         this.$store.dispatch("deleteLocalCart", productId);
-        this.snackBar=true
+        this.message = "Removed from cart!"
+        this.snackBar = true;
       }
     },
   },
