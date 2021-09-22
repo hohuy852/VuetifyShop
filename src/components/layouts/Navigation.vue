@@ -192,10 +192,7 @@
               <v-btn
                 text
                 fab
-                @click="
-                  deleteItem(item.idProduct._id, getUser.access_token);
-                  snackBar = true;
-                "
+                @click="deleteItem(item.idProduct._id, getUser.access_token)"
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
             </v-list-item-action>
@@ -328,7 +325,7 @@ export default {
       if (this.loggedIn) {
         return "user", JSON.parse(localStorage.getItem("user"));
       } else {
-        return '';
+        return "";
       }
     },
   },
@@ -340,15 +337,16 @@ export default {
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
         const promise = new Promise((resolve, reject) => {
-          if (this.$store.dispatch("deleteItem", { productId, access_token }))
-            resolve();
-          else {
+          if (this.$store.dispatch("deleteItem", { productId, access_token })) {
+            resolve(), (this.snackBar = true);
+          } else {
             reject(Error());
           }
         });
         promise.then(() => {});
       } else {
         this.$store.dispatch("deleteLocalCart", productId);
+        this.snackBar=true
       }
     },
   },

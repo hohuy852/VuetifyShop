@@ -44,8 +44,8 @@ const actions = {
             // }
             )
             .then(
-                commit('POSTED_ORDER'),
-               console.log(response => response.data)
+                commit('POSTED_ORDER')
+               //console.log(response => response.data)
             )
     }
 }

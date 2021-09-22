@@ -68,8 +68,8 @@ const actions = {
       })
       .then(response => {
         //console.log(access_token),
-        commit('GET_CART_ITEMS', response.data.cart),
-          console.log(response.data.cart)
+        commit('GET_CART_ITEMS', response.data.cart)
+          //console.log(response.data.cart)
       })
   }
 }
@@ -78,10 +78,10 @@ const mutations = {
     state.items = state.items.filter(item => item.idProduct._id !== productId)
     state.cartState = true
   },
-  PUSH_TO_CART(state) {
-
+  PUSH_TO_CART(state) {6
     state.cartState = true
     state.navId++
+    state.addSnackbar = true
     //this.commit('SAVE_DATA')
   },
   PUSH_TO_LOCAL_CART(state, idProduct) {
@@ -90,7 +90,8 @@ const mutations = {
       quantity: 1,
     })
     state.cartState = true
-    state.toggleCart = !state.toggleCart
+    //state.toggleCart = !state.toggleCart
+    state.addSnackbar = true
   },
   INCREASE_QTY(state, cartItem) {
     cartItem.quantity++
@@ -104,8 +105,8 @@ const mutations = {
   GET_CART_ITEMS(state, cart) {
     state.items = cart
     state.cartState = true
-    if (state.items != 0 && state.navId > 0)
-      state.toggleCart = !state.toggleCart
+    // if (state.items != 0 && state.navId > 0)
+    //   state.toggleCart = !state.toggleCart
 
   },
 }

@@ -8,7 +8,7 @@
       <v-col v-for="(product, i) in 8" :key="i" cols="12" sm="6" xl="3" lg="4">
         <v-skeleton-loader
           type="card, card-heading, actions"
-          :types="{ actions: 'button@1' }"
+          :types="{ actions: 'button@2' }"
           dark
         >
         </v-skeleton-loader>

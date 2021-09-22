@@ -5,10 +5,9 @@ import products from '../store/modules/product'
 import categories from '../store/modules/categories'
 import auth from '../store/modules/auth'
 import order from '../store/modules/order'
-// import createPersistedState from "vuex-persistedstate";
-// import Cookies from 'js-cookie'
+import profile from '../store/modules/profile'
 import resetPassword from './modules/resetPassword'
-//import VuexPersistence from 'vuex-persist';
+
 Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
@@ -17,10 +16,11 @@ export default new Vuex.Store({
     categories,
     auth,
     order,
-    resetPassword
+    resetPassword,
+    profile
   },
   state: {
-   // auth: true
+ 
   },
   mutations: {
 
@@ -34,11 +34,4 @@ export default new Vuex.Store({
    
     
   },
-  // plugins: [createPersistedState({
-  //   storage: {
-  //     getItem: (key) => Cookies.get(key),
-  //     setItem: () => {} ,
-  //     removeItem: (key) => Cookies.remove(key)
-  //   }
-  // })]
 })

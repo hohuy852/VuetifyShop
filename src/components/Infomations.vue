@@ -5,15 +5,28 @@
         <v-card-title>
           User Infomation
           <v-spacer></v-spacer>
-          <v-btn depressed dark outlined text class="font-weight-bold">
+          <v-btn depressed dark outlined text class="font-weight-bold" @click="refresh">
             Refresh
           </v-btn>
         </v-card-title>
         <v-card-text>
-          <v-text-field outlined label="First Name" :value="getUser.user.firstName"></v-text-field>
-          <v-text-field outlined label="Last Name" :value="getUser.user.lastName"></v-text-field>
-          
-          <v-btn class="cyan font-weight-bold"> Update </v-btn>
+          <v-text-field
+            outlined
+            label="First Name"
+            v-model="firstName"
+          ></v-text-field>
+          <v-text-field
+            outlined
+            label="Last Name"
+            v-model="lastName"
+          ></v-text-field>
+
+          <v-btn
+            class="cyan font-weight-bold"
+            @click="updateProfile(first, last, getUser.access_token)"
+          >
+            Update
+          </v-btn>
         </v-card-text>
       </v-card>
     </v-window-item>
@@ -22,12 +35,42 @@
 
 <script>
 export default {
-  name: 'Info',
-  computed:{
-    getUser(){
-     return ('user', JSON.parse(localStorage.getItem('user')))
+  data() {
+    return {
+      first: '',
+      last: ''
+    };
+  },
+  name: "Info",
+  computed: {
+    getUser() {
+      return "user", JSON.parse(localStorage.getItem("user"));
+    },
+    firstName: {
+      get(){
+        return this.$store.state.auth.user.user.firstName
+      },
+      set(value){
+        this.first = value
+      }
+    },
+    lastName: {
+      get(){
+        return this.$store.state.auth.user.user.lastName
+      },
+      set(value){
+        this.last = value
+      }
     }
-  }
+  },
+  methods: {
+    updateProfile(firstName, lastName, access_token) {
+       this.$store.dispatch("updateProfile", {firstName, lastName, access_token });
+    },
+    refresh(){
+
+    }
+  },
 };
 </script>
 

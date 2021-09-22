@@ -124,8 +124,6 @@
                       v-on="on"
                       @click="
                         addToCart(product._id, getToken, product);
-
-                        snackBar = true;
                       "
                       rounded
                       outlined
@@ -184,8 +182,8 @@ export default {
     return {
       expand: false,
       text: "Added to cart",
-      snackBar: false,
       buttonLoading: false,
+      snackBar: false,
     };
   },
   methods: {
@@ -204,6 +202,7 @@ export default {
         this.$store.dispatch("addProductToCart", { productId, access_token })
       else
         this.$store.dispatch("addLocalCart", product)
+      this.snackBar = true
     },
     addToWishlist(product) {
       if (this.loggedIn) {

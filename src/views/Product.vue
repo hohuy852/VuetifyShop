@@ -24,54 +24,6 @@
                 style="height: 48px; max-width: 48px"
               ></v-img
             ></v-tab>
-            <!-- <v-tab
-              class="
-                d-inline-block d-md-block
-                mb-md-3
-                ma-1 ma-md-0
-                overflow-hidden
-                v-card v-card--flat v-card--link
-                v-sheet
-                rounded
-                transparent
-              "
-              ><v-img
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                style="height: 48px; max-width: 48px"
-              ></v-img
-            ></v-tab>
-            <v-tab
-              class="
-                d-inline-block d-md-block
-                mb-md-3
-                ma-1 ma-md-0
-                overflow-hidden
-                v-card v-card--flat v-card--link
-                v-sheet
-                rounded
-                transparent
-              "
-              ><v-img
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                style="height: 48px; max-width: 48px"
-              ></v-img
-            ></v-tab>
-            <v-tab
-              class="
-                d-inline-block d-md-block
-                mb-md-3
-                ma-1 ma-md-0
-                overflow-hidden
-                v-card v-card--flat v-card--link
-                v-sheet
-                rounded
-                transparent
-              "
-              ><v-img
-                src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                style="height: 48px; max-width: 48px"
-              ></v-img
-            ></v-tab> -->
           </div>
           <div class="mb-1 min-w-0 mx-md-auto">
             <div class="" style="position: relative">
@@ -148,9 +100,7 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
-              @click="
-                addToCart(product._id, getUser.access_token);
-              "
+              @click="addToCart(product._id, getUser.access_token)"
               ><v-icon>mdi-basket-plus</v-icon
               ><span class="flex-grow-1">Add to cart</span></v-btn
             >
@@ -288,24 +238,24 @@
                       >{{ item.oldPrice }}</del
                     >
                     <v-spacer></v-spacer>
-                      <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="deep-purple lighten-2"
-                  text
-                  rounded
-                  outlined
-                  large
-                  class="accent--text"
-                  depressed
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon>mdi-heart-plus</v-icon>
-                </v-btn>
-                 </template>
-                  <span>Add to wishlist</span>
-                </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          color="deep-purple lighten-2"
+                          text
+                          rounded
+                          outlined
+                          large
+                          class="accent--text"
+                          depressed
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          <v-icon>mdi-heart-plus</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Add to wishlist</span>
+                    </v-tooltip>
                     <v-tooltip bottom>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -319,7 +269,7 @@
                           v-bind="attrs"
                           v-on="on"
                           @click="
-                            addToCart(item._id, getUser.access_token);
+                            addToCart(item._id, getUser.access_token, item);
                             toggleCart = !toggleCart;
                           "
                         >
@@ -359,33 +309,20 @@ export default {
   methods: {
     ...mapActions(["getSingleProduct"]),
     buy(productId, access_token) {
-      this.$store.dispatch("addProductToCart", {productId, access_token});
+      this.$store.dispatch("addProductToCart", { productId, access_token });
       this.$router.push("/checkout");
-     
     },
     handleChangeImage(img) {
       this.imgSelected = img.src;
     },
-    addToCart(productId, access_token) {
+    addToCart(productId, access_token, product) {
       //console.log(productId, access_token)
       this.buttonLoading = true;
-          const promise = new Promise((resolve, reject) => {
-        if (
-          this.$store.dispatch("addProductToCart", { productId, access_token })
-        )
-          resolve();
-        else {
-          reject(Error());
-        }
-      });
-      promise.then(() => {
-        this.$store.state.cart.navId++;
-        setTimeout(() => {
-          this.toggleCart = !this.toggleCart
-        }, 300);
-        
-      });
-      
+      if (this.loggedIn) {
+        this.$store.dispatch("addProductToCart", { productId, access_token });
+      } else {
+        this.$store.dispatch("addLocalCart", product);
+      }
     },
   },
   computed: {
@@ -407,19 +344,21 @@ export default {
         this.$store.commit("TOGGLE_CART", value);
       },
     },
-    getUser(){
-      return ("user", JSON.parse(localStorage.getItem("user")));
+    getUser() {
+      return "user", JSON.parse(localStorage.getItem("user"));
     },
-    
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
   },
   created() {
     this.getSingleProduct();
   },
   mounted() {
     window.scrollTo(0, 0);
-    setTimeout(() =>{
-      this.imgSelected = this.product.img
-    },200)
+    setTimeout(() => {
+      this.imgSelected = this.product.img;
+    }, 500);
   },
 };
 </script>
