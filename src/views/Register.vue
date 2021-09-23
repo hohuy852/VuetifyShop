@@ -33,7 +33,7 @@
           <v-text-field
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
             v-model="user.password"
-            :rules="[rules.required]"
+            :rules="[rules.required, rules.min, rules.max]"
             label="Password"
             :type="show ? 'text' : 'password'"
             outlined
@@ -41,10 +41,13 @@
           ></v-text-field>
 
           <v-btn
+          :disabled="!valid"
             class="success"
             x-large
             block
-            @click="handleRegister(user); validate"
+            @click="
+              handleRegister(user);
+            "
             :loading="loading"
             >Register</v-btn
           >
@@ -73,6 +76,7 @@ export default {
   name: "Register",
   data() {
     return {
+      valid: true,
       //text: '***',
       checkbox: false,
       show: false,
@@ -88,6 +92,8 @@ export default {
       ],
       rules: {
         required: (value) => !!value || "Required.",
+        max: (v) =>(v && v.length <= 16) || "Password must be less than 16 characters",
+        min: (v) => (v && v.length) >= 6 || "Password at least 6 characters",
       },
       message: "",
       loading: false,
@@ -114,9 +120,9 @@ export default {
         }
       );
     },
-     validate () {
-        this.$refs.form.validate()
-      },
+    validate() {
+      this.$refs.form.validate();
+    },
   },
   computed: {},
 };

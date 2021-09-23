@@ -89,10 +89,15 @@ export default {
     ...mapActions(["getOrders"]),
     refresh() {
       this.isLoading = true;
-      setTimeout(() => {
-        this.getOrders(this.getUser.access_token);
-        this.isLoading = false;
-      }, 580);
+        this.getOrders(this.getUser.access_token)
+        .then(
+          ()=>{
+            this.isLoading = false
+          },
+          (err) =>{
+            console.log(err.response.data)
+          }
+        )
     },
   },
   computed: {

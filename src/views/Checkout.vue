@@ -261,7 +261,7 @@
                   </v-col>
                 </v-row>
               </v-form>
-              <v-btn color="primary"  @click="handlePostOrder()">
+              <v-btn color="primary" :loading="loading"  @click="handlePostOrder()">
                 Complete Payment
               </v-btn>
               <v-btn text @click="e1 = 1"> Return </v-btn>
@@ -270,7 +270,9 @@
         </v-container>
       </v-stepper-content>
     </v-stepper-items>
+     <v-snackbar v-model="snackBar" timeout="1500"> {{ message }} </v-snackbar>
   </v-stepper>
+  
 </template>
 <script>
 import {mapGetters } from "vuex";
@@ -306,9 +308,11 @@ export default {
       rules: {
         required: (value) => !!value || "Required.",
       },
-      message: 'heelo',
+      message: '',
       status: "Paid",
+      snackBar: false,
       idUser: '',
+      loading: false,
         //Datetime: Date(),
       total: '',
       discount: "",
@@ -382,8 +386,22 @@ export default {
       console.log(this.cart)
     },
     handlePostOrder(){
+      this.loading = true
         this.$store.dispatch("postOrder", this.cartItems)
-      //  console.log(this.cartItems)
+        .then(
+          ()=>{
+            this.loading = false
+            this.message = 'Payment completed!'
+            this.snackBar = true
+          },
+          (err) =>{
+            console.log(err.response.data)
+            this.loading = false,
+            this.message = 'An error occur!'
+            this.snackBar = true
+          }
+        )
+        console.log(this.cartItems)
 
     },
     
@@ -398,6 +416,9 @@ export default {
       //this.phone =  this.getUser.user.phone
       this.idUser = this.getUser.user._id
       this.total = this.totalPrice
+    }
+    else{
+      this.idUser = 'guest'
     }
   }
 };

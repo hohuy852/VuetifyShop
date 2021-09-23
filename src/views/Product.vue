@@ -100,6 +100,7 @@
                 background-color: rgb(243, 205, 112);
                 border-color: rgb(243, 205, 112);
               "
+              :loading="buttonLoading"
               @click="addToCart(product._id, getUser.access_token)"
               ><v-icon>mdi-basket-plus</v-icon
               ><span class="flex-grow-1">Add to cart</span></v-btn
@@ -268,9 +269,11 @@
                           depressed
                           v-bind="attrs"
                           v-on="on"
+                          :loading="buttonLoading && index ==i"
                           @click="
                             addToCart(item._id, getUser.access_token, item);
-                            toggleCart = !toggleCart;
+                            loader = 'buttonLoading';
+                            index = i
                           "
                         >
                           <v-icon>mdi-basket-plus</v-icon>
@@ -286,6 +289,7 @@
         </v-row>
       </v-col>
     </div>
+     <v-snackbar v-model="snackBar" timeout="1500"> {{ message }} </v-snackbar>
   </v-container>
 </template>
 
@@ -303,6 +307,11 @@ export default {
       slug: this.$route.params.slug,
       selectedImg: 0,
       imgSelected: "",
+      message: '',
+      snackBar: false,
+      buttonLoading: false,
+      index: -1,
+      loader: null
     };
   },
   props: {},
@@ -317,13 +326,35 @@ export default {
     },
     addToCart(productId, access_token, product) {
       //console.log(productId, access_token)
-      this.buttonLoading = true;
       if (this.loggedIn) {
-        this.$store.dispatch("addProductToCart", { productId, access_token });
+        this.buttonLoading = true;
+        this.$store
+          .dispatch("addProductToCart", { productId, access_token })
+          .then(
+            () => {
+              this.buttonLoading = false;
+              this.message = "Added to cart!";
+              this.$store.state.cart.navId++;
+              setTimeout(() => {
+                this.toggleCart = !this.toggleCart;
+              }, 300);
+              this.snackBar = true;
+            },
+            (error) => {
+              console.log(error.response.data);
+              this.buttonLoading = false;
+              this.message = "An error occur!";
+              
+              this.snackBar = true;
+            }
+          );
       } else {
         this.$store.dispatch("addLocalCart", product);
+        this.text = "Added to cart!";
+        this.toggleCart = !this.toggleCart;
+        this.snackBar = true;    
       }
-    },
+    }
   },
   computed: {
     ...mapGetters(["products", "loadingDetails"]),
@@ -374,5 +405,8 @@ export default {
 }
 .v-application .accent--text.text--lighten-2 {
   color: #e65d5d !important;
+}
+.theme--dark.v-sheet {
+    background-color: #05090c;
 }
 </style>

@@ -56,6 +56,11 @@ const routes = [
         path: 'wishlist',
         name: 'Wishlist',
         component: () => import(/* webpackChunkName: "Wishlist" */'../components/Wishlist.vue')
+      },
+      {
+        path: 'change-password',
+        name: 'ChangePassword',
+        component: () => import(/* webpackChunkName: "changePassword" */'../components/ChangePassword.vue')
       }
     ],
     meta: {requiresAuth : true}

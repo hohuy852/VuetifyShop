@@ -94,6 +94,11 @@ export default {
           name: "wishlist (beta)",
           route: `/profile/wishlist`,
         },
+        {
+          id: 4,
+          name: "Change password",
+          route: '/profile/change-password'
+        }
       ],
       tt:{
         

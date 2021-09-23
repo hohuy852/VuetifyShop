@@ -11,7 +11,7 @@
       <v-card>
         <h2 class="py-4">Login</h2>
         <v-divider aria-orientation="horizontal"></v-divider>
-        <v-form ref="form" class="pa-7" type="submit">
+        <v-form ref="form" class="pa-7">
           <v-text-field
             v-model="user.email"
             label="Email"
@@ -25,7 +25,7 @@
             type="password"
           ></v-text-field>
           <div v-html="message" style="color:red"></div>
-          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)"  :loading="isLoading"
+          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)" :loading="isLoading"
             >Log in</v-btn
           >
 
