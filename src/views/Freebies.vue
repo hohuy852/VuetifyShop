@@ -4,7 +4,7 @@
       <skeleton v-if="loading" />
       <v-row>
         <v-col
-          v-for="(product, i) in uikits"
+          v-for="(product, i) in freebies"
           :key="product.id"
           cols="12"
           sm="6"
@@ -183,9 +183,9 @@ export default {
     },
   },
   computed: {
-    uikits() {
+    freebies() {
       let allProduct = this.$store.state.products.products;
-      let theme = allProduct.filter((product) => product.category === "UI Kits");
+      let theme = allProduct.filter((product) => product.category === "Free");
       return theme;
     },
     toggleCart: {

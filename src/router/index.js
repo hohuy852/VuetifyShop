@@ -34,6 +34,24 @@ const routes = [
     
   },
   {
+    path: '/themes',
+    name: 'Themes',
+    component:()=>import (/* webpackChunkName: "themes" */'../views/Themes.vue')
+    
+  },
+  {
+    path: '/uikits',
+    name: 'UIKits',
+    component:()=>import (/* webpackChunkName: "themes" */'../views/Uikits.vue')
+    
+  },
+  {
+    path: '/freebies',
+    name: 'Freebies',
+    component:()=>import (/* webpackChunkName: "themes" */'../views/Freebies.vue')
+    
+  },
+  {
     path: '/forgot-password',
     name: 'ForgotPassword',
     component: () => import (/* webpackChunkName: "forgorpassword" */'../views/ForgotPassword.vue')

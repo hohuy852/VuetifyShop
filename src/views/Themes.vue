@@ -1,15 +1,11 @@
 <template>
-     <section class="mb-3">
+  <v-container>
+    <section class="mb-3">
       <skeleton v-if="loading" />
-      <div v-else class="row" v-for="category in categories" :key="category.id">
-        <v-col cols="12" class="mt-2 mb-5">
-          <strong style="color: white">{{ category.name }}</strong>
-          <v-divider class="my-6 white"></v-divider>ss
-        </v-col>
-
+      <v-row>
         <v-col
-          v-for="(product, i) in category.products"
-          :key="`${product.id}${category.id}`"
+          v-for="(product, i) in themes"
+          :key="product.id"
           cols="12"
           sm="6"
           xl="3"
@@ -125,17 +121,110 @@
             </v-card>
           </div>
         </v-col>
-      </div>
+      </v-row>
     </section>
-
+  </v-container>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import skeleton from "../components/skeletonLoader.vue";
 export default {
+  name: "Theme",
+  components: {
+    skeleton,
+  },
+  data() {
+    return {
+      buttonLoading: false,
+      index: -1,
+      loading: false,
+    };
+  },
+  methods: {
+    ...mapActions(["getSingleProduct"]),
+    addToCart(productId, access_token, product) {
+      //console.log(productId, access_token)
+      if (this.loggedIn) {
+        this.buttonLoading = true;
+        this.$store
+          .dispatch("addProductToCart", { productId, access_token })
+          .then(
+            () => {
+              this.buttonLoading = false;
+              this.text = "Added to cart!";
+              this.$store.state.cart.navId++;
+              setTimeout(() => {
+                this.toggleCart = !this.toggleCart;
+              }, 300);
+              this.snackBar = true;
+            },
+            (error) => {
+              console.log(error.response.data);
+              this.buttonLoading = false;
+              this.text = "An error occur!";
 
-}
+              this.snackBar = true;
+            }
+          );
+      } else {
+        this.$store.dispatch("addLocalCart", product);
+        this.text = "Added to cart!";
+        this.toggleCart = !this.toggleCart;
+        this.snackBar = true;
+      }
+    },
+    addToWishlist(product) {
+      if (this.loggedIn) {
+        console.log("added " + product.title + " to wishlist");
+      } else {
+        this.$router.push("/login");
+      }
+    },
+  },
+  computed: {
+    themes() {
+      let allProduct = this.$store.state.products.products;
+      let theme = allProduct.filter((product) => product.category === "Themes");
+      return theme;
+    },
+    toggleCart: {
+      get() {
+        return this.$store.state.cart.toggleCart;
+      },
+      set(value) {
+        this.$store.commit("TOGGLE_CART", value);
+      },
+    },
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
+    getToken() {
+      if (this.loggedIn) {
+        return ("user", JSON.parse(localStorage.getItem("user"))).access_token;
+      } else {
+        return null;
+      }
+    },
+  },
+  created() {
+    this.getSingleProduct();
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
+.rounded-card {
+  border-radius: 10px;
+}
+.v-application .accent--text.text--lighten-2 {
+  color: #e65d5d !important;
+}
+.theme--dark.v-card {
+  background-color: #05090c;
+  color: #ffffff;
+}
+.theme--dark.v-btn.v-btn--outlined.v-btn--text {
+  border-color: rgba(255, 255, 255, 0.22);
+}
 </style>
