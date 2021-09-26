@@ -2,7 +2,7 @@
   <v-window>
     <v-window-item>
       <v-card class="my-2" dark>
-        <v-data-table disable-sort :headers="headers" :items="items">
+        <v-data-table disable-sort hide-default-footer :headers="headers" :items="wishlist.wishlist">
           <template v-slot:[`item.product`] ="{item}">
               <v-list-item>
                 <v-avatar :src = "item.src">
@@ -14,7 +14,7 @@
               </v-list-item>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">
+            <v-icon small class="mr-2" @click="deleteItem(item._id, getToken)">
               mdi-delete
             </v-icon>
           </template>
@@ -25,13 +25,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
       headers: [
         {
           text: "Product",
-          value: "product",
+          value: "title",
           align: "left",
         },
         {
@@ -40,19 +41,39 @@ export default {
           align: "center",
         },
         {
-          text: "",
+          text: "Action",
           value: "actions",
           align: "center",
         },
       ],
-      items: [
-        {
-          product: "A",
-          price: "33.3$",
-        },
-      ],
     };
   },
+  computed:{
+    getToken() {
+        return ("user", JSON.parse(localStorage.getItem("user"))).access_token;   
+    },
+    wishlist(){
+     return this.$store.getters.wishlist
+    }
+  },
+  methods:{
+    ...mapActions(['getWishlist']),
+    deleteItem(idProduct, access_token){
+       this.$store.dispatch('deleteWishlistItem', {idProduct, access_token})
+       .then(
+         () =>{
+            this.getWishlist(this.getToken)
+           //console.log('success')
+         },
+         (err) =>{
+           console.log(err.response.data)
+         }
+       )
+    }
+  },
+  mounted(){
+    this.getWishlist(this.getToken)
+  }
 };
 </script>
 

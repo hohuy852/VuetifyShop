@@ -74,8 +74,9 @@ const actions = {
   }
 }
 const mutations = {
-  DELETE_PRODUCT(state, productId) {
-    state.items = state.items.filter(item => item.idProduct._id !== productId)
+  DELETE_PRODUCT(state) {
+    //, productId
+    //state.items = state.items.filter(item => item.idProduct._id !== productId)
     state.cartState = true
   },
   PUSH_TO_CART(state) {6

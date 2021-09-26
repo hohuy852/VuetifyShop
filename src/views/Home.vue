@@ -102,13 +102,15 @@
                       color="deep-purple lighten-2"
                       text
                       rounded
-                      outlined
+                      outlined                    
                       large
                       class="accent--text"
                       depressed
                       v-bind="attrs"
                       v-on="on"
-                      @click="addToWishlist(product)"
+                      @click="
+                        addToWishlist(product._id, getToken);
+                      "
                     >
                       <v-icon>mdi-heart-plus</v-icon>
                     </v-btn>
@@ -130,7 +132,7 @@
                       rounded
                       outlined
                       large
-                      class="accent--text"
+                      class="light-blue--text"
                       depressed
                       :loading="buttonLoading && i == index"
                     >
@@ -221,7 +223,7 @@ export default {
               console.log(error.response.data);
               this.buttonLoading = false;
               this.text = "An error occur!";
-              
+
               this.snackBar = true;
             }
           );
@@ -230,12 +232,22 @@ export default {
         this.text = "Added to cart!";
         this.toggleCart = !this.toggleCart;
         this.snackBar = true;
-        
       }
     },
-    addToWishlist(product) {
+    addToWishlist(idProduct, access_token) {
       if (this.loggedIn) {
-        console.log("added " + product.title + " to wishlist");
+        this.$store.dispatch("addWishlist", { idProduct, access_token }).then(
+          () => {
+            this.text = "Added to wishlist !";
+            this.snackBar = true;
+          },
+          (err) => {
+            this.text = "Product already exists in wishlist";
+            this.snackBar = true;
+            console.log(err.response.data);
+          }
+        );
+        //console.log("added " + product.title + " to wishlist");
       } else {
         this.$router.push("/login");
       }

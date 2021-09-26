@@ -7,7 +7,7 @@ import auth from '../store/modules/auth'
 import order from '../store/modules/order'
 import profile from '../store/modules/profile'
 import resetPassword from './modules/resetPassword'
-
+import wishlist from './modules/wishlist'
 Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
@@ -17,7 +17,8 @@ export default new Vuex.Store({
     auth,
     order,
     resetPassword,
-    profile
+    profile,
+    wishlist
   },
   state: {
  
@@ -27,11 +28,8 @@ export default new Vuex.Store({
   },
   actions: {
   
-
   },
-
   getters: {
-   
-    
+ 
   },
 })
