@@ -251,6 +251,7 @@
                           depressed
                           v-bind="attrs"
                           v-on="on"
+                          @click="addToWishlist(item._id, getUser.access_token)"
                         >
                           <v-icon>mdi-heart-plus</v-icon>
                         </v-btn>
@@ -265,7 +266,7 @@
                           rounded
                           outlined
                           large
-                          class="accent--text"
+                          class="light-blue--text"
                           depressed
                           v-bind="attrs"
                           v-on="on"
@@ -354,7 +355,25 @@ export default {
         this.toggleCart = !this.toggleCart;
         this.snackBar = true;    
       }
-    }
+    },
+    addToWishlist(idProduct, access_token) {
+      if (this.loggedIn) {
+        this.$store.dispatch("addWishlist", { idProduct, access_token }).then(
+          () => {
+            this.message = "Added to wishlist !";
+            this.snackBar = true;
+          },
+          (err) => {
+            this.message = "Product already exists in wishlist";
+            this.snackBar = true;
+            console.log(err.response.data);
+          }
+        );
+        //console.log("added " + product.title + " to wishlist");
+      } else {
+        this.$router.push("/login");
+      }
+    },
   },
   computed: {
     ...mapGetters(["products", "loadingDetails"]),

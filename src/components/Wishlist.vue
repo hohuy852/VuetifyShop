@@ -14,7 +14,7 @@
               </v-list-item>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <v-icon small class="mr-2" @click="deleteItem(item._id, getToken)">
+            <v-icon  small class="mr-2" @click="deleteItem(item._id, getToken)">
               mdi-delete
             </v-icon>
           </template>

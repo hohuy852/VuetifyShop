@@ -347,7 +347,7 @@ export default {
             this.isLoading = false
             this.message = "Removed from cart!"
             this.snackBar = true
-              this.getCartItems(this.getUser.access_token);
+            this.getCartItems(this.getUser.access_token);
           },
           (error) =>{
             console.log(error.response.data)

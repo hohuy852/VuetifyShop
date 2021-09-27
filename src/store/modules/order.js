@@ -15,7 +15,7 @@ const actions = {
             })
             .then(response => {
                 commit('GET_ORDER', response.data)
-                console.log(response.data)
+               // console.log(response.data)
             })
     },
     postOrder({ commit }, order) {

@@ -401,7 +401,7 @@ export default {
             this.snackBar = true
           }
         )
-        console.log(this.cartItems)
+        //console.log(this.cartItems)
 
     },
     

@@ -12,6 +12,7 @@
             text
             class="font-weight-bold"
             @click="refresh"
+            :loading="updateStatus"
           >
             Refresh
           </v-btn>
@@ -30,12 +31,17 @@
           <v-text-field
             outlined
             label="Phone number"
-            v-model="phoneNumber"
+            v-model="cPhonenumber"
             type="number"
           ></v-text-field>
           <v-row>
             <v-col cols="12" lg="6">
-              <v-select :items="genders" label="Gender" outlined></v-select>
+              <v-select
+                v-model="cGender"
+                :items="genders"
+                label="Gender"
+                outlined
+              ></v-select>
             </v-col>
             <v-col cols="12" lg="6">
               <v-menu
@@ -48,7 +54,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
-                    v-model="date"
+                    v-model="cDate"
                     label="Birthday"
                     prepend-icon="mdi-calendar"
                     readonly
@@ -72,7 +78,9 @@
 
           <v-btn
             class="cyan font-weight-bold"
-            @click="updateProfile(first, last, getUser.access_token)"
+            @click="
+              updateProfile(first, last, phoneNumber, gender, date, getToken)
+            "
             :loading="updateStatus"
           >
             Update
@@ -95,25 +103,24 @@ export default {
       snackBar: false,
       message: "",
       picker: "",
+      gender: "",
       phoneNumber: "",
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
       menu: false,
-      genders:[
-        'Man', 'Woman'
-      ]
+      genders: ["Male", "Female"],
     };
   },
   name: "Info",
   computed: {
     ...mapGetters([]),
-    getUser() {
-      return "user", JSON.parse(localStorage.getItem("user"));
+    getToken() {
+      return this.$store.state.auth.user.access_token;
     },
     firstName: {
       get() {
-        return this.$store.state.auth.user.user.firstName;
+        return this.$store.state.profile.info.firstName;
       },
       set(value) {
         this.first = value;
@@ -121,18 +128,56 @@ export default {
     },
     lastName: {
       get() {
-        return this.$store.state.auth.user.user.lastName;
+        return this.$store.state.profile.info.lastName;
       },
       set(value) {
         this.last = value;
       },
     },
+    cGender: {
+      get() {
+        return this.$store.state.profile.info.gender;
+      },
+      set(value) {
+        this.gender = value;
+      },
+    },
+    cPhonenumber: {
+      get() {
+        return this.$store.state.profile.info.phonenumber;
+      },
+      set(value) {
+        this.phoneNumber = value;
+      },
+    },
+    cDate: {
+      get() {
+        return this.$store.state.profile.info.DOB;
+      },
+      set(value) {
+        this.date = value;
+      },
+    },
   },
   methods: {
-    updateProfile(firstName, lastName, access_token) {
+    updateProfile(
+      firstName,
+      lastName,
+      phoneNumber,
+      gender,
+      date,
+      access_token
+    ) {
       this.updateStatus = true;
       this.$store
-        .dispatch("updateProfile", { firstName, lastName, access_token })
+        .dispatch("updateProfile", {
+          firstName,
+          lastName,
+          phoneNumber,
+          gender,
+          date,
+          access_token,
+        })
         .then(
           () => {
             this.updateStatus = false;
@@ -147,7 +192,30 @@ export default {
           }
         );
     },
-    refresh() {},
+    refresh() {
+      this.updateStatus = true
+      this.$store.dispatch("getProfile", this.getToken).then(
+        () => {
+          this.updateStatus = false;
+          this.message = "Refreshed!";
+          this.snackBar = true;
+        },
+        (error) => {
+          console.log(error.response.data);
+          (this.updateStatus = false),
+            (this.message = "An error occur!"),
+            (this.snackBar = true);
+        }
+      );
+    },
+  },
+  mounted() {
+    this.$store.dispatch("getProfile", this.getToken);
+    // this.first = this.$store.state.auth.user.user.firstName;
+    // this.last = this.$store.state.auth.user.user.lastName;
+    // this.date = this.$store.state.auth.user.user.DOB;
+    // this.gender = this.$store.state.auth.user.user.gender;
+    // this.phoneNumber = this.date = this.$store.state.auth.user.user.phoneNumber;
   },
 };
 </script>
