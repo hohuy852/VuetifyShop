@@ -18,7 +18,7 @@
           w-full
         "
       >
-        🧨 UI Lib themes 40% off for a limited time
+        🧨🎉 {{socketMessage}}
       </v-container>
     </v-system-bar>
     <v-app-bar app dark>
@@ -109,6 +109,7 @@
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
+      
       <template v-slot:extension class="justify-space-around layout-menu">
         <v-container class="py-0 d-none d-md-block fill-height">
           <div
@@ -160,7 +161,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item v-for="item, i in cart" :key="item._id">
+        <v-list-item v-for="(item, i) in cart" :key="item._id">
           <v-badge overlap color="pink">
             <span slot="badge"> {{ item.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
@@ -192,9 +193,12 @@
               <v-btn
                 text
                 fab
-                :loading ="isLoading && i == index"
-                @click="deleteItem(item.idProduct._id, getUser.access_token);
-                    loader = 'isLoading'; index = i"
+                :loading="isLoading && i == index"
+                @click="
+                  deleteItem(item.idProduct._id, getUser.access_token);
+                  loader = 'isLoading';
+                  index = i;
+                "
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
             </v-list-item-action>
@@ -270,7 +274,7 @@
       </v-row>
     </v-navigation-drawer>
     <v-snackbar v-model="snackBar" timeout="1500">
-      {{message}}
+      {{ message }}
     </v-snackbar>
   </div>
 </template>
@@ -278,20 +282,25 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 import Notification from "../app/Notification.vue";
+//import VueSocketIO from 'vue-socket.io'
+import io from "socket.io-client";
 export default {
   components: {
     Notification,
   },
   data: () => ({
+    socket: io(),
+    isConnected: false,
     snackBar: false,
     entries: [],
     isLoading: false,
     model: [{}],
     search: null,
     toggleLeftMenu: false,
-    message: '',
+    message: "",
     index: -1,
-    loader:null,
+    loader: null,
+    socketMessage: "",
     buttons: [
       {
         title: "HOME",
@@ -340,25 +349,23 @@ export default {
     // }
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
-        this.isLoading = true
-        this.$store.dispatch("deleteItem", { productId, access_token })
-        .then(
-          () =>{
-            this.isLoading = false
-            this.message = "Removed from cart!"
-            this.snackBar = true
+        this.isLoading = true;
+        this.$store.dispatch("deleteItem", { productId, access_token }).then(
+          () => {
+            this.isLoading = false;
+            this.message = "Removed from cart!";
+            this.snackBar = true;
             this.getCartItems(this.getUser.access_token);
           },
-          (error) =>{
-            console.log(error.response.data)
-            this.isLoading = false
-            this.message ="Remove failed !",
-            this.snackBar = true
+          (error) => {
+            console.log(error.response.data);
+            this.isLoading = false;
+            (this.message = "Remove failed !"), (this.snackBar = true);
           }
-        )
+        );
       } else {
         this.$store.dispatch("deleteLocalCart", productId);
-        this.message = "Removed from cart!"
+        this.message = "Removed from cart!";
         this.snackBar = true;
       }
     },
@@ -387,10 +394,21 @@ export default {
         .finally(() => (this.isLoading = false));
     },
   },
+  sockets: {
+    connect: function () {
+      console.log("socket connected");
+    },
+  },
   mounted() {
     if (this.loggedIn) {
       this.getCartItems(this.getUser.access_token);
     }
+  },
+  created() {
+    this.sockets.subscribe("Server-sent-notification", (data) => {
+      this.socketMessage = data.content
+      //console.log(data)
+    });
   },
 };
 </script>
