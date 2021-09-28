@@ -18,7 +18,7 @@
           w-full
         "
       >
-        🧨🎉 {{socketMessage}}
+        🧨🎉 {{ socketMessage }}
       </v-container>
     </v-system-bar>
     <v-app-bar app dark>
@@ -109,7 +109,7 @@
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
-      
+
       <template v-slot:extension class="justify-space-around layout-menu">
         <v-container class="py-0 d-none d-md-block fill-height">
           <div
@@ -406,9 +406,12 @@ export default {
   },
   created() {
     this.sockets.subscribe("Server-sent-notification", (data) => {
-      this.socketMessage = data.content
+      this.socketMessage = data.content;
       //console.log(data)
     });
+    if (this.loggedIn) {
+      this.$socket.emit("Login", this.$store.state.auth.user.user._id);
+    }
   },
 };
 </script>
