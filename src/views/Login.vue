@@ -11,7 +11,7 @@
       <v-card>
         <h2 class="py-4">Login</h2>
         <v-divider aria-orientation="horizontal"></v-divider>
-        <v-form ref="form" class="pa-7">
+        <v-form ref="form" class="pa-7" @submit.prevent="handleLogin(user)">
           <v-text-field
             v-model="user.email"
             label="Email"
@@ -25,10 +25,9 @@
             type="password"
           ></v-text-field>
           <div v-html="message" style="color:red"></div>
-          <v-btn class="primary mb-3" x-large block @click="handleLogin(user)" :loading="isLoading"
+          <v-btn class="primary mb-3" x-large block type="submit" :loading="isLoading"
             >Log in</v-btn
           >
-
           <router-link
             to="/forgot-password"
             style="text-decoration: none"
