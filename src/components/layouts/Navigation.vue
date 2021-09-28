@@ -411,7 +411,12 @@ export default {
     });
     if (this.loggedIn) {
       this.$socket.emit("Login", this.$store.state.auth.user.user._id);
+      this.sockets.subscribe("Server-sent-notify", (data) => {
+     // this.socketMessage = data.content;
+      console.log(data)
+    });
     }
+
   },
 };
 </script>
