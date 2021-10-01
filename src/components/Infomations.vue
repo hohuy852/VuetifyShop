@@ -152,7 +152,7 @@ export default {
     },
     cDate: {
       get() {
-        return this.$store.state.profile.info.DOB;
+        return this.$store.state.profile.info.DOB.substr(0,10);
       },
       set(value) {
         this.date = value;
