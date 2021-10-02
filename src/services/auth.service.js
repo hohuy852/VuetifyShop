@@ -1,15 +1,19 @@
 import axios from 'axios';
+import api from './api'
+
+ import TokenService from './token.service'
 const API_URL = 'https://web-demo.online/'
 class AuthService {
   login(user) {
-    return axios
-      .post(API_URL + 'login', {
+    return api
+      .post('login', {
         email: user.email,
         password: user.password
       })
       .then(response => {
         if (response.data.access_token) {
-          localStorage.setItem('user', JSON.stringify(response.data));
+          TokenService.setUser(response.data)
+          // localStorage.setItem('user', JSON.stringify(response.data));
           //console.log(localStorage)
          
         }
@@ -22,7 +26,9 @@ class AuthService {
   logout() {
     return axios
       .post(API_URL + 'logout')
-      .then(localStorage.removeItem('user'))
+      .then(TokenService.removeUser())
+    //   .then(localStorage.removeItem('user'))
+    
   }
 
   register(user) {

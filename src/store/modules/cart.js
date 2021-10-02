@@ -1,4 +1,6 @@
 import axios from "axios"
+import api from '../../services/api'
+//import authHeader  from "../../services/auth-header"
 const API_URL = 'https://web-demo.online/'
 // const cart = window.localStorage.getItem('cart')
 
@@ -57,19 +59,17 @@ const actions = {
     commit('SAVE_CART')
   },
   deleteLocalCart({commit}, productId){
-    commit('DELETE_PRODUCT', productId)
+    commit('DELETE_LOCAL_PRODUCT', productId)
   },
   getCartItems({ commit }, access_token) {
-    return axios
-      .get(API_URL + 'cart', {
-        headers: {
-          Authorization: access_token
-        }
-      })
+    return api
+      .get('cart')
       .then(response => {
-        //console.log(access_token),
+       // console.log(access_token),
+       access_token
         commit('GET_CART_ITEMS', response.data.cart)
           //console.log(response.data.cart)
+          
       })
   }
 }
@@ -77,6 +77,11 @@ const mutations = {
   DELETE_PRODUCT(state) {
     //, productId
     //state.items = state.items.filter(item => item.idProduct._id !== productId)
+    state.cartState = true
+  },
+  DELETE_LOCAL_PRODUCT(state,productId) {
+    //, productId
+    state.items = state.items.filter(item => item.idProduct._id !== productId)
     state.cartState = true
   },
   PUSH_TO_CART(state) {6

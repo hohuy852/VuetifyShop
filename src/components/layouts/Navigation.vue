@@ -162,6 +162,7 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item v-for="(item, i) in cart" :key="item._id">
+          
           <v-badge overlap color="pink">
             <span slot="badge"> {{ item.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
@@ -189,6 +190,7 @@
                 >
               </div>
             </v-list-item-content>
+           
             <v-list-item-action>
               <v-btn
                 text
@@ -201,7 +203,13 @@
                 "
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
+               <!-- <div class="d-flex flex-row   align-center">
+              <v-btn fab small plain outlined> <v-icon>mdi-plus</v-icon></v-btn>
+              <span>1</span>
+              <v-btn fab small plain outlined><v-icon>mdi-minus</v-icon> </v-btn>
+            </div> -->
             </v-list-item-action>
+            
           </v-list-item>
         </v-list-item>
         <v-divider></v-divider>
@@ -412,11 +420,10 @@ export default {
     if (this.loggedIn) {
       this.$socket.emit("Login", this.$store.state.auth.user.user._id);
       this.sockets.subscribe("Server-sent-notify", (data) => {
-     // this.socketMessage = data.content;
-      console.log(data)
-    });
+        // this.socketMessage = data.content;
+        console.log(data);
+      });
     }
-
   },
 };
 </script>

@@ -152,11 +152,16 @@ export default {
     },
     cDate: {
       get() {
-        return this.$store.state.profile.info.DOB.substr(0,10);
+        return this.datecc
       },
       set(value) {
         this.date = value;
       },
+    },
+    datecc() {
+      let date = this.$store.state.profile.info.DOB;
+      if (date != null) return date.substr(0,10);
+      return date
     },
   },
   methods: {
@@ -193,7 +198,7 @@ export default {
         );
     },
     refresh() {
-      this.updateStatus = true
+      this.updateStatus = true;
       this.$store.dispatch("getProfile", this.getToken).then(
         () => {
           this.updateStatus = false;

@@ -65,6 +65,7 @@
 
 <script>
 //import Orders from "../components/Orders.vue"
+import EventBus from '../common/EventBus'
 export default {
   name: 'Account',
   components: {
@@ -119,6 +120,14 @@ export default {
       return "user", JSON.parse(localStorage.getItem("user"));
     },
   },
+  mounted(){
+    EventBus.on('logout', ()=>{
+      this.logOut()
+    })
+  },
+   beforeDestroy() {
+    EventBus.remove("logout");
+  }
 };
 </script>
 

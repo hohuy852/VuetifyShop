@@ -42,13 +42,13 @@ const routes = [
   {
     path: '/uikits',
     name: 'UIKits',
-    component:()=>import (/* webpackChunkName: "themes" */'../views/Uikits.vue')
+    component:()=>import (/* webpackChunkName: "uikits" */'../views/Uikits.vue')
     
   },
   {
     path: '/freebies',
     name: 'Freebies',
-    component:()=>import (/* webpackChunkName: "themes" */'../views/Freebies.vue')
+    component:()=>import (/* webpackChunkName: "freebies" */'../views/Freebies.vue')
     
   },
   {

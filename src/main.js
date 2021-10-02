@@ -7,7 +7,8 @@ import SocketIO from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
 
 // export const SocketInstance = socketio('https://web-demo.online/');
-
+import setupInterceptors from './services/setupInterceptors'
+setupInterceptors(store)
 Vue.use(new VueSocketIO({
   connection: SocketIO('https://web-demo.online/'), //options object is Optional
   vuex: {

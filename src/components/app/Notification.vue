@@ -8,7 +8,7 @@
     <v-card class="mx-auto" max-width="300">
       <v-list two-line>
         <v-list-item-group
-          v-model="selected"
+         
           active-class="pink--text"
           multiple
         >
