@@ -5,7 +5,7 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import SocketIO from 'socket.io-client';
 import VueSocketIO from 'vue-socket.io';
-
+import VueCookies from 'vue-cookies'
 // export const SocketInstance = socketio('https://web-demo.online/');
 import setupInterceptors from './services/setupInterceptors'
 setupInterceptors(store)
@@ -17,7 +17,7 @@ Vue.use(new VueSocketIO({
     mutationPrefix: "SOCKET_"
   }
 }))
-
+Vue.use(VueCookies)
 new Vue({
   store,
   router,

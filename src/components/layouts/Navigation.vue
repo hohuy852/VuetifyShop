@@ -109,7 +109,6 @@
           <v-icon> mdi-cart </v-icon></v-badge
         >
       </v-btn>
-
       <template v-slot:extension class="justify-space-around layout-menu">
         <v-container class="py-0 d-none d-md-block fill-height">
           <div
@@ -421,9 +420,10 @@ export default {
       this.$socket.emit("Login", this.$store.state.auth.user.user._id);
       this.sockets.subscribe("Server-sent-notify", (data) => {
         // this.socketMessage = data.content;
-        console.log(data);
+        console.log(data.content);
       });
     }
+    
   },
 };
 </script>

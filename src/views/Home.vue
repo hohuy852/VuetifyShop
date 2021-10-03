@@ -242,9 +242,9 @@ export default {
             this.snackBar = true;
           },
           (err) => {
-            this.text = "Product already exists in wishlist";
+            this.text = err.response.data.msg;
             this.snackBar = true;
-            console.log(err.response.data);
+           // console.log(err.response.data);
           }
         );
         //console.log("added " + product.title + " to wishlist");

@@ -1,18 +1,17 @@
-import axiosInstance  from './api';
+import axiosInstance from './api';
 import TokenService from './token.service'
 
 const setup = (store) => {
     axiosInstance.interceptors.request.use(
         (config) => {
             const token = TokenService.getLocalAccessToken();
-            console.log(token)
-            if(token){
+            if (token) {
                 config.headers["Authorization"] = token
             }
 
             return config
         },
-        (err) =>{
+        (err) => {
             return Promise.reject(err)
         }
     )
@@ -20,21 +19,27 @@ const setup = (store) => {
         (res) => {
             return res
         },
-        async (err) =>{
+        async (err) => {
             const originalConfig = err.config
 
-            if(originalConfig.url  !== "/" && err.response){
+            if (originalConfig.url !== "/login" && err.response) {
                 //Access Token was expired
-                if(err.response.status == 401 && !originalConfig._retry){
+                if (err.response.status == 401 && !originalConfig._retry) {
                     originalConfig._retry = true
-                    try{
-                        const rs = await axiosInstance.post('refresh_token')
-                        const  {access_token} = rs.data
+                    try {
+                        const rs = await axiosInstance.post('refresh_token', {
+                            refreshToken: TokenService.getLocalRefreshToken(),
+                        })
+                        console.log(rs.data)
+
+                        const { access_token } = rs.data
+
                         store.dispatch('auth/refreshToken', access_token)
                         TokenService.updateLocalAccessToken(access_token);
-                        return axiosInstance(originalConfig) 
+                        return axiosInstance(originalConfig)
                     }
-                    catch(_err){
+
+                    catch (_err) {
                         console.log(_err.response.data)
                         return Promise.reject(_err)
                     }
