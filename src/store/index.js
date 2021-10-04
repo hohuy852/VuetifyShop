@@ -8,6 +8,7 @@ import order from '../store/modules/order'
 import profile from '../store/modules/profile'
 import resetPassword from './modules/resetPassword'
 import wishlist from './modules/wishlist'
+import alert from './modules/alert'
 Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     order,
     resetPassword,
     profile,
-    wishlist
+    wishlist,
+    alert
   },
   state: {
  

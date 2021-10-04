@@ -102,15 +102,13 @@
                       color="deep-purple lighten-2"
                       text
                       rounded
-                      outlined                    
+                      outlined
                       large
                       class="accent--text"
                       depressed
                       v-bind="attrs"
                       v-on="on"
-                      @click="
-                        addToWishlist(product._id, getToken);
-                      "
+                      @click="addToWishlist(product._id, getToken)"
                     >
                       <v-icon>mdi-heart-plus</v-icon>
                     </v-btn>
@@ -179,6 +177,7 @@ import skeleton from "../components/skeletonLoader.vue";
 import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
+
   components: {
     Carousel,
     skeleton,
@@ -244,7 +243,7 @@ export default {
           (err) => {
             this.text = err.response.data.msg;
             this.snackBar = true;
-           // console.log(err.response.data);
+            // console.log(err.response.data);
           }
         );
         //console.log("added " + product.title + " to wishlist");
@@ -279,6 +278,9 @@ export default {
     this.getProduct();
     //this.getSingleProduct();
   },
+  mounted(){
+    this.$store.dispatch("getProfile", this.getToken);
+  }
 };
 </script>
 <style scoped>

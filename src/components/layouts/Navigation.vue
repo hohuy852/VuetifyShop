@@ -2,6 +2,7 @@
   <div>
     <!-- NavigationBar -->
     <v-system-bar
+      v-if="socketMessage != ''"
       app
       dark
       style="
@@ -161,7 +162,6 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item v-for="(item, i) in cart" :key="item._id">
-          
           <v-badge overlap color="pink">
             <span slot="badge"> {{ item.quantity }}</span>
             <v-avatar class="pt-3" rounded width="70" height="60">
@@ -189,7 +189,7 @@
                 >
               </div>
             </v-list-item-content>
-           
+
             <v-list-item-action>
               <v-btn
                 text
@@ -202,13 +202,12 @@
                 "
                 ><v-icon>mdi-delete </v-icon></v-btn
               >
-               <!-- <div class="d-flex flex-row   align-center">
+              <!-- <div class="d-flex flex-row   align-center">
               <v-btn fab small plain outlined> <v-icon>mdi-plus</v-icon></v-btn>
               <span>1</span>
               <v-btn fab small plain outlined><v-icon>mdi-minus</v-icon> </v-btn>
             </div> -->
             </v-list-item-action>
-            
           </v-list-item>
         </v-list-item>
         <v-divider></v-divider>
@@ -289,8 +288,8 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 import Notification from "../app/Notification.vue";
-//import VueSocketIO from 'vue-socket.io'
 import io from "socket.io-client";
+//import axios from "axios";
 export default {
   components: {
     Notification,
@@ -329,7 +328,7 @@ export default {
   }),
   computed: {
     ...mapState([]),
-    ...mapGetters(["cart", "totalProduct", "totalPrice", "addCartState"]),
+    ...mapGetters(["cart", "totalProduct", "totalPrice"]),
     toggleCart: {
       get() {
         return this.$store.state.cart.toggleCart;
@@ -340,6 +339,14 @@ export default {
     },
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
+    },
+    toggleNotify: {
+      get() {
+        return this.$store.state.alert.notification;
+      },
+      set() {
+        this.$store.state.alert.notification = false;
+      },
     },
     getUser() {
       if (this.loggedIn) {
@@ -354,6 +361,19 @@ export default {
     // deleteItem(productId){
     //   console.log(productId)
     // }
+    // postNotice() {
+    //   return axios
+    //     .post("https://web-demo.online/admin/notify", {
+    //       listUser: ["6151767330135c54093634b1"],
+    //       content: "Hello",
+    //     })
+    //     .then(
+    //       () => console.log("success"),
+    //       (err) => {
+    //         console.log(err.response);
+    //       }
+    //     );
+    // },
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
         this.isLoading = true;
@@ -423,7 +443,6 @@ export default {
         console.log(data.content);
       });
     }
-    
   },
 };
 </script>
