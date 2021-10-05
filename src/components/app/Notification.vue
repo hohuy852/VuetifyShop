@@ -16,29 +16,32 @@
           fab
           plain
         >
-          <v-badge color="pink" dot >
+          <v-badge color="pink" dot>
             <v-icon fab>mdi-bell</v-icon>
           </v-badge>
         </v-btn>
       </template>
-      <v-card width="320" dark height="300">
-        <v-expansion-panels>
-          <v-expansion-panel v-for="(item, i) in notifyItem" :key="i">
-            <v-expansion-panel-header disable-icon-rotate>
-              <template v-slot:actions>
-                <v-icon> mdi-email </v-icon>
-              </template>
-              <v-list-item-content>
-                <v-list-item-title class="text-subtitle-1">{{
-                  item.content
-                }}</v-list-item-title>
-              </v-list-item-content>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              {{ item.content }}
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+      <v-card width="420" max-height="500" dark>
+        <v-card-title>Notification</v-card-title>
+        <v-card-text>
+          <v-expansion-panels>
+            <v-expansion-panel v-for="(item, i) in notifyItem" :key="i">
+              <v-expansion-panel-header disable-icon-rotate>
+                <template v-slot:actions>
+                  <v-icon> mdi-email </v-icon>
+                </template>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-1">{{
+                    item.content
+                  }}</v-list-item-title>
+                </v-list-item-content>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                {{ item.content }}
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-card-text>
       </v-card>
     </v-menu>
   </div>
@@ -77,4 +80,14 @@ export default {
 </script>
 
 <style>
+.theme--dark.v-card {
+  background-color: #05090c;
+  color: #edf0f2;
+}
+.theme--dark.v-btn.v-btn--outlined.v-btn--text {
+  border-color: rgba(255, 255, 255, 0.62);
+}
+.theme--dark.v-expansion-panels .v-expansion-panel {
+  background-color: #000000;
+}
 </style>
