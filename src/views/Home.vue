@@ -278,9 +278,7 @@ export default {
     this.getProduct();
     //this.getSingleProduct();
   },
-  mounted(){
-    this.$store.dispatch("getProfile", this.getToken);
-  }
+
 };
 </script>
 <style scoped>
