@@ -51,6 +51,8 @@
       background-color="transparent"
       center-active
       dark
+      hide-slider
+      show-arrows
       >
       <v-tab v-for="tab of tabs" :key="tab.id" :to="tab.route" exact>
         {{ tab.name }}

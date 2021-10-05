@@ -141,7 +141,7 @@
           <v-list-item
             v-for="(item, index) in buttons"
             :key="index"
-            :to="item.link"
+            :to="item.route"
             link
           >
             <v-list-item-icon>

@@ -4,7 +4,7 @@
       transition="scroll-y-transition"
       offset-y
       :close-on-content-click="false"
-      open-on-hover
+      open-on-click
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -21,7 +21,7 @@
           </v-badge>
         </v-btn>
       </template>
-      <v-card width="320" dark>
+      <v-card width="320" dark height="300">
         <v-expansion-panels>
           <v-expansion-panel v-for="(item, i) in notifyItem" :key="i">
             <v-expansion-panel-header disable-icon-rotate>
