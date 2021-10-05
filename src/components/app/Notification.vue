@@ -16,26 +16,30 @@
           fab
           plain
         >
-          <v-badge color="pink" dot>
+          <v-badge color="pink" dot >
             <v-icon fab>mdi-bell</v-icon>
           </v-badge>
         </v-btn>
       </template>
-      
-        <v-responsive style="max-height: 320px" width="320">
-          <v-list v-for="(item, i) in notifyItem" :key="i">
-            <v-list-item link>
+      <v-card width="320" dark>
+        <v-expansion-panels>
+          <v-expansion-panel v-for="(item, i) in notifyItem" :key="i">
+            <v-expansion-panel-header disable-icon-rotate>
+              <template v-slot:actions>
+                <v-icon> mdi-email </v-icon>
+              </template>
               <v-list-item-content>
                 <v-list-item-title class="text-subtitle-1">{{
                   item.content
                 }}</v-list-item-title>
               </v-list-item-content>
-              <v-list-item-action>
-                <v-icon>mdi-email</v-icon>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
-        </v-responsive>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              {{ item.content }}
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card>
     </v-menu>
   </div>
 </template>
@@ -65,13 +69,6 @@ export default {
     getToken() {
       return this.$store.state.auth.user.access_token;
     },
-    // content() {
-    //   let length = this.notifyItem.length;
-    //   if (this.notifyItem != null) {
-    //     return length;
-    //   }
-    //   return length;
-    // },
   },
   mounted() {
     this.$store.dispatch("getProfile", this.getToken);
