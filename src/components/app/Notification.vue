@@ -21,7 +21,7 @@
           </v-badge>
         </v-btn>
       </template>
-      <v-card width="420" max-height="500" dark>
+      <v-card width="420" dark>
         <v-card-title>Notification</v-card-title>
         <v-card-text>
           <v-expansion-panels>

@@ -20,7 +20,7 @@
               :key="img._id"
               ><v-img
                 @click="handleChangeImage(img)"
-                :src="img.src"
+                :src="img"
                 style="height: 48px; max-width: 48px"
               ></v-img
             ></v-tab>
