@@ -170,24 +170,36 @@
               ></v-divider>
               <v-row justify="center" v-if="cart && cart.length > 0">
                 <v-spacer></v-spacer>
-                <div
-                  class="text-h5 font-weight-bold"
-                  v-if="discountCode != null"
-                >
+                <div class="text-h5 font-weight-bold" v-if="discountCode">
                   Applied Discount code:
                 </div>
                 <v-spacer></v-spacer>
                 <div class="text-h5 font-weight-bold" style="color: #eb3452">
-                  {{discountCode}}
+                  {{ discountCode }}
                 </div>
               </v-row>
-
+              <v-row justify="center" v-if="cart && cart.length > 0">
+                <v-spacer></v-spacer>
+                <div class="text-h5 font-weight-bold"></div>
+                <v-spacer></v-spacer>
+                <del class="text-h5 font-weight-bold" style="color: #eb3452">
+                  ${{ totalPrice }}
+                </del>
+              </v-row>
+               <v-row justify="center" v-if="cart && cart.length > 0">
+                <v-spacer></v-spacer>
+                <div class="text-h5 font-weight-bold"></div>
+                <v-spacer></v-spacer>
+                <div class="text-h5 font-weight-bold" style="color: #eb3452">
+                  -{{ this.discount.amount }}%
+                </div>
+              </v-row>
               <v-row justify="center" v-if="cart && cart.length > 0">
                 <v-spacer></v-spacer>
                 <div class="text-h5 font-weight-bold">Total:</div>
                 <v-spacer></v-spacer>
                 <div class="text-h5 font-weight-bold" style="color: #eb3452">
-                  ${{ totalPrice }}
+                  ${{ finalPrice }}
                 </div>
               </v-row>
             </v-col>
@@ -540,10 +552,11 @@ export default {
       loading: false,
       //Datetime: Date(),
       total: "",
-      discount: "",
+      discountCode: "",
       email: "",
       firstName: "",
       lastName: "",
+      finalPrice: "",
       company: "",
       address: "",
       apartment: "",
@@ -558,7 +571,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "totalPrice"]),
+    ...mapGetters(["cart", "totalPrice", "discount"]),
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
@@ -626,9 +639,18 @@ export default {
       );
       //console.log(this.cartItems)
     },
-    discountCheck(){
-      
-    } 
+    discountCheck() {
+      if (!this.discount) {
+        this.discountCode = "";
+        this.finalPrice = this.totalPrice;
+      } else {
+        this.discountCode = this.discount.code;
+        this.finalPrice = (
+          (this.discount.amount / 100) *
+          this.totalPrice
+        ).toFixed(2);
+      }
+    },
   },
   mounted() {
     if (this.loggedIn) {
@@ -643,6 +665,7 @@ export default {
     } else {
       this.idUser = "guest";
     }
+    this.discountCheck();
   },
 };
 </script>

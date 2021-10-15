@@ -362,24 +362,25 @@ export default {
   methods: {
     ...mapActions(["getCartItems"]),
     checkout(code) {
-      // this.isLoading = true;
-      // if (this.discountCode === "") {
-      //   this.isLoading = false
-      //   this.$router.push("/checkout");
-      // } else {
+      this.isLoading = true;
+      if (this.discountCode === "") {
+        this.isLoading = false
+        this.$router.push("/checkout");
+      } else {
       this.isLoading = true;
       this.$store.dispatch("checkout", code).then(
         () => {
           this.isLoading = false;
           this.$router.push("/checkout");
-          // this.discountCode = "";
+          this.discountCode = "";
         },
         (err) => {
           this.isLoading = false;
-          // this.message = "Invalid discount code";
+          this.message = "Invalid discount code";
           console.log(err.response.data);
         }
       );
+      }
     },
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
