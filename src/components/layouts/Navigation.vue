@@ -222,6 +222,7 @@
               placeholder="Discount Code"
               rounded
               filled
+              v-model="discountCode"
             ></v-text-field>
           </v-responsive>
         </v-col>
@@ -270,9 +271,10 @@
           <v-btn
             v-else
             class="theme--light v-size--large pink white--text font-weight-bold"
-            to="/checkout"
             block
             large
+            :loading="isLoading"
+            @click="checkout(discountCode)"
           >
             Checkout
           </v-btn>
@@ -306,6 +308,7 @@ export default {
     message: "",
     index: -1,
     loader: null,
+    discountCode: "",
     socketMessage: "",
     buttons: [
       {
@@ -358,22 +361,25 @@ export default {
   },
   methods: {
     ...mapActions(["getCartItems"]),
-    // deleteItem(productId){
-    //   console.log(productId)
-    // }
-    // postNotice() {
-    //   return axios
-    //     .post("https://web-demo.online/admin/notify", {
-    //       listUser: ["6151767330135c54093634b1"],
-    //       content: "Hello",
-    //     })
-    //     .then(
-    //       () => console.log("success"),
-    //       (err) => {
-    //         console.log(err.response);
-    //       }
-    //     );
-    // },
+    checkout(code) {
+      if (this.discountCode === "") {
+        this.$router.push("/checkout");
+      } else {
+        this.isLoading = true;
+        this.$store.dispatch("checkout", code).then(
+          () => {
+            this.isLoading = false;
+            this.$router.push("/checkout");
+            this.discountCode = "";
+          },
+          (err) => {
+            this.isLoading = false;
+            this.message = 'Invalid discount code'
+            console.log(err.response.data);
+          }
+        );
+      }
+    },
     deleteItem(productId, access_token) {
       if (this.loggedIn) {
         this.isLoading = true;

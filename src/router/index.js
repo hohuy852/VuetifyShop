@@ -13,48 +13,48 @@ const routes = [
   },
 
   {
-    path:'/product/:slug',
+    path: '/product/:slug',
     name: 'Product',
-    component:()=>import ( /* webpackChunkName: "product" */ '../views/Product.vue'),
+    component: () => import( /* webpackChunkName: "product" */ '../views/Product.vue'),
   },
   {
     path: '/register',
     name: 'Register',
-    component:()=>import (/* webpackChunkName: "register" */'../views/Register.vue')
+    component: () => import(/* webpackChunkName: "register" */'../views/Register.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component:()=>import (/* webpackChunkName: "login" */'../views/Login.vue')
+    component: () => import(/* webpackChunkName: "login" */'../views/Login.vue')
   },
   {
     path: '/checkout',
     name: 'Checkout',
-    component:()=>import (/* webpackChunkName: "checkout" */'../views/Checkout.vue')
-    
+    component: () => import(/* webpackChunkName: "checkout" */'../views/Checkout.vue')
+
   },
   {
     path: '/themes',
     name: 'Themes',
-    component:()=>import (/* webpackChunkName: "themes" */'../views/Themes.vue')
-    
+    component: () => import(/* webpackChunkName: "themes" */'../views/Themes.vue')
+
   },
   {
     path: '/uikits',
     name: 'UIKits',
-    component:()=>import (/* webpackChunkName: "uikits" */'../views/Uikits.vue')
-    
+    component: () => import(/* webpackChunkName: "uikits" */'../views/Uikits.vue')
+
   },
   {
     path: '/freebies',
     name: 'Freebies',
-    component:()=>import (/* webpackChunkName: "freebies" */'../views/Freebies.vue')
-    
+    component: () => import(/* webpackChunkName: "freebies" */'../views/Freebies.vue')
+
   },
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import (/* webpackChunkName: "forgorpassword" */'../views/ForgotPassword.vue')
+    component: () => import(/* webpackChunkName: "forgorpassword" */'../views/ForgotPassword.vue')
   },
   {
     path: '/profile',
@@ -81,7 +81,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "changePassword" */'../components/ChangePassword.vue')
       }
     ],
-    meta: {requiresAuth : true}
+    meta: { requiresAuth: true }
   },
   {
     path: "*",
@@ -91,24 +91,27 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    mode: 'history',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
- 
+
 })
 
 router.beforeEach((to, from, next) => {
-   const loggedIn = localStorage.getItem('user');
-    if(to.matched.some(record => record.meta.requiresAuth)){
-      if (!loggedIn) {
-        next({ name: "Login"});
-      } else {
-        next();
-      }
-     }
-    else {
+  const loggedIn = localStorage.getItem('user');
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!loggedIn) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+    } else {
       next();
     }
+  }
+  else {
+    next();
+  }
 
 })
 
