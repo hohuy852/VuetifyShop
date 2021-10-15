@@ -24,12 +24,7 @@ const actions = {
             .post('https://web-demo.online/checkDiscount', {
                 discount: code
             })
-            .then(
-                (res) => {
-                    commit('GET_AMOUNT', res.data)
-                }
-
-            )
+            .then(commit('GET_AMOUNT'))
 
     },
     postOrder({ commit }, order) {

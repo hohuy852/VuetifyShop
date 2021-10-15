@@ -565,9 +565,6 @@ export default {
     getUser() {
       return "user", JSON.parse(localStorage.getItem("user"));
     },
-    discountCode() {
-      return this.$store.getters.discount.code;
-    },
     // totalPrice(){
     //   return this.$store.getters.totalPrice
     // },
@@ -629,6 +626,9 @@ export default {
       );
       //console.log(this.cartItems)
     },
+    discountCheck(){
+      
+    } 
   },
   mounted() {
     if (this.loggedIn) {
