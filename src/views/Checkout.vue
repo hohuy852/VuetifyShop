@@ -180,18 +180,22 @@
               </v-row>
               <v-row justify="center" v-if="cart && cart.length > 0">
                 <v-spacer></v-spacer>
-                <div class="text-h5 font-weight-bold"></div>
+                <div class="text-h5 font-weight-bold">Old Price</div>
                 <v-spacer></v-spacer>
-                <del class="text-h5 font-weight-bold" style="color: #eb3452">
+                <del  class="text-h5 font-weight-bold" style="color: #eb3452">
                   ${{ totalPrice }}
                 </del>
               </v-row>
-               <v-row justify="center" v-if="cart && cart.length > 0">
+              <v-row justify="center" v-if="cart && cart.length > 0">
                 <v-spacer></v-spacer>
                 <div class="text-h5 font-weight-bold"></div>
                 <v-spacer></v-spacer>
-                <div class="text-h5 font-weight-bold" style="color: #eb3452">
-                  -{{ this.discount.amount }}%
+                <div
+                  v-if="amount != null"
+                  class="text-h5 font-weight-bold"
+                  style="color: #eb3452"
+                >
+                  -{{ amount }}%
                 </div>
               </v-row>
               <v-row justify="center" v-if="cart && cart.length > 0">
@@ -556,6 +560,7 @@ export default {
       email: "",
       firstName: "",
       lastName: "",
+      amount: "",
       finalPrice: "",
       company: "",
       address: "",
@@ -578,6 +583,7 @@ export default {
     getUser() {
       return "user", JSON.parse(localStorage.getItem("user"));
     },
+
     // totalPrice(){
     //   return this.$store.getters.totalPrice
     // },
@@ -649,6 +655,7 @@ export default {
           (this.discount.amount / 100) *
           this.totalPrice
         ).toFixed(2);
+        this.amount = this.discount.amount;
       }
     },
   },

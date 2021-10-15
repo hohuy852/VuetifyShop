@@ -376,6 +376,7 @@ export default {
         },
         (err) => {
           this.isLoading = false;
+          this.snackBar = true
           this.message = "Invalid discount code";
           console.log(err.response.data);
         }
