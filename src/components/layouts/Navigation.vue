@@ -364,23 +364,23 @@ export default {
     checkout(code) {
       this.isLoading = true;
       if (this.discountCode === "") {
-        this.isLoading = false
+        this.isLoading = false;
         this.$router.push("/checkout");
       } else {
-      this.isLoading = true;
-      this.$store.dispatch("checkout", code).then(
-        () => {
-          this.isLoading = false;
-          this.$router.push("/checkout");
-          this.discountCode = "";
-        },
-        (err) => {
-          this.isLoading = false;
-          this.snackBar = true
-          this.message = "Invalid discount code";
-          console.log(err.response.data);
-        }
-      );
+        this.isLoading = true;
+        this.$store.dispatch("checkout", code).then(
+          () => {
+            this.isLoading = false;
+            this.$router.push("/checkout");
+            this.discountCode = "";
+          },
+          (err) => {
+            this.isLoading = false;
+            this.snackBar = true;
+            this.message = "Invalid discount code";
+            console.log(err.response.data);
+          }
+        );
       }
     },
     deleteItem(productId, access_token) {

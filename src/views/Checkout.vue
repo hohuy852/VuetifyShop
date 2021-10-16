@@ -178,9 +178,9 @@
                   {{ discountCode }}
                 </div>
               </v-row>
-              <v-row justify="center" v-if="cart && cart.length > 0">
+              <v-row justify="center" v-if="cart && cart.length >  0 && postState ">
                 <v-spacer></v-spacer>
-                <div class="text-h5 font-weight-bold">Old Price</div>
+                <div class="text-h5 font-weight-bold" >Old Price</div>
                 <v-spacer></v-spacer>
                 <del  class="text-h5 font-weight-bold" style="color: #eb3452">
                   ${{ totalPrice }}
@@ -191,7 +191,7 @@
                 <div class="text-h5 font-weight-bold"></div>
                 <v-spacer></v-spacer>
                 <div
-                  v-if="amount != null"
+                  v-if="postState"
                   class="text-h5 font-weight-bold"
                   style="color: #eb3452"
                 >
@@ -576,7 +576,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["cart", "totalPrice", "discount"]),
+    ...mapGetters(["cart", "totalPrice", "discount", "postState"]),
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },

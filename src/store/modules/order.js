@@ -67,11 +67,13 @@ const mutations = {
     },
     GET_AMOUNT(state, discount) {
         state.discount = discount
+        state.postState = true
     }
 }
 const getters = {
     orders: state => state.orderList,
-    discount: state => state.discount
+    discount: state => state.discount,
+    postState: state =>  state.postState
 }
 export default {
     state,
