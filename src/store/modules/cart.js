@@ -84,7 +84,7 @@ const mutations = {
     state.items = state.items.filter(item => item.idProduct._id !== productId)
     state.cartState = true
   },
-  PUSH_TO_CART(state) {6
+  PUSH_TO_CART(state) {
     state.cartState = true
     //state.navId++
     state.addSnackbar = true

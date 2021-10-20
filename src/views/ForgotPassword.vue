@@ -18,7 +18,7 @@
             required
             outlined
           ></v-text-field>
-          <div v-if="sendSuccess" style="color: #f542a1">Please check your email</div>
+          <div v-if="sendSuccess" style="color: #3dfc03">Please check your email inbox</div>
           <v-btn class="primary mb-3" x-large block @click="sendRequest"
             >Send Reset Password</v-btn 
           >

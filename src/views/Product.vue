@@ -67,12 +67,12 @@
                   >{{ product.price }}</span
                 > -->
               </div>
-              <del
+              <!-- <del
                 v-if="product.price != 0"
                 class="text-h6 mx-2"
                 style="margin-top: 3px"
                 >{{ product.oldPrice }}</del
-              >
+              > -->
             </div>
             <div class="body-1 mt-3">
               <div>
@@ -323,7 +323,8 @@ export default {
       this.$router.push("/checkout");
     },
     handleChangeImage(img) {
-      this.imgSelected = img.src;
+      console.log(img)
+      this.imgSelected = img;
     },
     addToCart(productId, access_token, product) {
       //console.log(productId, access_token)
@@ -402,13 +403,20 @@ export default {
     },
   },
   created() {
-    this.getSingleProduct();
+    this.getSingleProduct().then(
+      () =>{
+        this.imgSelected = this.product.img;
+      },
+      (err) =>{
+        console.log(err.response.data)
+      }
+    )
   },
   mounted() {
     window.scrollTo(0, 0);
-    setTimeout(() => {
-      this.imgSelected = this.product.img;
-    }, 500);
+    // setTimeout(() => {
+    //   this.imgSelected = this.product.img;
+    // }, 500);
   },
 };
 </script>

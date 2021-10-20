@@ -152,7 +152,7 @@ export default {
     },
     cDate: {
       get() {
-        return this.datecc
+        return this.datecc;
       },
       set(value) {
         this.date = value;
@@ -160,8 +160,8 @@ export default {
     },
     datecc() {
       let date = this.$store.state.profile.info.DOB;
-      if (date != null) return date.substr(0,10);
-      return date
+      if (date != null) return date.substr(0, 10);
+      return date;
     },
   },
   methods: {
@@ -215,12 +215,13 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("getProfile", this.getToken);
-    // this.first = this.$store.state.auth.user.user.firstName;
-    // this.last = this.$store.state.auth.user.user.lastName;
-    // this.date = this.$store.state.auth.user.user.DOB;
-    // this.gender = this.$store.state.auth.user.user.gender;
-    // this.phoneNumber = this.date = this.$store.state.auth.user.user.phoneNumber;
+    this.$store.dispatch("getProfile", this.getToken).then(() => {
+      this.first = this.$store.state.auth.user.user.firstName;
+      this.last = this.$store.state.auth.user.user.lastName;
+      this.date = this.$store.state.auth.user.user.DOB;
+      this.gender = this.$store.state.auth.user.user.gender;
+      this.phoneNumber = this.$store.state.auth.user.user.phonenumber;
+    });
   },
 };
 </script>

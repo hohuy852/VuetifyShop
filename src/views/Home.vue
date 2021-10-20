@@ -89,12 +89,12 @@
                       > -->
                   </div>
                 </div>
-                <del
+                <!-- <del
                   v-if="product.price != 0"
                   class="body-1 mx-1"
                   style="margin-top: 3px"
                   >{{ parseFloat(product.oldPrice).toFixed(2) }}</del
-                >
+                > -->
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
