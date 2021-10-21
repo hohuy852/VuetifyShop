@@ -89,12 +89,12 @@ export default {
         },
         {
           id: 2,
-          name: "infomation",
-          route: `/profile/infomation`,
+          name: "information",
+          route: `/profile/information`,
         },
         {
           id: 3,
-          name: "wishlist (beta)",
+          name: "wishlist",
           route: `/profile/wishlist`,
         },
         {
