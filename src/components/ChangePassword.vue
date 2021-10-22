@@ -7,13 +7,21 @@
           <v-form ref="form" v-model="valid">
             <v-text-field
               outlined
+              label="Current password"
+              v-model="oldPassword"
+              type="password"
+              :rules="[passwordRules.required]"
+            ></v-text-field>
+            <v-text-field
+              outlined
               label="New password"
-              v-model="password"
+              v-model="newPassword"
               type="password"
               :rules="[
                 passwordRules.required,
                 passwordRules.min,
                 passwordRules.max,
+                passwordConfirmationRule2
               ]"
             ></v-text-field>
             <v-text-field
@@ -33,7 +41,7 @@
           <v-btn
             class="cyan font-weight-bold"
             @click="
-              sendPassword(confirm, access_token);
+              sendPassword(confirm, oldPassword, access_token);
               validate;
             "
             :disabled="!valid"
@@ -50,11 +58,13 @@
 
 <script>
 export default {
+  name: "Change Password",
   data() {
     return {
-      password: "",
-      confirm: "",
+      newPassword: "",
       message: "",
+      oldPassword: "",
+      confirm: "",
       snackBar: false,
       valid: true,
       loading: false,
@@ -68,7 +78,10 @@ export default {
   },
   computed: {
     passwordConfirmationRule() {
-      return () => this.password === this.confirm || "Password must match";
+      return () => this.newPassword === this.confirm || "Password must match";
+    },
+    passwordConfirmationRule2() {
+      return () => this.newPassword !== this.oldPassword || "The new password must be different from the old password";
     },
     access_token() {
       return this.$store.state.auth.user.access_token;
@@ -78,18 +91,18 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
-    sendPassword(confirm, access_token) {
+    sendPassword(confirm, oldPassword, access_token) {
       this.loading = true;
-      this.$store.dispatch("changePassword", { confirm, access_token }).then(
+      this.$store.dispatch("changePassword", { confirm, oldPassword, access_token }).then(
         () => {
           this.loading = false;
-          this.message = "Password change succesful!"
-          this.snackBar = true
+          this.message = "Password change succesful!";
+          this.snackBar = true;
         },
         (err) => {
           (this.loading = false), console.log(err.response.data);
-          this.message = "Password change failed"
-          this.snackBar = true
+          this.message = err.response.data
+          this.snackBar = true;
         }
       );
     },

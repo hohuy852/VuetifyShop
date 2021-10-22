@@ -15,6 +15,7 @@ const actions = {
     changePassword({commit}, password){
         return axios
         .post(API_URL + 'changePassword',{
+            oldPassword:   password.oldPassword,
             password:  password.confirm
         },
         {

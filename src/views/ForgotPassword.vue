@@ -46,7 +46,15 @@ export default {
   },
   methods: {
     sendRequest() {
-      this.$store.dispatch("sendRequest", this.email)
+      this.$store.dispatch("sendRequest", this.email).then(
+        () =>{
+
+        },
+        (err) =>{
+          console.log(err.response.data)
+        }
+
+      )
     },
   },
   computed:{

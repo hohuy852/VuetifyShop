@@ -72,9 +72,12 @@ export default {
     getToken() {
       return this.$store.state.auth.user.access_token;
     },
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    },
   },
   mounted() {
-    this.$store.dispatch("getProfile", this.getToken);
+    if (this.loggedIn) this.$store.dispatch("getProfile", this.getToken);
   },
 };
 </script>
