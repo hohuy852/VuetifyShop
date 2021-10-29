@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import VueGtag from "vue-gtag";
 import Home from '../views/Home.vue'
 //import store from "../store/index";
 Vue.use(VueRouter)
@@ -95,7 +95,9 @@ const router = new VueRouter({
   routes,
 
 })
-
+Vue.use(VueGtag, {
+  config: { id: "G-L3WJ61X2WE" }
+}, router);
 router.beforeEach((to, from, next) => {
   const loggedIn = router.app.$store.state.auth.status.loggedIn;
   if (to.matched.some(record => record.meta.requiresAuth)) {

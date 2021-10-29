@@ -17,6 +17,7 @@
     "vue": "^2.6.11",
     "vue-carousel-3d": "^1.0.1",
     "vue-cookies": "^1.7.4",
+    "vue-gtag": "^1.16.1",
     "vue-router": "^3.2.0",
     "vue-socket.io": "^3.0.10",
     "vue-tabs-component": "^1.5.0",
