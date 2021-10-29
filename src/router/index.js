@@ -96,7 +96,7 @@ const router = new VueRouter({
 
 })
 Vue.use(VueGtag, {
-  config: { id: "G-UA-210003077-1" }
+  config: { id: "G-4T5JMWWYG2" }
 }, router);
 router.beforeEach((to, from, next) => {
   const loggedIn = router.app.$store.state.auth.status.loggedIn;
