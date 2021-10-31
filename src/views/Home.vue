@@ -77,11 +77,17 @@
                       >Free</span
                     >
                     <span
-                      v-else
+                      v-if="product.percent > 0 && product.price !=0"
                       class="product-price font-weight-bold text-h5"
-                      >{{ parseFloat(product.price).toFixed(2) }}</span
+                    
+                      >  {{ parseFloat(product.price * (100 - product.percent)/100).toFixed(2) }}</span
                     >
-
+                    <span
+                      v-if="product.percent == 0 && product.price !=0"
+                      class="product-price font-weight-bold text-h5"
+                    
+                      >  {{ parseFloat(product.price).toFixed(2) }}</span
+                    >
                     <!-- <span
                         class="product-price body-2"
                         style="margin-left: 2px; margin-top: 5px"
@@ -89,12 +95,12 @@
                       > -->
                   </div>
                 </div>
-                <!-- <del
-                  v-if="product.price != 0"
+                <del
+                  v-if="product.percent > 0 && product.price !=0"
                   class="body-1 mx-1"
                   style="margin-top: 3px"
-                  >{{ parseFloat(product.oldPrice).toFixed(2) }}</del
-                > -->
+                  >{{ parseFloat(product.price).toFixed(2) }}</del
+                >
                 <v-spacer></v-spacer>
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on, attrs }">
@@ -201,6 +207,7 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
+
     ...mapActions(["getProduct", "addProductToCart"]),
     addToCart(productId, access_token, product) {
       //console.log(productId, access_token)

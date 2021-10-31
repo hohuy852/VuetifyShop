@@ -443,13 +443,13 @@ export default {
   created() {
     this.sockets.subscribe("Server-sent-notification", (data) => {
       this.socketMessage = data.content;
-      //console.log(data)
+      console.log(data)
     });
     if (this.loggedIn) {
       this.$socket.emit("Login", this.$store.state.auth.user.user._id);
       this.sockets.subscribe("Server-sent-notify", (data) => {
-        // this.socketMessage = data.content;
-        console.log(data.content);
+         this.socketMessage = data.content;
+        //console.log(data);
       });
     }
   },
