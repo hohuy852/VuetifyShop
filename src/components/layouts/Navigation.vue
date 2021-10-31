@@ -2,7 +2,7 @@
   <div>
     <!-- NavigationBar -->
     <v-system-bar
-      v-if="socketMessage != ''"
+      v-if="bannerContent && bannerContent[0] != ''"
       app
       dark
       style="
@@ -19,7 +19,7 @@
           w-full
         "
       >
-        🧨🎉 {{ socketMessage }}
+        🧨🎉 {{bannerContent[0].content}}
       </v-container>
     </v-system-bar>
     <v-app-bar app dark>
@@ -297,6 +297,7 @@ export default {
     Notification,
   },
   data: () => ({
+    bannerContent: null,
     socket: io(),
     isConnected: false,
     snackBar: false,
@@ -331,7 +332,7 @@ export default {
   }),
   computed: {
     ...mapState([]),
-    ...mapGetters(["cart", "totalProduct", "totalPrice"]),
+    ...mapGetters(["cart", "totalProduct", "totalPrice", "banner"]),
     toggleCart: {
       get() {
         return this.$store.state.cart.toggleCart;
@@ -439,6 +440,12 @@ export default {
     if (this.loggedIn) {
       this.getCartItems(this.getUser.access_token);
     }
+    this.$store.dispatch('getBanner')
+    .then(
+      ()=>{
+        this.bannerContent = this.banner
+      }
+    )
   },
   created() {
     this.sockets.subscribe("Server-sent-notification", (data) => {
