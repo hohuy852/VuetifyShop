@@ -133,23 +133,8 @@
             </p>
             <h2>Quick Facts</h2>
             <br />
-            <ul>
-              <li>
-                Reliable & regular updates. This theme is maintained by the
-                author of Vuetify, John Leider.
-              </li>
-              <li>
-                Reliable & regular updates. This theme is maintained by the
-                author of Vuetify, John Leider.
-              </li>
-              <li>
-                Reliable & regular updates. This theme is maintained by the
-                author of Vuetify, John Leider.
-              </li>
-              <li>
-                Reliable & regular updates. This theme is maintained by the
-                author of Vuetify, John Leider.
-              </li>
+            <ul v-for="item, i in product.quickFact" :key="i">
+              <li>{{item}}</li>
             </ul>
           </v-sheet>
         </v-card>
