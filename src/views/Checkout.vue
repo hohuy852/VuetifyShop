@@ -98,9 +98,11 @@
 
                 <v-text-field
                   :rules="[rules.required]"
+                  class="phoneNumber"
                   label="Phone"
                   outlined
                   dense
+                  type="number"
                   v-model="phone"
                 ></v-text-field>
               </v-form>
@@ -677,3 +679,14 @@ export default {
   },
 };
 </script>
+<style scoped>
+.phoneNumber >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+.phoneNumber >>> input::-webkit-outer-spin-button,
+.phoneNumber >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+</style>
