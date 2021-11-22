@@ -8,7 +8,6 @@ const state = {
   toggleCart: false,
   items: [],
   cartState: false,
-  navId: 0,
 }
 const actions = {
   deleteItem({ commit }, cartInfo) {

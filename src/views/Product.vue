@@ -304,8 +304,12 @@ export default {
   methods: {
     ...mapActions(["getSingleProduct"]),
     buy(productId, access_token) {
-      this.$store.dispatch("addProductToCart", { productId, access_token });
-      this.$router.push("/checkout");
+      this.$store
+        .dispatch("addProductToCart", { productId, access_token })
+        .then(
+          this.$router.push("/checkout"),
+          this.$store.dispatch("getCartItems")
+        );
     },
     handleChangeImage(img) {
       console.log(img);

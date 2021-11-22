@@ -657,6 +657,7 @@ export default {
         ).toFixed(2);
         this.amount = this.discount.amount;
       }
+      return this.totalPrice
     },
   },
   mounted() {
