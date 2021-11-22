@@ -228,7 +228,7 @@ export default {
             (error) => {
               console.log(error.response.data);
               this.buttonLoading = false;
-              this.text = "An error occur!";
+              this.text = "An error occur!, Add to cart failed";
 
               this.snackBar = true;
             }

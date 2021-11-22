@@ -133,8 +133,8 @@
             </p>
             <h2>Quick Facts</h2>
             <br />
-            <ul v-for="item, i in product.quickFact" :key="i">
-              <li>{{item}}</li>
+            <ul v-for="(item, i) in product.quickFact" :key="i">
+              <li>{{ item }}</li>
             </ul>
           </v-sheet>
         </v-card>
@@ -255,11 +255,11 @@
                           depressed
                           v-bind="attrs"
                           v-on="on"
-                          :loading="buttonLoading && index ==i"
+                          :loading="buttonLoading && index == i"
                           @click="
                             addToCart(item._id, getUser.access_token, item);
                             loader = 'buttonLoading';
-                            index = i
+                            index = i;
                           "
                         >
                           <v-icon>mdi-basket-plus</v-icon>
@@ -275,7 +275,7 @@
         </v-row>
       </v-col>
     </div>
-     <v-snackbar v-model="snackBar" timeout="1500"> {{ message }} </v-snackbar>
+    <v-snackbar v-model="snackBar" timeout="1500"> {{ message }} </v-snackbar>
   </v-container>
 </template>
 
@@ -293,11 +293,11 @@ export default {
       slug: this.$route.params.slug,
       selectedImg: 0,
       imgSelected: "",
-      message: '',
+      message: "",
       snackBar: false,
       buttonLoading: false,
       index: -1,
-      loader: null
+      loader: null,
     };
   },
   props: {},
@@ -308,7 +308,7 @@ export default {
       this.$router.push("/checkout");
     },
     handleChangeImage(img) {
-      console.log(img)
+      console.log(img);
       this.imgSelected = img;
     },
     addToCart(productId, access_token, product) {
@@ -321,7 +321,7 @@ export default {
             () => {
               this.buttonLoading = false;
               this.message = "Added to cart!";
-              this.$store.state.cart.navId++;
+              this.$store.dispatch("getCartItems");
               setTimeout(() => {
                 this.toggleCart = !this.toggleCart;
               }, 300);
@@ -331,7 +331,7 @@ export default {
               console.log(error.response.data);
               this.buttonLoading = false;
               this.message = "An error occur!";
-              
+
               this.snackBar = true;
             }
           );
@@ -339,7 +339,7 @@ export default {
         this.$store.dispatch("addLocalCart", product);
         this.text = "Added to cart!";
         this.toggleCart = !this.toggleCart;
-        this.snackBar = true;    
+        this.snackBar = true;
       }
     },
     addToWishlist(idProduct, access_token) {
@@ -389,13 +389,13 @@ export default {
   },
   created() {
     this.getSingleProduct().then(
-      () =>{
+      () => {
         this.imgSelected = this.product.img;
       },
-      (err) =>{
-        console.log(err.response.data)
+      (err) => {
+        console.log(err.response.data);
       }
-    )
+    );
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -405,8 +405,6 @@ export default {
   },
 };
 </script>
-
-
 
 <style scoped>
 .theme--light.v-divider {
@@ -419,6 +417,6 @@ export default {
   color: #e65d5d !important;
 }
 .theme--dark.v-sheet {
-    background-color: #05090c;
+  background-color: #05090c;
 }
 </style>
