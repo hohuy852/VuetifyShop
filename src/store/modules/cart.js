@@ -61,7 +61,7 @@ const actions = {
   deleteLocalCart({commit}, productId){
     commit('DELETE_LOCAL_PRODUCT', productId)
   },
-  getCartItems({ commit }, access_token) {
+  async getCartItems({ commit }, access_token) {
     return api
       .get('cart')
       .then(response => {

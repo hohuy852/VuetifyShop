@@ -219,7 +219,7 @@ export default {
             () => {
               this.buttonLoading = false;
               this.text = "Added to cart!";
-              this.$store.state.cart.navId++;
+              this.$store.dispatch('getCartItems')
               setTimeout(() => {
                 this.toggleCart = !this.toggleCart;
               }, 300);
