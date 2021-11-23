@@ -180,11 +180,14 @@
                   {{ discountCode }}
                 </div>
               </v-row>
-              <v-row justify="center" v-if="cart && cart.length >  0 && postState ">
+              <v-row
+                justify="center"
+                v-if="cart && cart.length > 0 && postState"
+              >
                 <v-spacer></v-spacer>
-                <div class="text-h5 font-weight-bold" >Old Price</div>
+                <div class="text-h5 font-weight-bold">Old Price</div>
                 <v-spacer></v-spacer>
-                <del  class="text-h5 font-weight-bold" style="color: #eb3452">
+                <del class="text-h5 font-weight-bold" style="color: #eb3452">
                   ${{ totalPrice }}
                 </del>
               </v-row>
@@ -300,9 +303,9 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
+  name: "Checkout",
   data() {
     return {
-      name: "Checkout",
       items: [
         "United States",
         "Canada",
@@ -648,7 +651,7 @@ export default {
       //console.log(this.cartItems)
     },
     discountCheck() {
-      if (!this.discount) {
+      if (this.discount == null) {
         this.discountCode = "";
         this.finalPrice = this.totalPrice;
       } else {
@@ -659,7 +662,7 @@ export default {
         ).toFixed(2);
         this.amount = this.discount.amount;
       }
-      return this.totalPrice
+      return this.finalPrice;
     },
   },
   mounted() {
