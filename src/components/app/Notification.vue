@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .theme--dark.v-card {
   background-color: #05090c;
   color: #edf0f2;

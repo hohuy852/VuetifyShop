@@ -19,12 +19,12 @@
         <tr>
           Name:
           <td class="px-2">
-            {{ getUser.user.firstName + " " + getUser.user.lastName }}
+            {{ getUser.firstName + " " + getUser.lastName }}
           </td>
         </tr>
         <tr>
           Email:
-          <td class="px-2">{{ getUser.user.email }}</td>
+          <td class="px-2">{{ getUser.email }}</td>
         </tr>
       </tbody>
     </table>
@@ -119,7 +119,7 @@ export default {
   },
   computed: {
     getUser() {
-      return "user", JSON.parse(localStorage.getItem("user"));
+      return this.$store.state.profile.info
     },
   },
   mounted(){

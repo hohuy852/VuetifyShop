@@ -44,19 +44,19 @@
             <div class="product-price d-flex">
               <div class="d-flex success--text">
                 <div
-                  v-if="product.price == 0"
+                     v-if="product.price == 0"
                   class="product-price font-weight-bold text-h4"
                 >
                   Free
                 </div>
                 <span
-                  v-else
+                      v-if="product.price != 0"
                   class="product-price body-2"
                   style="margin-top: 5px; margin-right: 1px"
                   >$</span
                 >
                 <div
-                  v-if="product.price != 0"
+                 v-if="product.percent > 0 && product.price !=0"
                   class="product-price font-weight-bold text-h4"
                 >
                   {{ parseFloat(product.price).toFixed(2) }}
@@ -88,7 +88,7 @@
               x-large
               block
               class="mt-3 black--text font-weight-bold cyan text-center"
-              href="https://lux-admin-pro.indielayer.com/dashboard/analytics"
+              :href="product.livePreview"
               target="_blank"
               ><span class="flex-grow-1">Live Preview</span>
             </v-btn>
@@ -192,30 +192,37 @@
                   </v-card-text>
                   <v-card-actions>
                     <div class="product-price d-flex pl-1">
-                      <div class="d-flex align-start">
-                        <span
-                          v-if="item.price == 0"
-                          class="product-price font-weight-bold text-h5"
-                          >Free</span
-                        >
-                        <span
-                          v-else
-                          class="product-price body-2"
-                          style="margin-top: 5px; margin-right: 1px"
-                        >
-                          $
-                        </span>
-                        <span
-                          v-if="item.price != 0"
-                          class="product-price font-weight-bold text-h5"
-                          >{{ parseFloat(item.price).toFixed(2) }}</span
-                        >
-                        <!-- <span
-                          class="product-price body-2"
-                          style="margin-left: 2px; margin-top: 5px"
-                          >98</span
-                        > -->
-                      </div>
+                     <div class="d-flex align-start">
+                    <span
+                      v-if="item.price != 0"
+                      class="product-price body-2"
+                      style="margin-top: 5px; margin-right: 1px"
+                    >
+                      $
+                    </span>
+                    <span
+                      v-if="item.price == 0"
+                      class="product-price font-weight-bold text-h5"
+                      >Free</span
+                    >
+                    <span
+                      v-if="item.percent > 0 && item.price !=0"
+                      class="product-price font-weight-bold text-h5"
+                    
+                      >  {{ parseFloat(item.price * (100 - item.percent)/100).toFixed(2) }}</span
+                    >
+                    <span
+                      v-if="item.percent == 0 && item.price !=0"
+                      class="product-price font-weight-bold text-h5"
+                    
+                      >  {{ parseFloat(item.price).toFixed(2) }}</span
+                    >
+                    <!-- <span
+                        class="product-price body-2"
+                        style="margin-left: 2px; margin-top: 5px"
+                        >98</span
+                      > -->
+                  </div>
                     </div>
                     <del
                       v-if="item.price != 0"
