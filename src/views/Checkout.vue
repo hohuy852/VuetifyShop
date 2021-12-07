@@ -212,7 +212,7 @@
                 </div>
               </v-row>
             </v-col>
-          </div>
+          </div>  
 
           <v-divider vertical dark></v-divider>
         </v-container>
@@ -656,13 +656,12 @@ export default {
         this.finalPrice = this.totalPrice;
       } else {
         this.discountCode = this.discount.code;
-        this.finalPrice = (
+        this.finalPrice = this.totalPrice -  (
           (this.discount.amount / 100) *
           this.totalPrice
         ).toFixed(2);
         this.amount = this.discount.amount;
       }
-      return this.finalPrice;
     },
   },
   mounted() {
