@@ -158,7 +158,7 @@
                             mb-1
                           "
                           >${{
-                            parseFloat(product.idProduct.price).toFixed(2)
+                            parseFloat(product.idProduct.price * (100 - (product.idProduct.percent))/100).toFixed(2)
                           }}</v-list-item-subtitle
                         >
                       </div>

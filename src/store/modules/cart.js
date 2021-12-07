@@ -132,8 +132,9 @@ const getters = {
     if (state.cartState == true) {
       var sum = 0;
       for (var i = 0; i < state.items.length; i++) {
+
         //console.log(state.cart[i].price * state.cart[i].quantity)
-        sum += state.items[i].idProduct.price * state.items[i].quantity
+        sum += (state.items[i].idProduct.price * ((100 - state.items[i].idProduct.percent)/100) )* state.items[i].quantity
       }
       return parseFloat(sum).toFixed(2)
     }

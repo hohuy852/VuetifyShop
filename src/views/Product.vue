@@ -59,7 +59,7 @@
                  v-if="product.percent > 0 && product.price !=0"
                   class="product-price font-weight-bold text-h4"
                 >
-                  {{ parseFloat(product.price).toFixed(2) }}
+                  {{ parseFloat(product.price * (100 - product.percent)/100).toFixed(2) }}
                 </div>
                 <!-- <span
                   class="product-price body-1"
@@ -67,12 +67,12 @@
                   >{{ product.price }}</span
                 > -->
               </div>
-              <!-- <del
+              <del
                 v-if="product.price != 0"
                 class="text-h6 mx-2"
                 style="margin-top: 3px"
-                >{{ product.oldPrice }}</del
-              > -->
+                >{{ parseFloat(product.price).toFixed(2) }}</del
+              >
             </div>
             <div class="body-1 mt-3">
               <div>

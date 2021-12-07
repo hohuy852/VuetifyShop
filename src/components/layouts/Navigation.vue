@@ -181,7 +181,14 @@
                   >Free</v-list-item-subtitle
                 >
                 <v-list-item-subtitle
-                  v-else
+                  v-if="item.idProduct.price != 0 && item.idProduct.percent > 0"
+                  class="red--text text--darken-4 font-weight-black mb-1"
+                  >${{
+                    parseFloat(item.idProduct.price * (100 - (item.idProduct.percent))/100).toFixed(2)
+                  }}</v-list-item-subtitle
+                >
+                 <v-list-item-subtitle
+                  v-if="item.idProduct.price != 0 && item.idProduct.percent == 0"
                   class="red--text text--darken-4 font-weight-black mb-1"
                   >${{
                     parseFloat(item.idProduct.price).toFixed(2)
