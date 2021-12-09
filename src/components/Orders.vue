@@ -33,7 +33,7 @@
                   <div class="d-flex flex-grow-1">
                     <v-spacer></v-spacer>
                     <div class="font-weight-bold mx-1">Fulfilled/Paid</div>
-                    <div class="mx-2 font-weight-bold">{{ order.total }} $</div>
+                    <div class="mx-2 font-weight-bold">{{ order.total}} $</div>
                   </div>
                 </div>
               </v-expansion-panel-header>
@@ -74,11 +74,6 @@ export default {
         {
           text: "Quantity",
           value: "quantity",
-          align: "right",
-        },
-        {
-          text: "Discount",
-          value: "discount",
           align: "right",
         },
         {

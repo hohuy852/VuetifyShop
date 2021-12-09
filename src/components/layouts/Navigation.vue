@@ -19,7 +19,7 @@
           w-full
         "
       >
-        🧨🎉 {{bannerContent[0].content}}
+        🧨🎉 {{socketMessage}}
       </v-container>
     </v-system-bar>
     <v-app-bar app dark>
@@ -451,6 +451,7 @@ export default {
     .then(
       ()=>{
         this.bannerContent = this.banner
+        this.socketMessage = this.bannerContent[0].content
       }
     )
   },
@@ -466,6 +467,7 @@ export default {
         //console.log(data);
       });
     }
+
   },
 };
 </script>

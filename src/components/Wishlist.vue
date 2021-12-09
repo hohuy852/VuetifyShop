@@ -35,11 +35,7 @@ export default {
           value: "title",
           align: "left",
         },
-        {
-          text: "Price",
-          value: "price",
-          align: "center",
-        },
+
         {
           text: "Action",
           value: "actions",
